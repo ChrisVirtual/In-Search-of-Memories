@@ -62,8 +62,6 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(AttackRoutine());
             } 
         }
-        
-        RotateCharacterTowardsMouse();
 
         IEnumerator AttackRoutine()
         {
@@ -79,26 +77,6 @@ public class PlayerController : MonoBehaviour
             Interact();
         }
         
-    }
-    void RotateCharacterTowardsMouse()
-    {
-        // Get the position of the mouse cursor
-        Vector3 mousePosition = Input.mousePosition;
-
-        // Ensure the mouse cursor's z-coordinate is 0 for 2D space
-        mousePosition.z = 0f;
-
-        // Convert the mouse position from screen space to world space
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-        // Calculate the direction vector from the player to the mouse cursor
-        Vector2 direction = (mouseWorldPosition - transform.position).normalized;
-
-        // Calculate the angle in degrees based on the direction vector
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Apply the calculated rotation to the player
-        transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
     }
 
     public void OnAttackEnd() // will be called by the animation Event when the animation be concluded
