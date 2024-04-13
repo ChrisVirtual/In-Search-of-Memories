@@ -14,15 +14,15 @@ public class GameController : MonoBehaviour
 
     private void Start() // Switch the state of the game from free roam to Dialog and vice versa
     {
-        DialogManager.Instance.OnShowDialog += () =>
+        if (DialogManagerInk.instance.dialogIsPlaying)
         {
             state = GameState.Dialog;
-        };
-        DialogManager.Instance.OnHideDialog += () =>
+        }
+        else if (!DialogManagerInk.instance.dialogIsPlaying)
         {
-            if (state == GameState.Dialog) 
+            if (state == GameState.Dialog)
                 state = GameState.FreeRoam;
-        };
+        }
     }
 
     private void Update() // Updates the game state of the game according with the situation
@@ -34,10 +34,10 @@ public class GameController : MonoBehaviour
         else if (state == GameState.Dialog)
         {
             DialogManager.Instance.HandleUpdate();
-        }  
+        }
         else if (state == GameState.attacking)
         {
             playerController.isAttacking = true;
-        }    
+        }
     }
 }

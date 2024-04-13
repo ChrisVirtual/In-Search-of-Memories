@@ -26,13 +26,13 @@ public class DialogTrigger : MonoBehaviour
         {
             visualCue.SetActive(true);
             // You can trigger the dialogue here using inkJSON
-            if(!DialogManagerInk.instance.dialogIsPlaying) 
+            if (!DialogManagerInk.instance.dialogIsPlaying)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     DialogManagerInk.instance.EnterDialogMode(inkJSON);
                 }
-            } 
+            }
         }
         else
         {
@@ -51,6 +51,4 @@ public class DialogTrigger : MonoBehaviour
     {
         interactionRadius = radius;
     }
-
-    // Optionally, you can remove the OnTriggerEnter2D and OnTriggerExit2D methods
 }

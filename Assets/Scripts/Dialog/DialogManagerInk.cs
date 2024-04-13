@@ -37,9 +37,9 @@ public class DialogManagerInk : MonoBehaviour
         dialogPanel.SetActive(false);
 
         choicesText = new TextMeshProUGUI[choices.Length];
-        int index = 0; 
-        
-        foreach(GameObject choice in choices)
+        int index = 0;
+
+        foreach (GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
@@ -69,7 +69,7 @@ public class DialogManagerInk : MonoBehaviour
             return;
         }
 
-        if (waitingForInput && Input.GetKeyDown(KeyCode.E))
+        if (currentStory.currentChoices.Count == 0 && waitingForInput && Input.GetKeyDown(KeyCode.E))
         {
             ContinueStory();
         }
@@ -106,7 +106,7 @@ public class DialogManagerInk : MonoBehaviour
         int index = 0;
 
         //Initialises choices to the amount of choices for this line of dialog
-        foreach (Choice choice in currentChoices) 
+        foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
             choicesText[index].text = choice.text;
@@ -119,6 +119,7 @@ public class DialogManagerInk : MonoBehaviour
             choices[i].gameObject.SetActive(false);
         }
 
+        
         StartCoroutine(selectFirstChoice());
     }
 
@@ -127,14 +128,14 @@ public class DialogManagerInk : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-        
+
     }
 
     public void MakeChoice(int choiceIndex)
-    { 
+    {
+        
         currentStory.ChooseChoiceIndex(choiceIndex);
+        ContinueStory();
     }
-
-
 
 }
