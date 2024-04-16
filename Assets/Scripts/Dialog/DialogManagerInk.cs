@@ -113,7 +113,7 @@ public class DialogManagerInk : MonoBehaviour
             index++;
         }
 
-        //Hide leftover choices
+        //Hide leftover null choices
         for (int i = index; i < choices.Length; i++)
         {
             choices[i].gameObject.SetActive(false);

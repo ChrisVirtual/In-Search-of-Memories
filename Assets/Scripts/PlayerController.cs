@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform circleOrigin;
     public float radius;
+    public PlayerStats playerStats;
 
     private void Awake()
     {
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = true;
 
+        
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime); //Get the original position and move towards the target position
