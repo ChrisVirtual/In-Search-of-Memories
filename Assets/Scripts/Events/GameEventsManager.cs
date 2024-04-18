@@ -19,17 +19,17 @@ public class GameEventsManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            goldEvents = new GoldEvents();
-            miscEvents = new MiscEvents();
-            questEvents = new QuestEvents();
-            inputEvents = new InputEvents();
+         
         }
         else
         {
             Destroy(gameObject);
         }
 
-       
+        goldEvents = new GoldEvents();
+        miscEvents = new MiscEvents();
+        questEvents = new QuestEvents();
+        inputEvents = new InputEvents();
     }
 }
 
