@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-    
-    public int level; 
+    [Header("Configuration")]
+    [SerializeField] private int startingLevel = 1;
+    [SerializeField] private int startingExperience = 0;
+
+    public int currentLevel; 
     public int statPoints;
     public int currentHealth; 
     public int maxHealth;
@@ -33,27 +36,51 @@ public class PlayerStats : MonoBehaviour
     public TextMeshProUGUI healthSliderDisplay;
     public TextMeshProUGUI manaSliderDisplay;
     public TextMeshProUGUI levelSliderDisplay;
-   
 
+    private void Awake()
+    {
+        currentLevel = startingLevel;
+        currentExp = startingExperience;
+    }
 
+    private void OnEnable()
+    {
+        GameEventsManager.instance.playerEvents.onExperienceGained += ExperienceGained;
+    }
+
+    private void OnDisable()
+    {
+        GameEventsManager.instance.playerEvents.onExperienceGained -= ExperienceGained;
+    }
+
+    private void Start()
+    {
+        GameEventsManager.instance.playerEvents.PlayerLevelChange(currentLevel);
+        GameEventsManager.instance.playerEvents.PlayerExperienceChange(currentExp);
+    }
+
+    private void ExperienceGained(int experience)
+    {
+        currentExp += experience;
+        // check if we're ready to level up
+        while (currentExp >= maxExp)
+        {
+           currentExp -= maxExp;
+            maxExp = (int)(maxExp * 1.5f);
+            currentLevel++;
+            GameEventsManager.instance.playerEvents.PlayerLevelChange(currentLevel);
+            statPoints += 5;
+            
+        }
+        GameEventsManager.instance.playerEvents.PlayerExperienceChange(currentExp);
+    }
 
     public void Update()
     {
         changeSliderUI();
-        if (currentExp >= maxExp)
-        {
-            int leftOverExp = 0;
-            if (currentExp > maxExp)
-            {
-                leftOverExp = currentExp - maxExp;
-            }
 
-            maxExp = (int)(maxExp * 1.5f);
-            level++;
-            statPoints += 5;
-            currentExp = leftOverExp;
-        }
     }
+
     public void changeSliderUI()
     { 
         healthBar.value = currentHealth;
@@ -66,20 +93,6 @@ public class PlayerStats : MonoBehaviour
 
         healthSliderDisplay.text = currentHealth + " / " + maxHealth;
         manaSliderDisplay.text = currentMana + " / " + maxMana;
-        levelSliderDisplay.text = " Level: " + level;
-        
+        levelSliderDisplay.text = " Level: " + currentLevel;
     }
-
-    //public void updateStatMenu()
-    //{
-    //    vitalityStat.text = " VIT: " + vitality;
-    //    strengthStat.text = " STR: " + strength;
-    //    dexterityStat.text = " DEX: " + dexterity;
-    //    intelligenceStat.text = " INT: " + intelligence;
-    //    speedStat.text = " SPD: " + speed;
-
-    //    statPointsRemaining.text = " Stat Points Remaining: " + statPoints;
-
-
-    //}
 }

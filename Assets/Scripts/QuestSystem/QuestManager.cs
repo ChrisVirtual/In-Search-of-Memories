@@ -5,6 +5,10 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
     private Dictionary<string, Quest> questMap;
+    public PlayerStats playerStats;
+    
+    
+
 
     private void Awake()
     {
@@ -17,8 +21,10 @@ public class QuestManager : MonoBehaviour
         Debug.Log(quest.currentStepExists());
     }
 
+    
     private void OnEnable()
     {
+       
         GameEventsManager.instance.questEvents.onStartQuest += StartQuest;
         GameEventsManager.instance.questEvents.onAdvanceQuest += AdvanceQuest;
         GameEventsManager.instance.questEvents.onFinishQuest += FinishQuest;
@@ -37,6 +43,13 @@ public class QuestManager : MonoBehaviour
         {
             GameEventsManager.instance.questEvents.QuestStateChange(quest);
         }
+    }
+
+    private void ChangeQuestState(string id, QuestState state)
+    {
+        Quest quest = GetQuestById(id);
+        quest.state = state;
+        GameEventsManager.instance.questEvents.QuestStateChange(quest);
     }
     private void StartQuest(string id)
     {

@@ -11,7 +11,7 @@ public class ExpCollectable : MonoBehaviour
     public float speed;
     public Rigidbody2D rigidBody2D;
     public int expAmount = 100;
-
+    PlayerStats playerStats;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through it's tag
@@ -44,7 +44,8 @@ public class ExpCollectable : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") //if exp orb touches player
         {
-            collision.gameObject.GetComponent<PlayerStats>().currentExp +=expAmount; //add xp to players current exp
+            GameEventsManager.instance.playerEvents.ExperienceGained(expAmount);
+            //collision.gameObject.GetComponent<PlayerStats>().currentExp +=expAmount; //add xp to players current exp
             Destroy(gameObject); //Destroy the orb
         }
     }

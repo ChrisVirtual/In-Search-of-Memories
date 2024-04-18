@@ -21,8 +21,17 @@ public class QuestPoint : MonoBehaviour
 
     private void Awake() 
     {
+        Debug.Log("Quest Point Awake");
         questId = questInfoForPoint.id;
         questIcon = GetComponentInChildren<QuestIcon>();
+        if (questIcon != null)
+        {
+            Debug.Log("questIcon is not null");
+        }
+        else
+        {
+            Debug.Log("questIcon is null");
+        }
     }
 
     private void OnEnable()
@@ -61,7 +70,7 @@ public class QuestPoint : MonoBehaviour
         if (quest.info.id.Equals(questId))
         {
             currentQuestState = quest.state;
-            questIcon.SetState(currentQuestState, startPoint, finishPoint);
+           questIcon.SetState(currentQuestState, startPoint, finishPoint);
         }
     }
 
