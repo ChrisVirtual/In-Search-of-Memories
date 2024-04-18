@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiscEvents : MonoBehaviour
+public class MiscEvents
 {
    
         // Event handlers
-        public event MiscEventHandler onCoinCollected;
+        public event Action onCoinCollected;
 
         // Method to trigger event
-        public void CoinCollected()
+        public void coinCollected()
         {
-            onCoinCollected?.Invoke();
+        if (onCoinCollected != null)
+        {
+            onCoinCollected();
         }
+    }
     
 }

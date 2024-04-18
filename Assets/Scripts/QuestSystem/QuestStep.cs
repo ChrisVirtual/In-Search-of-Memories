@@ -12,6 +12,8 @@ public abstract class QuestStep : MonoBehaviour
         {
             isFinished = true;
 
+            // To do - Advance quest forward
+
             Destroy(gameObject);
         }
     }

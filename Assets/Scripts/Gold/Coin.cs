@@ -42,10 +42,11 @@ public class Coin : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player") //if exp orb touches player
+        if (collision.gameObject.tag == "Player") //if coin touches player
         {
-           GameEventsManager.instance.goldEvents.GoldGained(goldAmount);
-            Destroy(gameObject); //Destroy the orb
+            GameEventsManager.instance.goldEvents.GoldGained(goldAmount);
+            GameEventsManager.instance.miscEvents.coinCollected();
+            Destroy(gameObject); //Destroy the coin
         }
     }
 }
