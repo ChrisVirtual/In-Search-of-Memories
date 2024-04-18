@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     private Vector2 input; // Holds 2 values X and Y in the grid(map)
 
-    private Animator animator;
+   // private Animator animator;
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
 
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+       // animator = GetComponent<Animator>();
     }
 
     public void HandleUpdate()
@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
             {
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
+               // animator.SetFloat("moveX", input.x);
+              //  animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
                 targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 mousePosition = GetMouseWorldPositon();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
                 //Debug.Log("Attack");
-                animator.SetTrigger("Attack");
+              //  animator.SetTrigger("Attack");
                 isAttacking = true;
                 StartCoroutine(AttackRoutine());
             } 
@@ -74,13 +74,13 @@ public class PlayerController : MonoBehaviour
             isAttacking = false;
         }
 
-        animator.SetBool("isMoving", isMoving);
-        animator.SetBool("isAttacking", isAttacking);
+        //animator.SetBool("isMoving", isMoving);
+       // animator.SetBool("isAttacking", isAttacking);
 
-        if (Input.GetKeyDown(KeyCode.E)) // Button to trigger interaction from player with objects/entities
-        {
-            Interact();
-        }
+        //if (Input.GetKeyDown(KeyCode.E)) // Button to trigger interaction from player with objects/entities
+        //{
+        //    Interact();
+        //}
         
     }
 
@@ -89,19 +89,19 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
     
-    void Interact()
-    {
-        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY")); // makes a invisible hitline which moves according to the direction that the player character is facing
-        var interactPos = transform.position + facingDir;
+    //void Interact()
+    //{
+    //   // var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY")); // makes a invisible hitline which moves according to the direction that the player character is facing
+    //    //var interactPos = transform.position + facingDir;
 
-        // Debug.DrawLine(transform.position, interactPos, Color.red, 1f); //draw a represtation of this invisible hitline 
+    //    // Debug.DrawLine(transform.position, interactPos, Color.red, 1f); //draw a represtation of this invisible hitline 
 
-        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer); // makes the line overlap the collider allowing interaction
-        if(collider != null) // if collider is not null the coliders will check for intercatablelayer and get the component, then interact (do some function)
-        {
-            collider.GetComponent<Interactable>()?.Interact();
-        }
-    }
+    //    var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer); // makes the line overlap the collider allowing interaction
+    //    if(collider != null) // if collider is not null the coliders will check for intercatablelayer and get the component, then interact (do some function)
+    //    {
+    //        collider.GetComponent<Interactable>()?.Interact();
+    //    }
+    //}
 
     IEnumerator Move(Vector3 targetPos)
     {

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
+    
     public int level; 
     public int statPoints;
     public int currentHealth; 
@@ -32,8 +33,9 @@ public class PlayerStats : MonoBehaviour
     public TextMeshProUGUI healthSliderDisplay;
     public TextMeshProUGUI manaSliderDisplay;
     public TextMeshProUGUI levelSliderDisplay;
+   
 
- 
+
 
     public void Update()
     {
@@ -65,6 +67,7 @@ public class PlayerStats : MonoBehaviour
         healthSliderDisplay.text = currentHealth + " / " + maxHealth;
         manaSliderDisplay.text = currentMana + " / " + maxMana;
         levelSliderDisplay.text = " Level: " + level;
+        
     }
 
     //public void updateStatMenu()
