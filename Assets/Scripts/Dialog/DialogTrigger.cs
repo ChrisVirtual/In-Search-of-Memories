@@ -24,7 +24,7 @@ public class DialogTrigger : MonoBehaviour
 
         if (distanceToPlayer <= interactionRadius)
         {
-            visualCue.SetActive(true);
+           
             // You can trigger the dialogue here using inkJSON
             if (!DialogManagerInk.instance.dialogIsPlaying)
             {
@@ -34,10 +34,7 @@ public class DialogTrigger : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            visualCue.SetActive(false);
-        }
+       
     }
 
     // This method can be used to set the player's transform when it enters the trigger zone
@@ -50,5 +47,22 @@ public class DialogTrigger : MonoBehaviour
     public void SetInteractionRadius(float radius)
     {
         interactionRadius = radius;
+    }
+
+    private void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        if (otherCollider.CompareTag("Player"))
+        {
+            visualCue.SetActive(true);
+           
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D otherCollider)
+    {
+        if (otherCollider.CompareTag("Player"))
+        {
+            visualCue.SetActive(false);
+        }
     }
 }

@@ -35,6 +35,13 @@ public class PlayerController : MonoBehaviour
         {
             return; 
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E was pushed");
+            GameEventsManager.instance.inputEvents.SubmitPressed();
+        }
+
         if (!isMoving && !isAttacking) // Check if player sprite is not moving
         {
             input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.

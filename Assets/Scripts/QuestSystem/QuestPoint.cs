@@ -37,29 +37,33 @@ public class QuestPoint : MonoBehaviour
     private void OnEnable()
     {
         GameEventsManager.instance.questEvents.onQuestStateChange += QuestStateChange;
-        //GameEventsManager.instance.inputEvents.onSubmitPressed += SubmitPressed;
+        GameEventsManager.instance.inputEvents.onSubmitPressed += SubmitPressed;
     }
 
     private void OnDisable()
     {
         GameEventsManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
-        //GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
+        GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
     }
 
     private void SubmitPressed()
     {
+        Debug.Log("SubmitPressed method called in QuestPoint");
         if (!playerIsNear)
         {
+            Debug.Log("Says player is not near");
             return;
         }
 
         // start or finish a quest
         if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
         {
+            Debug.Log("Starting quest");
             GameEventsManager.instance.questEvents.StartQuest(questId);
         }
         else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
         {
+            Debug.Log("Starting quest");
             GameEventsManager.instance.questEvents.FinishQuest(questId);
         }
     }
@@ -70,7 +74,8 @@ public class QuestPoint : MonoBehaviour
         if (quest.info.id.Equals(questId))
         {
             currentQuestState = quest.state;
-           questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            questIcon.SetState(currentQuestState, startPoint, finishPoint);
+            Debug.Log("Quest state changed to: " + currentQuestState);
         }
     }
 
@@ -79,6 +84,7 @@ public class QuestPoint : MonoBehaviour
         if (otherCollider.CompareTag("Player"))
         {
             playerIsNear = true;
+            Debug.Log("Player has entered quest point trigger area");
         }
     }
 
@@ -87,6 +93,7 @@ public class QuestPoint : MonoBehaviour
         if (otherCollider.CompareTag("Player"))
         {
             playerIsNear = false;
+            Debug.Log("Player has entered quest point trigger area");
         }
     }
 }
