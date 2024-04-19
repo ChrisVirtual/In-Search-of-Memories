@@ -474,7 +474,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934698940}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc72709f3b3de041a6cb1e8a5c2b4a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 6
   isMoving: 0
   isAttacking: 0
   solidObjectsLayer:
@@ -661,7 +661,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.25}
-  m_Size: {x: 1.18, y: 1.76}
+  m_Size: {x: 0.85, y: 1.31}
   m_Direction: 0
 --- !u!1 &1096696951
 GameObject:
@@ -4347,6 +4347,7 @@ GameObject:
   - component: {fileID: 1156667072}
   - component: {fileID: 1156667073}
   - component: {fileID: 1156667074}
+  - component: {fileID: 1156667075}
   m_Layer: 0
   m_Name: MeleeEnemy
   m_TagString: Enemy
@@ -4392,8 +4393,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -136115229
-  m_SortingLayer: 1
+  m_SortingLayerID: -1793522249
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -998217645, guid: fea4ca4ffce11e84b9c97762c4fd5a3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4415,7 +4416,7 @@ Transform:
   m_GameObject: {fileID: 1156667069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.731162, y: 0.9797516, z: 0}
+  m_LocalPosition: {x: 7.7, y: -1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4433,7 +4434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8daa1fe4550e194409a8221b489b9fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.5
   target: {fileID: 934698946}
   attackCooldown: 2
   startWaitTime: 3
@@ -4442,6 +4443,13 @@ MonoBehaviour:
   maxX: 5
   minY: -5
   maxY: 5
+  solidObjectsLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  attackCollider: {fileID: 934698949}
 --- !u!50 &1156667073
 Rigidbody2D:
   serializedVersion: 4
@@ -4504,6 +4512,41 @@ CircleCollider2D:
   m_Offset: {x: 0.71, y: -1}
   serializedVersion: 2
   m_Radius: 3.79
+--- !u!70 &1156667075
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156667069}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.71, y: -1}
+  m_Size: {x: 0.89, y: 1.49}
+  m_Direction: 0
 --- !u!1 &1227072001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4523,7 +4566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1227072002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4536,7 +4579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847e763e45041054495f08369cb4c749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.5
   target: {fileID: 934698946}
   stoppingDistance: 2
   retreatDistance: 3
@@ -4586,8 +4629,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -136115229
-  m_SortingLayer: 1
+  m_SortingLayerID: -1793522249
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 1511277138, guid: fea4ca4ffce11e84b9c97762c4fd5a3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
