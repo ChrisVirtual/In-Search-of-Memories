@@ -14,16 +14,14 @@ public class Projectile : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        target = new Vector2(player.position.x, player.position.y);   
+        target = new Vector2(player.position.x, player.position.y);
     }
 
     void Update()
     {
-
-        Debug.DrawLine(transform.position, player.position, Color.red); // Debug line
         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
-        if(transform.position.x == target.x && transform.position.y == target.y)
+        if (transform.position.x == target.x && transform.position.y == target.y)
         {
             DestroyProjectile();
         }
@@ -31,8 +29,8 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-         Debug.Log("Collided with: " + other.gameObject.tag); // Debugging statement
-        if(other.CompareTag("Player"))
+        Debug.Log("Collided with: " + other.gameObject.tag); // Debugging statement
+        if (other.CompareTag("Player"))
         {
             Debug.Log("Projectile hit the player!"); // Debugging statement
             DestroyProjectile();

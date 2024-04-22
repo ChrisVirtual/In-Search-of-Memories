@@ -74,11 +74,11 @@ public class MeleeEnemy : BaseEnemy
             Debug.Log("Melee enemy attacking player");
             // Add code here to damage the player
 
-            currentCooldown = attackCooldown; 
+            currentCooldown = attackCooldown;
         }
         else
         {
-            currentCooldown -= Time.deltaTime; 
+            currentCooldown -= Time.deltaTime;
         }
     }
 
@@ -107,17 +107,17 @@ public class MeleeEnemy : BaseEnemy
 
             if (IsWalkable(nextPosition))
             {
-                rb.velocity = moveDirection * speed; 
+                rb.velocity = moveDirection * speed;
             }
             else
             {
-                ResetPatrol(); 
+                ResetPatrol();
             }
 
             // Check if reached the move spot
             if (Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
             {
-                ResetPatrol(); 
+                ResetPatrol();
             }
         }
         else
@@ -145,10 +145,10 @@ public class MeleeEnemy : BaseEnemy
         if (distance > attackCollider.size.x)
         {
             Vector2 nextPosition = (Vector2)transform.position + direction * speed * Time.deltaTime;
-            
+
             if (IsWalkable(nextPosition))
             {
-                rb.velocity = direction * speed; 
+                rb.velocity = direction * speed;
             }
             else
             {
@@ -157,8 +157,8 @@ public class MeleeEnemy : BaseEnemy
         }
         else
         {
-            rb.velocity = Vector2.zero; 
-            Attack(); 
+            rb.velocity = Vector2.zero;
+            Attack();
         }
     }
 

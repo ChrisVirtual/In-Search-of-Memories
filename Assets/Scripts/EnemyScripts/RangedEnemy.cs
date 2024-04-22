@@ -19,6 +19,13 @@ public class RangedEnemy : BaseEnemy
     public float minY;
     public float maxY;
 
+    // Layer masks for collision detection
+    public LayerMask solidObjectsLayer;
+    public LayerMask interactableLayer;
+
+    // Rigidbody component for movement
+    private Rigidbody2D rb;
+
     private bool isMovingToSpot = true;
     private EnemyState currentState;
 
@@ -28,6 +35,7 @@ public class RangedEnemy : BaseEnemy
 
         timeBetweenShots = startTimeBetweenShots;
         moveSpot = new GameObject().transform; // Create a new empty GameObject to serve as the move spot
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected override void Attack()
@@ -61,48 +69,67 @@ public class RangedEnemy : BaseEnemy
         if (isMovingToSpot)
         {
             Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
-            transform.position += (Vector3)(moveDirection * speed * Time.deltaTime);
+            Vector2 nextPosition = Vector2.MoveTowards(transform.position, moveSpot.position, speed * Time.deltaTime);
 
-            if(Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
+            if (IsWalkable(nextPosition))
             {
-                isMovingToSpot = false;
-                waitTime = startWaitTime;
+                transform.position = nextPosition;
+            }
+            else
+            {
+                ResetPatrol();
+            }
+
+            // Check if reached the move spot
+            if (Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
+            {
+                ResetPatrol();
             }
         }
         else
         {
-            if(waitTime <= 0) 
+            // Handle waiting behavior
+            if (waitTime <= 0)
             {
-                Vector2 newMoveSpot = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-                moveSpot.position = newMoveSpot;
-                isMovingToSpot = true;
+                ResetPatrol();
             }
-            else 
+            else
             {
                 waitTime -= Time.deltaTime;
             }
         }
     }
 
+
     void TrackPlayerBehavior()
     {
         float distance = Vector2.Distance(transform.position, target.position);
+        Vector2 direction = (target.position - transform.position).normalized;
+        Vector2 nextPosition = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
-        if (distance > stoppingDistance)
+        if (IsWalkable(nextPosition))
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        } 
-        else if (distance < stoppingDistance && distance > retreatDistance)
+            if (distance > stoppingDistance)
+            {
+                transform.position = nextPosition;
+            }
+            else if (distance < stoppingDistance && distance > retreatDistance)
+            {
+                transform.position = this.transform.position;
+            }
+            else if (distance < retreatDistance)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
+            }
+        }
+        else
         {
-            transform.position = this.transform.position;
-        } 
-        else if (distance < retreatDistance)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
+            rb.velocity = Vector2.zero;
         }
 
         Attack();
     }
+
 
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -128,6 +155,31 @@ public class RangedEnemy : BaseEnemy
         {
             Debug.Log("Exited detection of object with tag: " + other.tag);
         }
+    }
+
+
+    void ResetPatrol()
+    {
+        // Generate a new move spot and reset movement
+        Vector2 newMoveSpot = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        moveSpot.position = newMoveSpot;
+        isMovingToSpot = true;
+        waitTime = startWaitTime;
+
+        transform.position = Vector2.MoveTowards(transform.position, moveSpot.position, speed * Time.deltaTime);
+    }
+
+
+    private bool IsWalkable(Vector3 targetPos)
+    {
+        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+
+        if (!isWalkable)
+        {
+            Debug.Log("Collision detected at: " + targetPos);
+        }
+
+        return isWalkable;
     }
 
     public enum EnemyState
