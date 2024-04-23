@@ -23,9 +23,12 @@ public class PlayerController : MonoBehaviour
     public Transform circleOrigin;
     public float radius;
 
+    AudioManager audioManager; // Reference to the AudioManager script
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>(); // Get reference to AudioManager
     }
 
     public void HandleUpdate()
@@ -114,11 +117,21 @@ public class PlayerController : MonoBehaviour
     }
 
     // Determine if a position is suitable for movement
+    // Determine if a position is suitable for movement
     private bool IsWalkable(Vector3 targetPos)
     {
         // Use a small overlap circle to check for collisions with solid or interactable objects
-        return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool walkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+
+        if (!walkable)
+        {
+            // Play collision sound effect if there's a collision
+            audioManager.PlaySFX(audioManager.collision);
+        }
+
+        return walkable;
     }
+
 
     // --- Mouse Position Handling ---
 
