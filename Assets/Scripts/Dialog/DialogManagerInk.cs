@@ -52,6 +52,12 @@ public class DialogManagerInk : MonoBehaviour
         dialogIsPlaying = true;
         dialogPanel.SetActive(true);
         waitingForInput = true;
+        currentStory.BindExternalFunction("startQuest", (string questId) => 
+        {
+            Debug.Log("Inkle output: "+questId);
+            GameEventsManager.instance.questEvents.StartQuest(questId);
+
+        });
         ContinueStory();
     }
 
@@ -133,6 +139,7 @@ public class DialogManagerInk : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
+        
         currentStory.ChooseChoiceIndex(choiceIndex);
         ContinueStory();
     }
