@@ -22,7 +22,7 @@ public class PlayerStats : MonoBehaviour
     public int currentExp; //Current exp for this level
     public int maxExp; //Max exp for this level
 
-    public int vitality; //Increases health
+    public int vitality; //Increases health 
     public int strength; //Increases attack damage
     public int dexterity; //Increases attack speed
     public int intelligence; //Increases 

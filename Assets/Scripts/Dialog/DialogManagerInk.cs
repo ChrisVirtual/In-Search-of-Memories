@@ -133,7 +133,6 @@ public class DialogManagerInk : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
-        
         currentStory.ChooseChoiceIndex(choiceIndex);
         ContinueStory();
     }

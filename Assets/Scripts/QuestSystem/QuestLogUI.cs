@@ -19,7 +19,16 @@ public class QuestLogUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questRequirementsText;
 
     private Button firstSelectedButton;
+    public static QuestLogUI instance { get; private set; }
+    public bool questLogOpen { get; private set; } = false;
 
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     private void OnEnable()
     {
         GameEventsManager.instance.inputEvents.onQuestLogTogglePressed += QuestLogTogglePressed;
@@ -37,10 +46,13 @@ public class QuestLogUI : MonoBehaviour
         if (contentParent.activeInHierarchy)
         {
             HideUI();
+             
+        Debug.Log("HideUI");
         }
         else
         {
             ShowUI();
+            Debug.Log("ShowUI");
         }
     }
 
@@ -53,19 +65,22 @@ public class QuestLogUI : MonoBehaviour
         {
             firstSelectedButton.Select();
         }
+        questLogOpen = true;
+        Debug.Log("Quest Log opened");
     }
 
     private void HideUI()
     {
         contentParent.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
+        questLogOpen = false;
+        Debug.Log("Quest Log closed");
     }
 
     private void QuestStateChange(Quest quest)
     {
         // add the button to the scrolling list if not already added
-        QuestLogButton questLogButton = scrollingList.CreateButtonIfNotExists(quest, () => {
-            SetQuestLogInfo(quest);
+        QuestLogButton questLogButton = scrollingList.CreateButtonIfNotExists(quest, () => {SetQuestLogInfo(quest);
         });
 
         // initialize the first selected button if not already so that it's

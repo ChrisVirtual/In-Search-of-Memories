@@ -85,6 +85,7 @@ public class Quest
         if(stepIndex < questStepStates.Length)
         {
             questStepStates[stepIndex].state = questStepState.state;
+            questStepStates[stepIndex].status = questStepState.status;
         }
         else
         {

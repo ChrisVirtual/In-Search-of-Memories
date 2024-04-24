@@ -8,6 +8,7 @@ public class QuestStepState
     public string state;
     public string status;
 
+
     public QuestStepState(string state, string status)
     {
         this.state = state;

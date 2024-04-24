@@ -31,9 +31,14 @@ public class PlayerController : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if(DialogManagerInk.instance.dialogIsPlaying)
+        if(DialogManagerInk.instance.dialogIsPlaying) 
         {
             return; 
+        }
+
+        if (QuestLogUI.instance.questLogOpen)
+        {
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.E))

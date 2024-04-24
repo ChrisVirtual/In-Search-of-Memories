@@ -7,6 +7,6 @@ This place has been swarming with monsters recently, can you take care of them f
     + [No]
         -> chosen("No")
         
-=== chosen(Trader) ===
-You chose {Trader}
+=== chosen(Quest) ===
+You chose {Quest}
 -> END

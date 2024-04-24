@@ -19,7 +19,7 @@ public class QuestLogScrollingList : MonoBehaviour
 
     ////Below is code to test that the scrolling list is working as expected.
     ////For it to work, you'll need to change the QuestInfoSO id field to be publicly settable
-    // private void Start()
+    //private void Start()
     //{
     //    for (int i = 0; i < 20; i++)
     //    {
@@ -60,8 +60,7 @@ public class QuestLogScrollingList : MonoBehaviour
     {
         // create the button
         QuestLogButton questLogButton = Instantiate(
-            questLogButtonPrefab,
-            contentParent.transform).GetComponent<QuestLogButton>();
+            questLogButtonPrefab, contentParent.transform).GetComponent<QuestLogButton>();
         // game object name in the scene
         questLogButton.gameObject.name = quest.info.id + "_button";
         // initialize and set up function for when the button is selected

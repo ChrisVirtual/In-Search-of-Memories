@@ -18,7 +18,6 @@ public class QuestLogButton : MonoBehaviour, ISelectHandler
     {
         this.button = this.GetComponent<Button>();
         this.buttonText = this.GetComponentInChildren<TextMeshProUGUI>();
-
         this.buttonText.text = displayName;
         this.onSelectAction = selectAction;
     }
