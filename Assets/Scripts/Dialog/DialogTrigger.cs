@@ -13,6 +13,7 @@ public class DialogTrigger : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float interactionRadius = 1f;
 
+    
     private void Awake()
     {
         visualCue.SetActive(false);

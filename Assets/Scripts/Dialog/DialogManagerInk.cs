@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using JetBrains.Annotations;
+using System;
 
 public class DialogManagerInk : MonoBehaviour
 {
@@ -33,6 +35,7 @@ public class DialogManagerInk : MonoBehaviour
 
     void Start()
     {
+
         dialogIsPlaying = false;
         dialogPanel.SetActive(false);
 
@@ -46,20 +49,73 @@ public class DialogManagerInk : MonoBehaviour
         }
     }
 
-    public void EnterDialogMode(TextAsset inkJSON)
-    {
-        currentStory = new Story(inkJSON.text);
-        dialogIsPlaying = true;
-        dialogPanel.SetActive(true);
-        waitingForInput = true;
-        currentStory.BindExternalFunction("startQuest", (string questId) => 
+  public void EnterDialogMode(TextAsset inkJSON)
+{
+    currentStory = new Story(inkJSON.text);
+    dialogIsPlaying = true;
+    dialogPanel.SetActive(true);
+    waitingForInput = true;
+        currentStory.BindExternalFunction("levelCheck", (int requiredLevel) =>
         {
-            Debug.Log("Inkle output: "+questId);
-            GameEventsManager.instance.questEvents.StartQuest(questId);
+            bool levelMet = true;
+            if (PlayerStats.instance.currentLevel < requiredLevel)
+            {
+                levelMet = false;
+            }
 
+            return levelMet;
         });
-        ContinueStory();
-    }
+        currentStory.BindExternalFunction("checkCanStart", (int requiredLevel, string questId) =>
+        {
+            bool canStart = true;
+            if (PlayerStats.instance.currentLevel < requiredLevel)
+            {
+                canStart = false;
+            }
+
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() != QuestState.CAN_START)
+                {
+                    canStart = false;
+                }
+            }
+            else
+            {
+                Debug.LogError("QuestPoint with questId " + questId + " not found in the scene.");
+            }
+
+            return canStart;
+        });
+        currentStory.BindExternalFunction("completed", (string questId) =>
+        {
+            bool completed = false;
+
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() == QuestState.FINISHED)
+                {
+                    
+                        completed = true;
+                }
+            }
+         
+
+            return completed;
+        });
+        currentStory.BindExternalFunction("startQuest", (string questId) =>
+    {
+        Debug.Log("Inkle output: " + questId);
+        GameEventsManager.instance.questEvents.StartQuest(questId);
+        
+    });
+
+    ContinueStory();
+}
 
     private void ExitDialogMode()
     {

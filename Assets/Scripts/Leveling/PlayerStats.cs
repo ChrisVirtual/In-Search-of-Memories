@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int startingLevel = 1;
     [SerializeField] private int startingExperience = 0;
 
-    public int currentLevel; 
+    [SerializeField] public int currentLevel; 
     public int statPoints;
     public int currentHealth; 
     public int maxHealth;
@@ -32,6 +32,8 @@ public class PlayerStats : MonoBehaviour
     public Slider manaBar;
     public Slider expBar;
 
+    public static PlayerStats instance;
+
     public TextMeshProUGUI statIncreaseText;
     public TextMeshProUGUI healthSliderDisplay;
     public TextMeshProUGUI manaSliderDisplay;
@@ -39,8 +41,18 @@ public class PlayerStats : MonoBehaviour
 
     private void Awake()
     {
-        currentLevel = startingLevel;
-        currentExp = startingExperience;
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            currentLevel = startingLevel;
+            currentExp = startingExperience;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     private void OnEnable()

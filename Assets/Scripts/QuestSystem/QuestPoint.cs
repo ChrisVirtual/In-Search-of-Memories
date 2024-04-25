@@ -14,7 +14,7 @@ public class QuestPoint : MonoBehaviour
     [SerializeField] private bool finishPoint = true;
 
     private bool playerIsNear = false;
-    private string questId;
+    public string questId { get; private set; }
     private QuestState currentQuestState;
 
     private QuestIcon questIcon;
@@ -44,6 +44,11 @@ public class QuestPoint : MonoBehaviour
     {
         GameEventsManager.instance.questEvents.onQuestStateChange -= QuestStateChange;
         GameEventsManager.instance.inputEvents.onSubmitPressed -= SubmitPressed;
+    }
+
+    public QuestState GetCurrentQuestState()
+    {
+        return currentQuestState;
     }
 
     private void SubmitPressed()
