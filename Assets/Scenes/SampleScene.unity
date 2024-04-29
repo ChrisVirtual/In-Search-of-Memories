@@ -4354,7 +4354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1156667070
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4598,6 +4598,8 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 256
+  projectilePrefab: {fileID: 8824529035201094033, guid: ca51d2b167b11224aacf065f157cbb75, type: 3}
+  projectileSpeed: 4
 --- !u!212 &1227072003
 SpriteRenderer:
   m_ObjectHideFlags: 0

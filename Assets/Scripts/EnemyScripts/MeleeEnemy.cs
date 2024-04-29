@@ -188,7 +188,7 @@ public class MeleeEnemy : BaseEnemy
         return isWalkable;
     }
 
-    // Enemy states enumeration
+    // Enemy states
     public enum EnemyState
     {
         Patrol,

@@ -1,44 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed;
-
-    private Transform player;
-    private Vector2 target;
+    private Rigidbody2D rb;
+    public float destroyDelay = 2f;
+    private float elapsedTime = 0f;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        target = new Vector2(player.position.x, player.position.y);
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f; // Disable gravity
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Set collision detection mode
     }
 
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        elapsedTime += Time.deltaTime;
 
-        if (transform.position.x == target.x && transform.position.y == target.y)
+        if (elapsedTime >= destroyDelay)
         {
-            DestroyProjectile();
+            Destroy(gameObject);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collided with: " + other.gameObject.tag); // Debugging statement
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Projectile hit the player!"); // Debugging statement
-            DestroyProjectile();
+            Debug.Log("Projectile hit the player!");
+            Destroy(gameObject);
         }
-    }
-
-    void DestroyProjectile()
-    {
-        Destroy(gameObject);
     }
 }

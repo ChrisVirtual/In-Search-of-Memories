@@ -29,12 +29,16 @@ public class RangedEnemy : BaseEnemy
     private bool isMovingToSpot = true;
     private EnemyState currentState;
 
+    // For projectile
+    public GameObject projectilePrefab;
+    public float projectileSpeed;
+
     protected override void Start()
     {
         base.Start();
 
         timeBetweenShots = startTimeBetweenShots;
-        moveSpot = new GameObject().transform; // Create a new empty GameObject to serve as the move spot
+        moveSpot = new GameObject().transform;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -42,7 +46,19 @@ public class RangedEnemy : BaseEnemy
     {
         if (timeBetweenShots <= 0)
         {
-            Instantiate(projectile, transform.position, Quaternion.identity);
+            // Spawn the projectile
+            GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
+            Rigidbody2D rb = projectileObject.GetComponent<Rigidbody2D>();
+            if (rb == null)
+            {
+                rb = projectileObject.AddComponent<Rigidbody2D>();
+            }
+
+            // Set the velocity of the projectile
+            Vector2 direction = (target.position - transform.position).normalized;
+            rb.velocity = direction * projectileSpeed;
+
             timeBetweenShots = startTimeBetweenShots;
         }
         else
