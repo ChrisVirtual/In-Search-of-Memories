@@ -12,14 +12,17 @@ public class ExpCollectable : MonoBehaviour
     public Rigidbody2D rigidBody2D;
     public int expAmount = 100;
     PlayerStats playerStats;
+
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through it's tag
+        //Get reference to the player object
+        player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through its tag
         rigidBody2D = gameObject.GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
+        //Move towards the player
         if (!moveToPlayer)
         {
             if (timer < 1)
@@ -33,8 +36,9 @@ public class ExpCollectable : MonoBehaviour
             }
         }
 
-        if(moveToPlayer) 
+        if (moveToPlayer)
         {
+            //Move the orb towards the player
             Vector3 movementVector = player.transform.position - transform.position;
             rigidBody2D.velocity = movementVector * speed;
         }
@@ -42,12 +46,12 @@ public class ExpCollectable : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player") //if exp orb touches player
+        //When the exp orb touches the player
+        if (collision.gameObject.tag == "Player")
         {
+            //Add experience to the player's stats
             GameEventsManager.instance.playerEvents.ExperienceGained(expAmount);
-            //collision.gameObject.GetComponent<PlayerStats>().currentExp +=expAmount; //add xp to players current exp
-            Destroy(gameObject); //Destroy the orb
+            Destroy(gameObject); // Destroy the orb
         }
     }
-
 }

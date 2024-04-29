@@ -5,20 +5,21 @@ using UnityEngine;
 public class QuestIcon : MonoBehaviour
 {
     [Header("Icons")]
-    [SerializeField] private GameObject requirementsNotMetToStartIcon;
-    [SerializeField] private GameObject canStartIcon;
-    [SerializeField] private GameObject requirementsNotMetToFinishIcon;
-    [SerializeField] private GameObject canFinishIcon;
+    [SerializeField] private GameObject requirementsNotMetToStartIcon; // Icon indicating requirements are not met to start the quest
+    [SerializeField] private GameObject canStartIcon; // Icon indicating the quest can be started
+    [SerializeField] private GameObject requirementsNotMetToFinishIcon; // Icon indicating requirements are not met to finish the quest
+    [SerializeField] private GameObject canFinishIcon; // Icon indicating the quest can be finished
 
+    // Method to set the state of the quest icon based on the new state
     public void SetState(QuestState newState, bool startPoint, bool finishPoint)
     {
-        // set all to inactive
+        //Set all icons to inactive
         requirementsNotMetToStartIcon.SetActive(false);
         canStartIcon.SetActive(false);
         requirementsNotMetToFinishIcon.SetActive(false);
         canFinishIcon.SetActive(false);
 
-        // set the appropriate one to active based on the new state
+        //Set the appropriate icon to active based on the new state
         switch (newState)
         {
             case QuestState.REQUIREMENTS_NOT_MET:

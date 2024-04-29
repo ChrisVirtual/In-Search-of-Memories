@@ -35,13 +35,14 @@ public class DialogManagerInk : MonoBehaviour
 
     void Start()
     {
-
         dialogIsPlaying = false;
         dialogPanel.SetActive(false);
 
+        //Initialise choicesText array
         choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
 
+        //Get TextMeshPro components for each choice UI object
         foreach (GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
@@ -49,12 +50,16 @@ public class DialogManagerInk : MonoBehaviour
         }
     }
 
-  public void EnterDialogMode(TextAsset inkJSON)
-{
-    currentStory = new Story(inkJSON.text);
-    dialogIsPlaying = true;
-    dialogPanel.SetActive(true);
-    waitingForInput = true;
+    //Method to start displaying dialog from an Ink JSON file
+    public void EnterDialogMode(TextAsset inkJSON)
+    {
+        //Create a new Story instance from the Ink JSON text
+        currentStory = new Story(inkJSON.text);
+        dialogIsPlaying = true;
+        dialogPanel.SetActive(true);
+        waitingForInput = true;
+
+        //Bind external Ink functions to C# methods
         currentStory.BindExternalFunction("levelCheck", (int requiredLevel) =>
         {
             bool levelMet = true;
@@ -114,9 +119,11 @@ public class DialogManagerInk : MonoBehaviour
         
     });
 
-    ContinueStory();
-}
+        //Start Displaying the story
+        ContinueStory();
+    }
 
+    //Method to exit dialog mode
     private void ExitDialogMode()
     {
         dialogIsPlaying = false;
@@ -126,15 +133,17 @@ public class DialogManagerInk : MonoBehaviour
 
     void Update()
     {
+        //Check if dialog is currently playing
         if (!dialogIsPlaying)
         {
             return;
         }
-
+        //Check if waiting for player input and the 'E' key is pressed
         if (currentStory.currentChoices.Count == 0 && waitingForInput && Input.GetKeyDown(KeyCode.E))
         {
             ContinueStory();
         }
+        //Exit dialog if not waiting for input
         else if (!waitingForInput && !currentStory.canContinue)
         {
             ExitDialogMode();
@@ -143,15 +152,18 @@ public class DialogManagerInk : MonoBehaviour
 
     private void ContinueStory()
     {
+        //Check if the story can continue
         if (currentStory.canContinue)
         {
+            //Display the next line of dialog
             dialogText.text = currentStory.Continue();
             waitingForInput = true;
-
+            //Display choices if available
             DisplayChoices();
         }
         else
         {
+            //No more content to display, stop waiting for input
             waitingForInput = false;
         }
     }
@@ -160,6 +172,7 @@ public class DialogManagerInk : MonoBehaviour
     {
         List<Choice> currentChoices = currentStory.currentChoices;
 
+        //Check if there are more choices than available UI objects
         if (currentChoices.Count > choices.Length)
         {
             Debug.LogError("More choices were given than the UI can support");
@@ -181,7 +194,7 @@ public class DialogManagerInk : MonoBehaviour
             choices[i].gameObject.SetActive(false);
         }
 
-        
+        //Select the first choice automatically
         StartCoroutine(selectFirstChoice());
     }
 
@@ -193,9 +206,10 @@ public class DialogManagerInk : MonoBehaviour
 
     }
 
+    //Method to handle player choice selection
     public void MakeChoice(int choiceIndex)
     {
-        
+        //Choose the selected choice index and continue the story
         currentStory.ChooseChoiceIndex(choiceIndex);
         ContinueStory();
     }

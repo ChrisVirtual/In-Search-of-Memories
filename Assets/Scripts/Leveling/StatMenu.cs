@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    //References to UI TextMeshProUGUI elements
     public TextMeshProUGUI vitalityStat;
     public TextMeshProUGUI strengthStat;
     public TextMeshProUGUI dexterityStat;
@@ -18,22 +19,25 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private GameObject statIncreaseButton;
     [SerializeField] private GameObject statMenu;
 
+    //Reference to PlayerStats scriptable object
     public PlayerStats playerStats;
 
-    // Start is called before the first frame update
+    //Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
+    //Update is called once per frame
     void Update()
     {
-        if(statMenu.gameObject.activeInHierarchy)
+        //Check if the stat menu is active and display it
+        if (statMenu.gameObject.activeInHierarchy)
         {
             displayStatMenu();
         }
 
+        //Show visual cue if there are stat points available
         if (playerStats.statPoints > 0)
         {
             visualCue.gameObject.SetActive(true);
@@ -44,10 +48,10 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-
+    //Method to increase a specific stat based on statID
     public void IncreaseStat(int statID)
     {
-        
+        //Check statID and available stat points before increasing the stat
         if (statID == 1 && playerStats.statPoints > 0)
         {
             playerStats.vitality++;
@@ -73,12 +77,15 @@ public class NewBehaviourScript : MonoBehaviour
             playerStats.speed++;
             playerStats.statPoints--;
         }
-        
+
+        //Display the stat menu after increasing the stat
         displayStatMenu();
     }
 
-        public void displayStatMenu()
+    //Method to display stat menu UI elements
+    public void displayStatMenu()
     {
+        //Update the text of UI elements with player stats and remaining stat points
         vitalityStat.text = " VIT: " + playerStats.vitality;
         strengthStat.text = " STR: " + playerStats.strength;
         dexterityStat.text = " DEX: " + playerStats.dexterity;
@@ -87,5 +94,4 @@ public class NewBehaviourScript : MonoBehaviour
 
         statPointsRemaining.text = " Stat Points Remaining: " + playerStats.statPoints;
     }
-
 }

@@ -19,13 +19,14 @@ public class DialogTrigger : MonoBehaviour
         visualCue.SetActive(false);
     }
 
+    
     private void Update()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
+        //Checks to see if player is close enough to NPC
         if (distanceToPlayer <= interactionRadius)
         {
-           
             // You can trigger the dialogue here using inkJSON
             if (!DialogManagerInk.instance.dialogIsPlaying)
             {
@@ -50,6 +51,7 @@ public class DialogTrigger : MonoBehaviour
         interactionRadius = radius;
     }
 
+    //When the player is collides with this collider shows the visual cue
     private void OnTriggerEnter2D(Collider2D otherCollider)
     {
         if (otherCollider.CompareTag("Player"))
@@ -59,6 +61,7 @@ public class DialogTrigger : MonoBehaviour
         }
     }
 
+    //When the player leaves stops colliding disable visual cue
     private void OnTriggerExit2D(Collider2D otherCollider)
     {
         if (otherCollider.CompareTag("Player"))
