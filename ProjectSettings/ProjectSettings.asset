@@ -655,7 +655,11 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
+<<<<<<< HEAD
   activeInputHandler: 0
+=======
+  activeInputHandler: 2
+>>>>>>> Caleb-Changes
   windowsGamepadBackendHint: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0

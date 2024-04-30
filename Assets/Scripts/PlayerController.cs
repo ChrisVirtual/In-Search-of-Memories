@@ -14,7 +14,11 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     private Vector2 input; // Holds 2 values X and Y in the grid(map)
 
+<<<<<<< HEAD
     private Animator animator;
+=======
+   // private Animator animator;
+>>>>>>> Caleb-Changes
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
 
@@ -22,14 +26,41 @@ public class PlayerController : MonoBehaviour
 
     public Transform circleOrigin;
     public float radius;
+<<<<<<< HEAD
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+=======
+    public PlayerStats playerStats;
+
+    private void Awake()
+    {
+       // animator = GetComponent<Animator>();
+>>>>>>> Caleb-Changes
     }
 
     public void HandleUpdate()
     {
+<<<<<<< HEAD
+=======
+        if(DialogManagerInk.instance.dialogIsPlaying) 
+        {
+            return; 
+        }
+
+        if (QuestLogUI.instance.questLogOpen)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E was pushed");
+            GameEventsManager.instance.inputEvents.SubmitPressed();
+        }
+
+>>>>>>> Caleb-Changes
         if (!isMoving && !isAttacking) // Check if player sprite is not moving
         {
             input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
@@ -39,8 +70,13 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
             {
+<<<<<<< HEAD
                 animator.SetFloat("moveX", input.x);
                 animator.SetFloat("moveY", input.y);
+=======
+               // animator.SetFloat("moveX", input.x);
+              //  animator.SetFloat("moveY", input.y);
+>>>>>>> Caleb-Changes
 
                 Vector3 targetPos = transform.position;
                 targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
@@ -57,7 +93,11 @@ public class PlayerController : MonoBehaviour
                 Vector3 mousePosition = GetMouseWorldPositon();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
                 //Debug.Log("Attack");
+<<<<<<< HEAD
                 animator.SetTrigger("Attack");
+=======
+              //  animator.SetTrigger("Attack");
+>>>>>>> Caleb-Changes
                 isAttacking = true;
                 StartCoroutine(AttackRoutine());
             } 
@@ -69,6 +109,7 @@ public class PlayerController : MonoBehaviour
             isAttacking = false;
         }
 
+<<<<<<< HEAD
         animator.SetBool("isMoving", isMoving);
         animator.SetBool("isAttacking", isAttacking);
 
@@ -76,6 +117,15 @@ public class PlayerController : MonoBehaviour
         {
             Interact();
         }
+=======
+        //animator.SetBool("isMoving", isMoving);
+       // animator.SetBool("isAttacking", isAttacking);
+
+        //if (Input.GetKeyDown(KeyCode.E)) // Button to trigger interaction from player with objects/entities
+        //{
+        //    Interact();
+        //}
+>>>>>>> Caleb-Changes
         
     }
 
@@ -84,6 +134,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
     
+<<<<<<< HEAD
     void Interact()
     {
         var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY")); // makes a invisible hitline which moves according to the direction that the player character is facing
@@ -97,11 +148,30 @@ public class PlayerController : MonoBehaviour
             collider.GetComponent<Interactable>()?.Interact();
         }
     }
+=======
+    //void Interact()
+    //{
+    //   // var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY")); // makes a invisible hitline which moves according to the direction that the player character is facing
+    //    //var interactPos = transform.position + facingDir;
+
+    //    // Debug.DrawLine(transform.position, interactPos, Color.red, 1f); //draw a represtation of this invisible hitline 
+
+    //    var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer); // makes the line overlap the collider allowing interaction
+    //    if(collider != null) // if collider is not null the coliders will check for intercatablelayer and get the component, then interact (do some function)
+    //    {
+    //        collider.GetComponent<Interactable>()?.Interact();
+    //    }
+    //}
+>>>>>>> Caleb-Changes
 
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
 
+<<<<<<< HEAD
+=======
+        
+>>>>>>> Caleb-Changes
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime); //Get the original position and move towards the target position
