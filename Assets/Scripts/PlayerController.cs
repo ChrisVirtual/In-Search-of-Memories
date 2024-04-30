@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("Attacking!"); // Print message to console
                 Vector3 mousePosition = GetMouseWorldPositon();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
                 animator.SetTrigger("Attack");
