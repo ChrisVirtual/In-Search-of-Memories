@@ -15,9 +15,9 @@ public class DialogManager : MonoBehaviour
     public event Action OnShowDialog;
     public event Action OnHideDialog;
 
-    AudioManager audioManager; // Reference to the AudioManager script
-
     public static DialogManager Instance { get; private set; }
+
+    AudioManager audioManager; // Reference to the AudioManager script
 
     private void Awake() // This will expose Dialog Manager to the "world" allowing any class to be able to access this
     {

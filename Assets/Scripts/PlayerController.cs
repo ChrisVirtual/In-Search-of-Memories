@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public Transform circleOrigin;
     public float radius;
 
-    AudioManager audioManager; // Reference to the AudioManager script
+    AudioManager audioManager;
 
     private void Awake()
     {
