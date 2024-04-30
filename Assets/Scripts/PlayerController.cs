@@ -30,21 +30,37 @@ public class PlayerController : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (!isMoving && !isAttacking && !isDashing)
+        if(DialogManagerInk.instance.dialogIsPlaying) 
         {
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
+            return; 
+        }
+
+        if (QuestLogUI.instance.questLogOpen)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E was pushed");
+            GameEventsManager.instance.inputEvents.SubmitPressed();
+        }
+
+        if (!isMoving && !isAttacking) // Check if player sprite is not moving
+        {
+            input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
+            input.y = Input.GetAxisRaw("Vertical"); // Watch if user is pressing up or down key, then store in the input variable.
 
             if (input.x != 0) input.y = 0;
 
-            if (input != Vector2.zero)
+            if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
             {
-                animator.SetFloat("moveX", input.x);
+               animator.SetFloat("moveX", input.x);
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
-                targetPos.x += input.x * moveSpeed * Time.deltaTime;
-                targetPos.y += input.y * moveSpeed * Time.deltaTime;
+                targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
+                targetPos.y += input.y * moveSpeed * Time.deltaTime; // add to the variable in y axis
 
                 if (IsWalkable(targetPos))
                 {
@@ -110,10 +126,16 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
+    // Determine if a position is suitable for movement
     private bool IsWalkable(Vector3 targetPos)
     {
+        // Use a small overlap circle to check for collisions with solid or interactable objects
         return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
     }
+
+    // --- Mouse Position Handling ---
+
+    // Get Mouse Position in World with Z = 0f
 
     public static Vector3 GetMouseWorldPositon()
     {
@@ -121,33 +143,39 @@ public class PlayerController : MonoBehaviour
         vec3.z = 0f;
         return vec3;
     }
+    // Get mouse position in world space with a specific camera
 
     public static Vector3 GetMouseWorldPositonWithZ(Camera worldCamera)
     {
         return GetMouseWorldPositonWithZ(Input.mousePosition, worldCamera);
     }
-
+    // Get mouse position in world space, providing both screen position and camera
     public static Vector3 GetMouseWorldPositonWithZ(Vector3 screenPos, Camera worldCamera)
     {
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
-
+    
+    // ---- Gizmos Visualization ----
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position;
-        Gizmos.DrawWireSphere(position, radius);
+        Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position; // Determine the circle's center (using origin object if set, otherwise use zero)
+        Gizmos.DrawWireSphere(position, radius); // Draw a blue wire sphere to represent the radius in the scene editor 
     }
 
+    // ---- Collider Detection ----
     public void DetectColliders()
     {
+        // Get all colliders within the circle's radius
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position,radius))
         {
+            //Debug.Log(collider.name);
             Health health; 
-            if (health = collider.GetComponent<Health>())
+            // Attempt to get the Health component of the collided object
+            if (health = collider.GetComponent<Health>()) // If the object has a Health component, inflict damage
             {
-                health.GetHit(1, transform.gameObject);
+                health.GetHit(1, transform.gameObject); // Deal 1 damage, passing this object as the reference
             }
         }
     }
