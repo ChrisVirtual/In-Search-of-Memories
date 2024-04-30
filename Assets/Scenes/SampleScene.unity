@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  isMoving: 0
+  isMoving: 1
   isAttacking: 0
   solidObjectsLayer:
     serializedVersion: 2
@@ -606,6 +606,8 @@ MonoBehaviour:
   state: 0
   circleOrigin: {fileID: 0}
   radius: 1
+  dashDistance: 3
+  dashDuration: 1
 --- !u!114 &934698948
 MonoBehaviour:
   m_ObjectHideFlags: 0
