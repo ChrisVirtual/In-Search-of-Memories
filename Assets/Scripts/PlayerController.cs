@@ -14,9 +14,8 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     private bool isDashing;
 
-    [SerializeField]
-    private Renderer renderer;
     private Vector2 input;
+    [SerializeField]
     private Animator animator;
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
@@ -53,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
             {
-               animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveX", input.x);
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
