@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 2020547283121942823, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: <InventoryItem>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 60d12263899c768449613092407f9b1f, type: 2}
+      objectReference: {fileID: 11400000, guid: b8527ce0cac494c489d598f324092208, type: 2}
     - target: {fileID: 7088582574739757157, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: m_Icon
       value: 
@@ -887,7 +887,7 @@ MonoBehaviour:
   weapon: {fileID: 0}
   inventoryData: {fileID: 11400000, guid: 7f7091732fe15a9429eda3d500dade13, type: 2}
   parametersToModify:
-  - itemParameter: {fileID: 11400000, guid: 608b1a754e7f96144b3910d1c634e4e6, type: 2}
+  - itemParameter: {fileID: 11400000, guid: 803e8e8120c967c4f92fc7ba340e79d8, type: 2}
     value: -10
   itemCurrentState: []
 --- !u!82 &934698953
@@ -7737,19 +7737,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 18.86705
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18.26345
       objectReference: {fileID: 0}
     - target: {fileID: 5156062819628587095, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8429,7 +8429,7 @@ PrefabInstance:
     - target: {fileID: 2020547283121942823, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: <InventoryItem>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 42cc4203e58d7c4459382fc949305be1, type: 2}
+      objectReference: {fileID: 11400000, guid: 75c137ff4663c5546b19324caa8358f9, type: 2}
     - target: {fileID: 7088582574739757157, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: m_Icon
       value: 
