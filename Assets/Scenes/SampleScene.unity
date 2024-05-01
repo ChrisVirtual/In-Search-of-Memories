@@ -7737,19 +7737,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 18.86705
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.26345
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5156062819628587095, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
