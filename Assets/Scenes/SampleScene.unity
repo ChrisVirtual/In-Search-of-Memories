@@ -326,7 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
   mainCam: {fileID: 347228827}
-  item: {fileID: 0}
+  item: {fileID: 1306527086}
 --- !u!1 &266566266
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,8 +819,16 @@ MonoBehaviour:
   inventoryUI: {fileID: 997357420}
   inventoryData: {fileID: 11400000, guid: 981df6931b73e584f8071a202e25367e, type: 2}
   initialItems:
+  - quantity: 1
+    item: {fileID: 11400000, guid: 22bbc0a9145a2e148a38226d718efe11, type: 2}
+    itemState:
+    - itemParameter: {fileID: 11400000, guid: 1ed34516848ff1948a3ffa353144f8af, type: 2}
+      value: 0
   - quantity: 2
-    item: {fileID: 11400000, guid: 42cc4203e58d7c4459382fc949305be1, type: 2}
+    item: {fileID: 11400000, guid: 22bbc0a9145a2e148a38226d718efe11, type: 2}
+    itemState: []
+  - quantity: 5
+    item: {fileID: 11400000, guid: 38fd8abb000a5bb4c8d650d85f8e81ed, type: 2}
     itemState: []
   dropClip: {fileID: 8300000, guid: 2ca9f079158f8d945a2afc9fca031e41, type: 3}
   audioSource: {fileID: 934698953}
@@ -4706,6 +4714,17 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1306527086 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8578219746859489732, guid: dc495997dae73834ba144bf2405977f4, type: 3}
+  m_PrefabInstance: {fileID: 1965256111}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306527083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e9cf5a6d335a84faa8268bad288f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1493849754
 GameObject:
   m_ObjectHideFlags: 0
@@ -7737,19 +7756,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 18.86705
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18.26345
       objectReference: {fileID: 0}
     - target: {fileID: 5156062819628587095, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y

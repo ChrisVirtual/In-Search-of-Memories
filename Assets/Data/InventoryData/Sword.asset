@@ -15,7 +15,9 @@ MonoBehaviour:
   <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 1
   <Name>k__BackingField: 
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Cuts things
   <ItemImage>k__BackingField: {fileID: -251446703, guid: 87afaf0b8df22b449921ec61bdcc7f2c, type: 3}
-  <DefaultParametersList>k__BackingField: []
+  <DefaultParametersList>k__BackingField:
+  - itemParameter: {fileID: 11400000, guid: 1ed34516848ff1948a3ffa353144f8af, type: 2}
+    value: 100
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 7acf745a916e35c479166ea826f2895b, type: 3}
