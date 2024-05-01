@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public bool isMoving;
     public bool isAttacking;
     private bool isDashing;
+
+    [SerializeField]
+    private Renderer renderer;
     private Vector2 input;
     private Animator animator;
     public LayerMask solidObjectsLayer;
@@ -22,11 +25,6 @@ public class PlayerController : MonoBehaviour
     public float radius;
     public float dashDistance;
     public float dashDuration;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
 
     public void HandleUpdate()
     {
