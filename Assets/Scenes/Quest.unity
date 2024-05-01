@@ -1577,7 +1577,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 347228824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0d172d5c1e917e478d78a2ac228e699, type: 3}
+  m_Script: {fileID: 11500000, guid: 00d46f37a83f877469e11f2f8d5adc86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CameraSpeed: 2
@@ -4545,6 +4545,10 @@ PrefabInstance:
       propertyPath: startPoint
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3039530399764191341, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
+      propertyPath: questInfoForPoint
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a646073d358a8a4db21cce84619e544, type: 2}
     - target: {fileID: 4625350442662595821, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
       propertyPath: m_Name
       value: QuestPoint (1)
@@ -4769,7 +4773,8 @@ MonoBehaviour:
   state: 0
   circleOrigin: {fileID: 0}
   radius: 1
-  playerStats: {fileID: 934698950}
+  dashDistance: 0
+  dashDuration: 0
 --- !u!114 &934698948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5570,7 +5575,7 @@ PrefabInstance:
     - target: {fileID: 3039530399764191341, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
       propertyPath: questInfoForPoint
       value: 
-      objectReference: {fileID: 11400000, guid: df34593b08499ed408c4770103d381ac, type: 2}
+      objectReference: {fileID: 11400000, guid: ded9908aec377d94faaaf8aa94ad9ef0, type: 2}
     - target: {fileID: 4625350442662595821, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
       propertyPath: m_Name
       value: QuestPoint (2)
@@ -17230,6 +17235,10 @@ PrefabInstance:
       propertyPath: finishPoint
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3039530399764191341, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
+      propertyPath: questInfoForPoint
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a646073d358a8a4db21cce84619e544, type: 2}
     - target: {fileID: 4625350442662595821, guid: 030904e0c79ec284caf4859ed7e3d65b, type: 3}
       propertyPath: m_Name
       value: QuestPoint

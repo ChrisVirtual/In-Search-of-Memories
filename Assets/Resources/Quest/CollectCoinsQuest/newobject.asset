@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08cc56f86c18bb54f9c33e3a40d97f60, type: 3}
   m_Name: newobject
   m_EditorClassIdentifier: 
-  <id>k__BackingField: 
+  <id>k__BackingField: newobject
   displayName: 
   levelRequirement: 0
   questPrerequisites: []
