@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08cc56f86c18bb54f9c33e3a40d97f60, type: 3}
   m_Name: TalkToNPCQuest
   m_EditorClassIdentifier: 
-  <id>k__BackingField: 
-  displayName: 
-  levelRequirement: 0
-  questPrerequisites: []
-  questStepPrefabs: []
-  goldReward: 0
-  experienceReward: 0
+  <id>k__BackingField: TalkToNPCQuest
+  displayName: Talk to NPC
+  levelRequirement: 1
+  questPrerequisites:
+  - {fileID: 11400000, guid: 7a646073d358a8a4db21cce84619e544, type: 2}
+  questStepPrefabs:
+  - {fileID: 1715346751642966319, guid: 2e955ea7f6e30244ea0a8e54c03a9117, type: 3}
+  - {fileID: 1715346751642966319, guid: c4b5e0fcf44f95f4295de2fa8f60b958, type: 3}
+  - {fileID: 1715346751642966319, guid: 35b8388d7a693b149ab963903aa9ae85, type: 3}
+  goldReward: 500
+  experienceReward: 1000
