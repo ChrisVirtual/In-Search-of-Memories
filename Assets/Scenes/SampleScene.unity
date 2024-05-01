@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 2020547283121942823, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: <InventoryItem>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: b8527ce0cac494c489d598f324092208, type: 2}
+      objectReference: {fileID: 11400000, guid: 22bbc0a9145a2e148a38226d718efe11, type: 2}
     - target: {fileID: 7088582574739757157, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: m_Icon
       value: 
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  currentHealth: {fileID: 11400000, guid: 3e638c5281d738540bbda9ce02547a4f, type: 2}
+  currentHealth: {fileID: 11400000, guid: 54914fe931f4a134cbf547320e38e965, type: 2}
   bloodParticle: {fileID: 2156367806491492928, guid: 5f83e1530fdf11148ba195e4411ba1d9, type: 3}
   renderer: {fileID: 266566269}
   flashTime: 0.2
@@ -817,7 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 997357420}
-  inventoryData: {fileID: 11400000, guid: 7f7091732fe15a9429eda3d500dade13, type: 2}
+  inventoryData: {fileID: 11400000, guid: 981df6931b73e584f8071a202e25367e, type: 2}
   initialItems:
   - quantity: 2
     item: {fileID: 11400000, guid: 42cc4203e58d7c4459382fc949305be1, type: 2}
@@ -871,7 +871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d3327a474a15848aaea93be2a1db21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryData: {fileID: 11400000, guid: 7f7091732fe15a9429eda3d500dade13, type: 2}
+  inventoryData: {fileID: 11400000, guid: 981df6931b73e584f8071a202e25367e, type: 2}
 --- !u!114 &934698952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,9 +885,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
-  inventoryData: {fileID: 11400000, guid: 7f7091732fe15a9429eda3d500dade13, type: 2}
+  inventoryData: {fileID: 11400000, guid: 981df6931b73e584f8071a202e25367e, type: 2}
   parametersToModify:
-  - itemParameter: {fileID: 11400000, guid: 803e8e8120c967c4f92fc7ba340e79d8, type: 2}
+  - itemParameter: {fileID: 11400000, guid: 1ed34516848ff1948a3ffa353144f8af, type: 2}
     value: -10
   itemCurrentState: []
 --- !u!82 &934698953
@@ -7737,19 +7737,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 18.86705
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 732234137104975440, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.26345
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5156062819628587095, guid: dc495997dae73834ba144bf2405977f4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8429,7 +8429,7 @@ PrefabInstance:
     - target: {fileID: 2020547283121942823, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: <InventoryItem>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 75c137ff4663c5546b19324caa8358f9, type: 2}
+      objectReference: {fileID: 11400000, guid: 38fd8abb000a5bb4c8d650d85f8e81ed, type: 2}
     - target: {fileID: 7088582574739757157, guid: 8007b4fa130e3c94cbf3fa4d90fe9052, type: 3}
       propertyPath: m_Icon
       value: 
