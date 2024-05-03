@@ -9,30 +9,30 @@ VAR finished = false
 
 -> main
 === main ===
-~ finished = completed("CollectCoinsQuest")
+~ finished = completed("TalkToNPCQuest")
 ~ levelMet = levelCheck(5)
-~ canStart = checkCanStart(5, "CollectCoinsQuest")
+~ canStart = checkCanStart(8, "TalkToNPCQuest")
 
 {finished == true:
-    - Thanks for your help earlier, The names bob btw
+    - Thanks for your help.
     -> END
 }
 
 {levelMet == false:
-    - You are too low level to complete this quest. Go grab that purple exp orb and come back at level 5.
+    - You are too low level to complete this quest. Come back at level 9.
     -> END
 }
 
 {canStart == false:
-    - How is the coin collecting going? Remember to talk to my brother to the west after you are done.
+    - Did you find out what you need to know? Remember to talk to the everyone in order from north to south
     -> END
 }
 
 {canStart == true and levelMet == true and finished == false:
-    - Hey dude, I've got a job for you. Collect five coins and then talk to my brother west of here.
+    - Oi you, you new around here, go get to know the locals
     Do you wish to start the Quest?
         + [Accept]
-            ~ startQuest("CollectCoinsQuest")
+            ~ startQuest("TalkToNPCQuest")
                 -> chosen("Accept")
         + [Decline]
             -> chosen("Decline")
@@ -41,5 +41,3 @@ VAR finished = false
 === chosen(Quest) ===
 You chose {Quest}
 -> END
-
-
