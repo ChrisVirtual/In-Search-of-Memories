@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,8 @@ public class PlayerStats : MonoBehaviour
     //Player stats
     [SerializeField] public int currentLevel;
     public int statPoints;
-    public int currentHealth;
-    public int maxHealth;
+    public FloatValueSO currentHealth;
+    public float maxHealth;
     public int currentMana;
     public int maxMana;
     public int currentExp; //Current exp for this level
@@ -99,7 +100,7 @@ public class PlayerStats : MonoBehaviour
     public void changeSliderUI()
     {
         //Update UI slider values
-        healthBar.value = currentHealth;
+        healthBar.value = currentHealth.Value;
         manaBar.value = currentMana;
         expBar.value = currentExp;
 
@@ -109,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         expBar.maxValue = maxExp;
 
         //Update UI text displays
-        healthSliderDisplay.text = currentHealth + " / " + maxHealth;
+        healthSliderDisplay.text = currentHealth.Value + " / " + maxHealth;
         manaSliderDisplay.text = currentMana + " / " + maxMana;
         levelSliderDisplay.text = " Level: " + currentLevel;
     }

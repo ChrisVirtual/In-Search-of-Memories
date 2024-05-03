@@ -32,11 +32,6 @@ public class PlayerController : MonoBehaviour
             return; 
         }
 
-        if (QuestLogUI.instance.questLogOpen)
-        {
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("E was pushed");
