@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private float attackEndTime = 0.625f;
     public bool isMoving;
     public bool isAttacking;
-    private bool isDashing;
+    public bool isDashing;
 
     private Vector2 input;
     [SerializeField]
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
             GameEventsManager.instance.inputEvents.SubmitPressed();
         }
 
-        if (!isMoving && !isAttacking) // Check if player sprite is not moving
+        if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
         {
             input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
             input.y = Input.GetAxisRaw("Vertical"); // Watch if user is pressing up or down key, then store in the input variable.
