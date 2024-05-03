@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 10;
+    [SerializeField] private float maxHealth;
     [SerializeField] private FloatValueSO currentHealth;
 
     [SerializeField] private GameObject bloodParticle;
@@ -20,14 +20,7 @@ public class Health : MonoBehaviour
     
     private void Start()
     {
-        currentHealth.Value = 1;
-    }
-
-    public void InitializeHealth(int healthValue)
-    {
-        currentHealth.Value = healthValue; // set current heath as the heath value given to the GameObject
-        maxHealth = healthValue; // set max health of the GameObject
-        isDead = false; // Mark the gameObject as not dead
+        currentHealth.Value = 10;
     }
 
     public void AddHealth(int healthBoost)
@@ -84,6 +77,7 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Debug.Log("Died");
-        currentHealth.Value = 1;
+        currentHealth.Value = 0;
+        isDead = true;
     }  
 }

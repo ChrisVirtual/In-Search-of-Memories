@@ -8,24 +8,37 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed; // Controls the speed that the player will move through the grid(map)
-    private float attackEndTime = 0.625f; // Define how long will last the attack animation
-    public bool isMoving; // Check if player is moving in the grid(map)
+    public float moveSpeed;
+    private float attackEndTime = 0.625f;
+    public bool isMoving;
     public bool isAttacking;
-    private Vector2 input; // Holds 2 values X and Y in the grid(map)
+    public bool isDashing;
 
-    [SerializeField] private Animator animator;
+    private Vector2 input;
+    [SerializeField]
+    private Animator animator;
     public LayerMask solidObjectsLayer;
     public LayerMask interactableLayer;
-
     public GameState state;
-
     public Transform circleOrigin;
     public float radius;
+    public float dashDistance;
+    public float dashDuration;
 
     public void HandleUpdate()
     {
-        if (!isMoving && !isAttacking) // Check if player sprite is not moving
+        if(DialogManagerInk.instance.dialogIsPlaying) 
+        {
+            return; 
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E was pushed");
+            GameEventsManager.instance.inputEvents.SubmitPressed();
+        }
+
+        if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
         {
             input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
             input.y = Input.GetAxisRaw("Vertical"); // Watch if user is pressing up or down key, then store in the input variable.
@@ -45,49 +58,46 @@ public class PlayerController : MonoBehaviour
                 {
                     StartCoroutine(Move(targetPos));
                 }
-            }    
+            }
 
-            if (Input.GetMouseButtonDown(0)) 
+            if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("Attacking!"); // Print message to console
                 Vector3 mousePosition = GetMouseWorldPositon();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
-                //Debug.Log("Attack");
                 animator.SetTrigger("Attack");
                 isAttacking = true;
                 StartCoroutine(AttackRoutine());
-            } 
-        }
+            }
 
-        IEnumerator AttackRoutine()
-        {
-            yield return new WaitForSeconds(attackEndTime);
-            isAttacking = false;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartCoroutine(Dash());
+            }
         }
 
         animator.SetBool("isMoving", isMoving);
         animator.SetBool("isAttacking", isAttacking);
-
-        if (Input.GetKeyDown(KeyCode.E)) // Button to trigger interaction from player with objects/entities
-        {
-            Interact();
-        }
-        
     }
 
-    public void OnAttackEnd() // will be called by the animation Event when the animation be concluded
+    IEnumerator AttackRoutine()
+    {
+        yield return new WaitForSeconds(attackEndTime);
+        isAttacking = false;
+    }
+
+    public void OnAttackEnd()
     {
         isAttacking = false;
     }
-    
+
     void Interact()
     {
-        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY")); // makes a invisible hitline which moves according to the direction that the player character is facing
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
         var interactPos = transform.position + facingDir;
 
-        // Debug.DrawLine(transform.position, interactPos, Color.red, 1f); //draw a represtation of this invisible hitline 
-
-        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer); // makes the line overlap the collider allowing interaction
-        if(collider != null) // if collider is not null the coliders will check for intercatablelayer and get the component, then interact (do some function)
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
+        if(collider != null)
         {
             collider.GetComponent<Interactable>()?.Interact();
         }
@@ -99,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime); //Get the original position and move towards the target position
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;
@@ -118,6 +128,7 @@ public class PlayerController : MonoBehaviour
     // --- Mouse Position Handling ---
 
     // Get Mouse Position in World with Z = 0f
+
     public static Vector3 GetMouseWorldPositon()
     {
         Vector3 vec3 = GetMouseWorldPositonWithZ(Input.mousePosition, Camera.main);
@@ -125,6 +136,7 @@ public class PlayerController : MonoBehaviour
         return vec3;
     }
     // Get mouse position in world space with a specific camera
+
     public static Vector3 GetMouseWorldPositonWithZ(Camera worldCamera)
     {
         return GetMouseWorldPositonWithZ(Input.mousePosition, worldCamera);
@@ -135,7 +147,7 @@ public class PlayerController : MonoBehaviour
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
-
+    
     // ---- Gizmos Visualization ----
     private void OnDrawGizmosSelected()
     {
@@ -158,5 +170,47 @@ public class PlayerController : MonoBehaviour
                 health.GetHit(1, transform.gameObject); // Deal 1 damage, passing this object as the reference
             }
         }
+    }
+
+    IEnumerator Dash()
+    {
+        isDashing = true;
+
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + new Vector3(input.x, input.y, 0f) * dashDistance;
+
+        // Checks if there's anything solid in the path of the player's dash.
+        RaycastHit2D hit = Physics2D.Raycast(startPos, endPos - startPos, Vector3.Distance(startPos, endPos), solidObjectsLayer);
+
+        if (hit.collider != null)
+        {
+            // If there's a collision, stop at the hit box
+            endPos = hit.point;
+
+            // Calculate the normal vector of the collision
+            Vector3 normal = hit.normal;
+
+            // Reflect the collsion of the original dash to find bounce distance
+            Vector3 reflectedDirection = Vector3.Reflect(endPos - startPos, normal).normalized;
+
+            float bounceFactor = 0.3f; // Control bounce strength
+            reflectedDirection *= bounceFactor;
+
+            // Set the new end position to continue the dash in the reflected direction
+            endPos = startPos + reflectedDirection * dashDistance;
+        }
+
+        float dashTimer = 0f;
+
+        while (dashTimer < dashDuration)
+        {
+            float dashProgress = dashTimer / dashDuration;
+            transform.position = Vector3.Lerp(startPos, endPos, dashProgress);
+            dashTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPos;
+        isDashing = false;
     }
 }
