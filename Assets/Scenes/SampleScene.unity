@@ -580,6 +580,7 @@ GameObject:
   - component: {fileID: 934698947}
   - component: {fileID: 934698950}
   - component: {fileID: 934698953}
+  - component: {fileID: 934698954}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -790,6 +791,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &934698954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934698940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85eb2823cde1b714a94756688e1255c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  currentHealth: {fileID: 11400000, guid: 54914fe931f4a134cbf547320e38e965, type: 2}
+  bloodParticle: {fileID: 2156367806491492928, guid: 5f83e1530fdf11148ba195e4411ba1d9, type: 3}
+  renderer: {fileID: 266566269}
+  flashTime: 0.2
+  isDead: 0
+  OnHitWithReference:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeathWithReference:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1015634072
 PrefabInstance:
   m_ObjectHideFlags: 0
