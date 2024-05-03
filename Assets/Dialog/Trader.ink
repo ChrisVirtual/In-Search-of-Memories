@@ -1,7 +1,7 @@
 -> main
 
 === main ===
-Would you like to browse my wares?
+My name is Earl, Would you like to browse my wares?
     + [Yes]
         -> chosen("Yes")
     + [No]
