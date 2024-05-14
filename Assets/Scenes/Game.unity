@@ -885,6 +885,7 @@ GameObject:
   - component: {fileID: 347228825}
   - component: {fileID: 347228827}
   - component: {fileID: 347228826}
+  - component: {fileID: 347228828}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -905,7 +906,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 934698946}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &347228826
 AudioListener:
@@ -966,6 +967,20 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &347228828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347228824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469541a15f4cdb9449db4dd41df4dd76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraSpeed: 1000
+  target: {fileID: 934698946}
 --- !u!1 &384657489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,7 +1465,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 758001520}
-  - {fileID: 347228825}
   - {fileID: 1958278447}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1480,8 +1494,8 @@ MonoBehaviour:
   state: 0
   circleOrigin: {fileID: 0}
   radius: 1
-  dashDistance: 0
-  dashDuration: 0
+  dashDistance: 3
+  dashDuration: 0.2
 --- !u!82 &934698948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8829,3 +8843,4 @@ SceneRoots:
   - {fileID: 384657491}
   - {fileID: 4990700665060653590}
   - {fileID: 1046814183}
+  - {fileID: 347228825}
