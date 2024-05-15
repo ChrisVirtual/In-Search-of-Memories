@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class StatMenu : MonoBehaviour
 {
     //References to UI TextMeshProUGUI elements
     public TextMeshProUGUI vitalityStat;
@@ -16,7 +16,7 @@ public class NewBehaviourScript : MonoBehaviour
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
 
-    [SerializeField] private GameObject statIncreaseButton;
+    //[SerializeField] private GameObject statIncreaseButton;
     [SerializeField] private GameObject statMenu;
 
     //Reference to PlayerStats scriptable object
@@ -31,6 +31,10 @@ public class NewBehaviourScript : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ToggleStatMenuUI();
+        }
         //Check if the stat menu is active and display it
         if (statMenu.gameObject.activeInHierarchy)
         {
@@ -48,6 +52,10 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
+    private void ToggleStatMenuUI()
+    {
+        statMenu.SetActive(!statMenu.activeSelf);
+    }
     //Method to increase a specific stat based on statID
     public void IncreaseStat(int statID)
     {

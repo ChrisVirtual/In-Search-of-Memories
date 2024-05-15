@@ -30,6 +30,18 @@ public class QuestLogUI : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ToggleQuestLogUI();
+        }
+    }
+
+    private void ToggleQuestLogUI()
+    {
+        contentParent.SetActive(!contentParent.activeSelf);
+    }
     private void OnEnable()
     {
         //Subscribe to events
