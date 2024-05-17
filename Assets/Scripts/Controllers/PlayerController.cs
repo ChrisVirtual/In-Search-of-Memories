@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isMoving", isMoving);
         animator.SetBool("isAttacking", isAttacking);
+        animator.SetBool("isDashing", isDashing);
     }
 
     IEnumerator AttackRoutine()
