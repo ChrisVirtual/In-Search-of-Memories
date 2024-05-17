@@ -1703,6 +1703,7 @@ MonoBehaviour:
   radius: 1
   dashDistance: 3
   dashDuration: 0.2
+  attack: {fileID: 0}
 --- !u!82 &934698948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7037,6 +7038,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1778801080}
   - component: {fileID: 1778801081}
+  - component: {fileID: 1778801082}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -7100,7 +7102,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1673842685, guid: f1f41678cd025d34d907ff568ac5e52f, type: 3}
+  m_Sprite: {fileID: -162572820, guid: f1f41678cd025d34d907ff568ac5e52f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7111,6 +7113,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1778801082
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778801079}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0433c137833d2884e8c5379e1d5d65ab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1790276099 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1467921619171560959, guid: e67f519f95362e340a60ddffc3571b6e, type: 3}
@@ -10074,6 +10097,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterRender: {fileID: 0}
   weaponRenderer: {fileID: 0}
+  animator: {fileID: 1778801082}
+  delay: 0.3
 --- !u!114 &1973110047 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3051599027770362524, guid: 7f2c56495e58ad244b28cadbf4295416, type: 3}

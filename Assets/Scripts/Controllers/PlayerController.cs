@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class PlayerController : MonoBehaviour
     public float dashDuration;
 
     private WeaponParent weaponParent;
+
+    // Animation for player attack
+    [SerializeField]
+    private InputActionReference attack;
 
     public void Awake() {
         weaponParent = GetComponentInChildren<WeaponParent>();
@@ -69,12 +74,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Attacking!"); // Print message to console
-                Vector3 mousePosition = GetMouseWorldPosition();
-                Vector3 attackDir = (mousePosition - transform.position).normalized;
-                animator.SetTrigger("Attack");
-                isAttacking = true;
-                StartCoroutine(AttackRoutine());
+                weaponParent.Attack();
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -85,6 +85,11 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isMoving", isMoving);
         animator.SetBool("isAttacking", isAttacking);
+    }
+
+    // Player attack aniamtion
+     private void PerformAttack(InputAction.CallbackContext obj) {
+        weaponParent.Attack();
     }
 
     IEnumerator AttackRoutine()
