@@ -243,6 +243,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4309183629139882787, guid: fea1645bf4ee26041b1bfd13512113a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4369789300743561604, guid: fea1645bf4ee26041b1bfd13512113a9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -353,6 +357,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7349014720166159040, guid: fea1645bf4ee26041b1bfd13512113a9, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349014720166159040, guid: fea1645bf4ee26041b1bfd13512113a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7645573116498271971, guid: fea1645bf4ee26041b1bfd13512113a9, type: 3}
@@ -877,7 +885,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 8519513317081793186, guid: 09868f39a34848144be5d31cdc45fd4e, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.005
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1696,10 +1704,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   state: 0
-  circleOrigin: {fileID: 0}
+  circleOrigin: {fileID: 2004148430}
   radius: 1
-  dashDistance: 3
-  dashDuration: 0.2
+  dashDistance: 5
+  dashDuration: 1
 --- !u!82 &934698948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6610,7 +6618,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748048746}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -6710,7 +6718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialog:
     lines:
-    - 
+    - Hello
     - 
     - 
 --- !u!1001 &1752284694
