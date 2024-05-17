@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Diagnostics;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,8 +23,17 @@ public class PlayerController : MonoBehaviour
     public float dashDistance;
     public float dashDuration;
 
+    private WeaponParent weaponParent;
+
+    public void Awake() {
+        weaponParent = GetComponentInChildren<WeaponParent>();
+    }
+
     public void HandleUpdate()
     {
+        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        weaponParent.RotateTowards(mouseWorldPosition);
+
         if(DialogManagerInk.instance.dialogIsPlaying) 
         {
             return; 
@@ -63,7 +70,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Attacking!"); // Print message to console
-                Vector3 mousePosition = GetMouseWorldPositon();
+                Vector3 mousePosition = GetMouseWorldPosition();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
                 animator.SetTrigger("Attack");
                 isAttacking = true;
@@ -129,20 +136,20 @@ public class PlayerController : MonoBehaviour
 
     // Get Mouse Position in World with Z = 0f
 
-    public static Vector3 GetMouseWorldPositon()
+    public static Vector3 GetMouseWorldPosition()
     {
-        Vector3 vec3 = GetMouseWorldPositonWithZ(Input.mousePosition, Camera.main);
+        Vector3 vec3 = GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
         vec3.z = 0f;
         return vec3;
     }
     // Get mouse position in world space with a specific camera
 
-    public static Vector3 GetMouseWorldPositonWithZ(Camera worldCamera)
+    public static Vector3 GetMouseWorldPositionWithZ(Camera worldCamera)
     {
-        return GetMouseWorldPositonWithZ(Input.mousePosition, worldCamera);
+        return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
     }
     // Get mouse position in world space, providing both screen position and camera
-    public static Vector3 GetMouseWorldPositonWithZ(Vector3 screenPos, Camera worldCamera)
+    public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPos, Camera worldCamera)
     {
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
