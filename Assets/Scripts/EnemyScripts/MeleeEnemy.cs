@@ -40,6 +40,12 @@ public class MeleeEnemy : BaseEnemy
     // Reference to the enemy weapon script
     public EnemyWeaponParent enemyWeapon;
 
+    // Reference to the Animator component for the attack animation
+    public Animator enemyAnimator;
+
+    // Attack animation trigger name
+    private readonly string attackTrigger = "Attack";
+
     private void Awake()
     {
         moveSpot = new GameObject().transform;
@@ -77,6 +83,7 @@ public class MeleeEnemy : BaseEnemy
             Debug.Log("Melee enemy attacking player");
             // Add code here to damage the player
 
+            enemyAnimator.SetTrigger(attackTrigger);
             currentCooldown = attackCooldown;
         }
         else
