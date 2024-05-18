@@ -37,6 +37,9 @@ public class MeleeEnemy : BaseEnemy
     private bool isMovingToSpot = true;
     private bool isPlayerInRange = false;
 
+    // Reference to the enemy weapon script
+    public EnemyWeaponParent enemyWeapon;
+
     private void Awake()
     {
         moveSpot = new GameObject().transform;
@@ -82,6 +85,20 @@ public class MeleeEnemy : BaseEnemy
         }
     }
 
+    // Override the Start method from the BaseEnemy class
+    protected override void Start()
+    {
+        base.Start();
+
+        enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
+
+        // Check if enemyWeapon is found
+        if (enemyWeapon == null)
+        {
+            Debug.LogError("EnemyWeaponParent script not found!");
+        }
+    }
+
     // Update method to handle state-specific behaviors
     void Update()
     {
@@ -103,7 +120,8 @@ public class MeleeEnemy : BaseEnemy
         {
             // Calculate movement direction and next position
             Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
-            Vector2 nextPosition = (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
+            Vector2 nextPosition =
+                (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
             {
@@ -141,9 +159,13 @@ public class MeleeEnemy : BaseEnemy
         float distance = Vector2.Distance(transform.position, target.position);
         Vector2 direction = (target.position - transform.position).normalized;
 
+        // Rotate the enemy weapon towards the player
+        enemyWeapon.RotateTowards(target.position);
+
         // Check if player is out of attack range
         if (distance > attackCollider.size.x)
         {
+            // Move the enemy towards the player
             Vector2 nextPosition = (Vector2)transform.position + direction * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
@@ -154,6 +176,9 @@ public class MeleeEnemy : BaseEnemy
             {
                 rb.velocity = Vector2.zero;
             }
+
+            // Move the enemy weapon towards the player
+            enemyWeapon.MoveTo(target.position);
         }
         else
         {
@@ -178,7 +203,8 @@ public class MeleeEnemy : BaseEnemy
     // Check if the target position is walkable
     private bool IsWalkable(Vector3 targetPos)
     {
-        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool isWalkable =
+            Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
 
         if (!isWalkable)
         {
