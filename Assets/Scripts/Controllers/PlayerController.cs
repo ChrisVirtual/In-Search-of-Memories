@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public float radius;
     public float dashDistance;
     public float dashDuration;
+    [SerializeField] private Transform minimapIndicator;
 
     public void HandleUpdate()
     {
@@ -53,6 +54,25 @@ public class PlayerController : MonoBehaviour
                 Vector3 targetPos = transform.position;
                 targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
                 targetPos.y += input.y * moveSpeed * Time.deltaTime; // add to the variable in y axis
+
+
+                if (input.x < 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 90);
+                }
+                else if (input.x > 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 270);
+                }
+                else if (input.y < 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 180);
+                }
+                else if (input.y > 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 0);
+
+                }
 
                 if (IsWalkable(targetPos))
                 {

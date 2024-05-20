@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour
     public int vitality; //Increases health 
     public int strength; //Increases attack damage
     public int dexterity; //Increases attack speed
-    public int intelligence; //Increases 
+    public int intelligence; //Increases mana
     public int speed; //Increases speed and roll distance
 
     //UI elements
