@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, IDataPersistence
 {
     //Configuration variables
     [Header("Configuration")]
@@ -114,4 +114,15 @@ public class PlayerStats : MonoBehaviour
         manaSliderDisplay.text = currentMana + " / " + maxMana;
         levelSliderDisplay.text = " Level: " + currentLevel;
     }
+
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position;
+    }
+
 }

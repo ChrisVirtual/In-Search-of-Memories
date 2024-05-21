@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GoldManager : MonoBehaviour
+public class GoldManager : MonoBehaviour, IDataPersistence
 {
     //Variable to store the current gold amount
     public int gold;
@@ -18,6 +18,16 @@ public class GoldManager : MonoBehaviour
     {
         //Get the GoldEvents instance from the GameEventsManager
         goldEvents = GameEventsManager.instance.goldEvents;
+    }
+
+    public void LoadData(GameData data)
+    {
+        this.gold = data.gold;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.gold = this.gold;
     }
 
     private void OnEnable()
