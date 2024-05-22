@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     public bool isDashing;
 
+    public float effectiveSpeed;
     private Vector2 input;
     [SerializeField]
     private Animator animator;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public float dashDistance;
     public float dashDuration;
     [SerializeField] private Transform minimapIndicator;
+    public PlayerStats playerStats;
 
     public void HandleUpdate()
     {
@@ -52,8 +54,9 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
-                targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
-                targetPos.y += input.y * moveSpeed * Time.deltaTime; // add to the variable in y axis
+                effectiveSpeed = moveSpeed + (playerStats.speed * 0.25f);
+                targetPos.x += input.x * effectiveSpeed * Time.deltaTime; // add to the variable in x axis
+                targetPos.y += input.y * effectiveSpeed * Time.deltaTime; // add to the variable in y axis
 
 
                 if (input.x < 0)
@@ -130,7 +133,7 @@ public class PlayerController : MonoBehaviour
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, effectiveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;
