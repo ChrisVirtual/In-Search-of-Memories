@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.UIElements;
@@ -27,18 +29,13 @@ public class PlayerController : MonoBehaviour
     public float dashDuration;
     [SerializeField] private Transform minimapIndicator;
     public PlayerStats playerStats;
+    [SerializeField] public TextMeshProUGUI interactText;
 
     public void HandleUpdate()
     {
         if(DialogManagerInk.instance.dialogIsPlaying) 
         {
             return; 
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E was pushed");
-            GameEventsManager.instance.inputEvents.SubmitPressed();
         }
 
         if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
@@ -97,6 +94,14 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(Dash());
             }
+            checkForInteraction();
+        
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("E was pushed");
+                GameEventsManager.instance.inputEvents.SubmitPressed();
+                Interact();
+            }
         }
 
         animator.SetBool("isMoving", isMoving);
@@ -104,7 +109,23 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isDashing", isDashing);
     }
 
-    IEnumerator AttackRoutine()
+    public void checkForInteraction()
+    { 
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var interactPos = transform.position + facingDir;
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
+        if (collider != null)
+        {
+            interactText.gameObject.SetActive(true);
+        }
+        else
+        {
+            interactText.gameObject.SetActive(false);
+        }
+    }
+    
+IEnumerator AttackRoutine()
     {
         yield return new WaitForSeconds(attackEndTime);
         isAttacking = false;

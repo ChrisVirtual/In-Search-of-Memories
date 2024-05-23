@@ -120,7 +120,7 @@ public class DialogManagerInk : MonoBehaviour
     });
 
         //Start Displaying the story
-        ContinueStory();
+       //ContinueStory();
     }
 
     //Method to exit dialog mode
