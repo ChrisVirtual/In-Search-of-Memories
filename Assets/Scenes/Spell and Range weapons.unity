@@ -1837,9 +1837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85eb2823cde1b714a94756688e1255c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: {fileID: 11400000, guid: 54914fe931f4a134cbf547320e38e965, type: 2}
-  bloodParticle: {fileID: 0}
+  maxHealth: 5
+  currentHealth: {fileID: 11400000, guid: 0ddee506d9a43f44fa099e9198d77fc9, type: 2}
+  bloodParticle: {fileID: 2156367806491492928, guid: 5f83e1530fdf11148ba195e4411ba1d9, type: 3}
   renderer: {fileID: 0}
   flashTime: 0.2
   isDead: 0
