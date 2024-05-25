@@ -16,8 +16,8 @@ TagManager:
   - EnemyColliders
   - SolidObjects
   - Interactable
-  - 
-  - 
+  - MiniMapCamera
+  - BothCameras
   - 
   - 
   - 

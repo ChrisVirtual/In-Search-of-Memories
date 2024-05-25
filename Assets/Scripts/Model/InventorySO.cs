@@ -13,7 +13,7 @@ namespace Inventory.Model
     public class InventorySO : ScriptableObject
     {
         [SerializeField]
-        private List<InventoryItem> inventoryItems;
+        public List<InventoryItem> inventoryItems;
 
         [field: SerializeField]
         public int Size { get; private set; } = 10;
@@ -120,6 +120,18 @@ namespace Inventory.Model
 
                 InformAboutChange();        
             }
+        }
+
+        public bool CheckItemByName(string key)
+        {
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if (item.item != null && item.item.name.Equals(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void AddItem(InventoryItem item)

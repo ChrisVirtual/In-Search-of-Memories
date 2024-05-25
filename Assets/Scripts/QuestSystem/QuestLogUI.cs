@@ -42,6 +42,7 @@ public class QuestLogUI : MonoBehaviour
     {
         contentParent.SetActive(!contentParent.activeSelf);
     }
+
     private void OnEnable()
     {
         //Subscribe to events

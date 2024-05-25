@@ -18,16 +18,17 @@ public class PlayerStats : MonoBehaviour
     public int statPoints;
     public FloatValueSO currentHealth;
     public float maxHealth;
-    public int currentMana;
+    public FloatValueSO currentMana;
     public int maxMana;
     public int currentExp; //Current exp for this level
     public int maxExp; //Max exp for this level
     public int vitality; //Increases health 
     public int strength; //Increases attack damage
     public int dexterity; //Increases attack speed
-    public int intelligence; //Increases 
-    public int speed; //Increases speed and roll distance
-
+    public int intelligence; //Increases mana
+    public int speed; //Increases speed
+    public Health health;
+    public Mana mana;
     //UI elements
     public Slider healthBar;
     public Slider manaBar;
@@ -38,6 +39,30 @@ public class PlayerStats : MonoBehaviour
     public TextMeshProUGUI levelSliderDisplay;
 
     public static PlayerStats instance;
+
+    public float getMovementSpeed()
+    {
+        return speed * 0.25f;
+    }
+    public void setMaxHealth()
+    {
+        health.maxHealth = 95 + (vitality * 5);
+    }
+
+    public void setMaxMana()
+    {
+        mana.maxMana = 18 + (intelligence * 2);
+    }
+
+    public float getAttackDamage()
+    {
+        return strength * 0.25f;
+    }
+
+    public float getAttackSpeed()
+    {
+        return dexterity * 0.25f;
+    }
 
     private void Awake()
     {
@@ -101,17 +126,17 @@ public class PlayerStats : MonoBehaviour
     {
         //Update UI slider values
         healthBar.value = currentHealth.Value;
-        manaBar.value = currentMana;
+        manaBar.value = currentMana.Value;
         expBar.value = currentExp;
 
         //Update UI slider maximum values
-        healthBar.maxValue = maxHealth;
-        manaBar.maxValue = maxMana;
+        healthBar.maxValue = health.maxHealth;
+        manaBar.maxValue = mana.maxMana;
         expBar.maxValue = maxExp;
 
         //Update UI text displays
-        healthSliderDisplay.text = currentHealth.Value + " / " + maxHealth;
-        manaSliderDisplay.text = currentMana + " / " + maxMana;
+        healthSliderDisplay.text = currentHealth.Value + " / " + health.maxHealth;
+        manaSliderDisplay.text = currentMana.Value + " / " + mana.maxMana;
         levelSliderDisplay.text = " Level: " + currentLevel;
     }
 }
