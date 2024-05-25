@@ -43,8 +43,12 @@ public class PlayerController : MonoBehaviour
 
     public void HandleUpdate()
     {
-        Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        weaponParent.RotateTowards(mouseWorldPosition);
+        if (weaponParent != null)
+        {
+            Vector3 mouseWorldPosition = GetMouseWorldPosition();
+            weaponParent.RotateTowards(mouseWorldPosition);
+        }
+        
 
         if(DialogManagerInk.instance.dialogIsPlaying) 
         {
@@ -95,7 +99,11 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                weaponParent.Attack();
+                if (weaponParent != null)
+                {
+                    weaponParent.Attack();
+                }
+                
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
