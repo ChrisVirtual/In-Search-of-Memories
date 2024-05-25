@@ -39,4 +39,15 @@ public class InputEvents
             onQuestLogTogglePressed();
         }
     }
+    public event Action onMapTogglePressed;
+
+    //Method to invoke the onQuestLogTogglePressed event
+    public void MapTogglePressed()
+    {
+        if (onMapTogglePressed != null)
+        {
+            onMapTogglePressed();
+        }
+    }
+
 }

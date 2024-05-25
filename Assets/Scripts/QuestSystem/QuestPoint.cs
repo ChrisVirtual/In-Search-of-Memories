@@ -4,7 +4,7 @@ using UnityEngine;
 
 //This script manages a quest point, which is an area in the game where the player can interact to start or finish a quest
 [RequireComponent(typeof(CircleCollider2D))] //Ensures a CircleCollider2D component is attached to the same game object
-public class QuestPoint : MonoBehaviour
+public class QuestPoint : MonoBehaviour, Interactable
 {
     [Header("Quest")]
     [SerializeField] private QuestInfoSO questInfoForPoint; //The quest associated with this point
@@ -18,7 +18,7 @@ public class QuestPoint : MonoBehaviour
     private QuestState currentQuestState; //The current state of the associated quest
 
     private QuestIcon questIcon; //Reference to the quest icon component
-
+    
     //Awake is called when the script instance is being loaded
     private void Awake()
     {
@@ -93,6 +93,19 @@ public class QuestPoint : MonoBehaviour
         if (otherCollider.CompareTag("Player")) //If the collider belongs to the player
         {
             playerIsNear = false; //Set playerIsNear to false
+        }
+    }
+
+    public void Interact()
+    {
+        //Start or finish a quest based on the current quest state and the type of quest point
+        if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
+        {
+            GameEventsManager.instance.questEvents.StartQuest(questId); //Start the quest
+        }
+        else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
+        {
+            GameEventsManager.instance.questEvents.FinishQuest(questId); //Finish the quest
         }
     }
 }

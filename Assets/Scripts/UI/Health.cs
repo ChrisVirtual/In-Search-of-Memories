@@ -5,19 +5,27 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float maxHealth;
-    [SerializeField] private FloatValueSO currentHealth;
+    [SerializeField]
+    public float maxHealth;
 
-    [SerializeField] private GameObject bloodParticle;
+    [SerializeField]
+    private FloatValueSO currentHealth;
 
-    [SerializeField] private Renderer renderer;
-    [SerializeField] private float flashTime = 0.2f;
+    [SerializeField]
+    private GameObject bloodParticle;
+
+    [SerializeField]
+    private Renderer renderer;
+
+    [SerializeField]
+    private float flashTime = 0.2f;
 
     [SerializeField]
     private bool isDead = false;
 
-    public UnityEvent<GameObject> OnHitWithReference, OnDeathWithReference;
-    
+    public UnityEvent<GameObject> OnHitWithReference,
+        OnDeathWithReference;
+
     private void Start()
     {
         currentHealth.Value = 10;
@@ -25,9 +33,17 @@ public class Health : MonoBehaviour
 
     public void AddHealth(int healthBoost)
     {
-        int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
-        int val = health + healthBoost;
-        currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
+        if (currentHealth.Value + healthBoost > maxHealth)
+        {
+            currentHealth.Value = maxHealth;
+        }
+        else 
+        {
+            currentHealth.Value += healthBoost;
+        }
+        //int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
+        //int val = health + healthBoost;
+        //currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
     }
 
     public void Reduce(int damage)
@@ -46,10 +62,10 @@ public class Health : MonoBehaviour
             return;
         if (sender.layer == gameObject.layer)
             return; // Don't take damage from objects on the same layer
-        
+
         currentHealth.Value -= amount; // Decrease health by the damage amount
 
-        if (currentHealth.Value > 0) 
+        if (currentHealth.Value > 0)
         {
             OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
         }
@@ -79,5 +95,5 @@ public class Health : MonoBehaviour
         Debug.Log("Died");
         currentHealth.Value = 0;
         isDead = true;
-    }  
+    }
 }
