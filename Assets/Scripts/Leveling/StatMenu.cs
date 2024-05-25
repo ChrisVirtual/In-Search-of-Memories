@@ -12,7 +12,8 @@ public class StatMenu : MonoBehaviour
     public TextMeshProUGUI intelligenceStat;
     public TextMeshProUGUI speedStat;
     public TextMeshProUGUI statPointsRemaining;
-
+    public Health health;
+    public Mana mana;
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
 
@@ -63,6 +64,8 @@ public class StatMenu : MonoBehaviour
         if (statID == 1 && playerStats.statPoints > 0)
         {
             playerStats.vitality++;
+            playerStats.setMaxHealth();
+            health.AddHealth(5);
             playerStats.statPoints--;
         }
         if (statID == 2 && playerStats.statPoints > 0)
@@ -78,6 +81,8 @@ public class StatMenu : MonoBehaviour
         if (statID == 4 && playerStats.statPoints > 0)
         {
             playerStats.intelligence++;
+            playerStats.setMaxMana();
+            mana.AddMana(2);
             playerStats.statPoints--;
         }
         if (statID == 5 && playerStats.statPoints > 0)

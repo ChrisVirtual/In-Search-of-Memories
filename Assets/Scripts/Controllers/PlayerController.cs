@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.UIElements;
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public bool isAttacking;
     public bool isDashing;
 
+    public float effectiveSpeed;
     private Vector2 input;
     [SerializeField]
     private Animator animator;
@@ -24,18 +27,15 @@ public class PlayerController : MonoBehaviour
     public float radius;
     public float dashDistance;
     public float dashDuration;
+    [SerializeField] private Transform minimapIndicator;
+    public PlayerStats playerStats;
+    [SerializeField] public TextMeshProUGUI interactText;
 
     public void HandleUpdate()
     {
         if(DialogManagerInk.instance.dialogIsPlaying) 
         {
             return; 
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E was pushed");
-            GameEventsManager.instance.inputEvents.SubmitPressed();
         }
 
         if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
@@ -51,8 +51,28 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
-                targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
-                targetPos.y += input.y * moveSpeed * Time.deltaTime; // add to the variable in y axis
+                effectiveSpeed = moveSpeed + (playerStats.speed * 0.25f);
+                targetPos.x += input.x * effectiveSpeed * Time.deltaTime; // add to the variable in x axis
+                targetPos.y += input.y * effectiveSpeed * Time.deltaTime; // add to the variable in y axis
+
+
+                if (input.x < 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 90);
+                }
+                else if (input.x > 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 270);
+                }
+                else if (input.y < 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 180);
+                }
+                else if (input.y > 0)
+                {
+                    minimapIndicator.rotation = Quaternion.Euler(0, 0, 0);
+
+                }
 
                 if (IsWalkable(targetPos))
                 {
@@ -74,6 +94,14 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(Dash());
             }
+            checkForInteraction();
+        
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Debug.Log("E was pushed");
+                GameEventsManager.instance.inputEvents.SubmitPressed();
+                Interact();
+            }
         }
 
         animator.SetBool("isMoving", isMoving);
@@ -81,7 +109,23 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isDashing", isDashing);
     }
 
-    IEnumerator AttackRoutine()
+    public void checkForInteraction()
+    { 
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var interactPos = transform.position + facingDir;
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
+        if (collider != null)
+        {
+            interactText.gameObject.SetActive(true);
+        }
+        else
+        {
+            interactText.gameObject.SetActive(false);
+        }
+    }
+    
+IEnumerator AttackRoutine()
     {
         yield return new WaitForSeconds(attackEndTime);
         isAttacking = false;
@@ -110,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, effectiveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = targetPos;

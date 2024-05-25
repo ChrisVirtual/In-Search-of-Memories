@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float maxHealth;
+    [SerializeField] public float maxHealth;
     [SerializeField] private FloatValueSO currentHealth;
 
     [SerializeField] private GameObject bloodParticle;
@@ -25,9 +25,17 @@ public class Health : MonoBehaviour
 
     public void AddHealth(int healthBoost)
     {
-        int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
-        int val = health + healthBoost;
-        currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
+        if (currentHealth.Value + healthBoost > maxHealth)
+        {
+            currentHealth.Value = maxHealth;
+        }
+        else 
+        {
+            currentHealth.Value += healthBoost;
+        }
+        //int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
+        //int val = health + healthBoost;
+        //currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
     }
 
     public void Reduce(int damage)
