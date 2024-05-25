@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Diagnostics;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,8 +31,21 @@ public class PlayerController : MonoBehaviour
     public PlayerStats playerStats;
     [SerializeField] public TextMeshProUGUI interactText;
 
+    private WeaponParent weaponParent;
+
+    // Animation for player attack
+    [SerializeField]
+    private InputActionReference attack;
+
+    public void Awake() {
+        weaponParent = GetComponentInChildren<WeaponParent>();
+    }
+
     public void HandleUpdate()
     {
+        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        weaponParent.RotateTowards(mouseWorldPosition);
+
         if(DialogManagerInk.instance.dialogIsPlaying) 
         {
             return; 
@@ -82,12 +95,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Attacking!"); // Print message to console
-                Vector3 mousePosition = GetMouseWorldPositon();
-                Vector3 attackDir = (mousePosition - transform.position).normalized;
-                animator.SetTrigger("Attack");
-                isAttacking = true;
-                StartCoroutine(AttackRoutine());
+                weaponParent.Attack();
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -109,6 +117,11 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isDashing", isDashing);
     }
 
+    // Player attack aniamtion
+     private void PerformAttack(InputAction.CallbackContext obj) {
+        weaponParent.Attack();
+    }
+    
     public void checkForInteraction()
     { 
         var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
@@ -125,7 +138,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-IEnumerator AttackRoutine()
+    IEnumerator AttackRoutine()
     {
         yield return new WaitForSeconds(attackEndTime);
         isAttacking = false;
@@ -174,20 +187,20 @@ IEnumerator AttackRoutine()
 
     // Get Mouse Position in World with Z = 0f
 
-    public static Vector3 GetMouseWorldPositon()
+    public static Vector3 GetMouseWorldPosition()
     {
-        Vector3 vec3 = GetMouseWorldPositonWithZ(Input.mousePosition, Camera.main);
+        Vector3 vec3 = GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
         vec3.z = 0f;
         return vec3;
     }
     // Get mouse position in world space with a specific camera
 
-    public static Vector3 GetMouseWorldPositonWithZ(Camera worldCamera)
+    public static Vector3 GetMouseWorldPositionWithZ(Camera worldCamera)
     {
-        return GetMouseWorldPositonWithZ(Input.mousePosition, worldCamera);
+        return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
     }
     // Get mouse position in world space, providing both screen position and camera
-    public static Vector3 GetMouseWorldPositonWithZ(Vector3 screenPos, Camera worldCamera)
+    public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPos, Camera worldCamera)
     {
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
