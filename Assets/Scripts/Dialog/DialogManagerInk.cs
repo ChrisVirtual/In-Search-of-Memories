@@ -211,7 +211,6 @@ public class DialogManagerInk : MonoBehaviour
             {
                 if (questPoint.GetCurrentQuestState() == QuestState.FINISHED)
                 {
-
                     completed = true;
                 }
             }
@@ -237,7 +236,28 @@ public class DialogManagerInk : MonoBehaviour
         {
             LockedGate.SetActive(false);
         });
+        currentStory.BindExternalFunction("handIn", (string questId) =>
+        {
+            bool readyToHandIn = false;
 
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() == QuestState.CAN_FINISH)
+                {
+                    readyToHandIn = true;
+                }
+            }
+
+            return readyToHandIn;
+        });
+        currentStory.BindExternalFunction("completeQuest", (string questId) =>
+        {
+            Debug.Log("Inkle output: " + questId);
+            GameEventsManager.instance.questEvents.FinishQuest(questId);
+
+        });
 
     }
 }

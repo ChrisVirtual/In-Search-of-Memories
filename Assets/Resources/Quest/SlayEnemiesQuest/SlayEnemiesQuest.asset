@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: SlayEnemiesQuest
   displayName: SlayEnemies
-  levelRequirement: 10
-  questPrerequisites:
-  - {fileID: 11400000, guid: 7a646073d358a8a4db21cce84619e544, type: 2}
+  levelRequirement: 5
+  questPrerequisites: []
   questStepPrefabs:
   - {fileID: 8813986217014524194, guid: f580e17b7d0810a45933be5a65e8b25f, type: 3}
   goldReward: 1000
