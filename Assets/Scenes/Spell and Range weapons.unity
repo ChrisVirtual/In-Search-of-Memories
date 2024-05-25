@@ -478,19 +478,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3932720107007465110, guid: fe3f73ae0f074684a9aa4c2ade7a1e8d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3932720107007465110, guid: fe3f73ae0f074684a9aa4c2ade7a1e8d, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3932720107007465110, guid: fe3f73ae0f074684a9aa4c2ade7a1e8d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 18.86705
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3932720107007465110, guid: fe3f73ae0f074684a9aa4c2ade7a1e8d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.26345
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4226064398265321826, guid: fe3f73ae0f074684a9aa4c2ade7a1e8d, type: 3}
       propertyPath: m_Pivot.x
@@ -1935,6 +1935,7 @@ MonoBehaviour:
   isMoving: 0
   isAttacking: 0
   isDashing: 0
+  effectiveSpeed: 1
   animator: {fileID: 758001518}
   solidObjectsLayer:
     serializedVersion: 2
@@ -1947,6 +1948,9 @@ MonoBehaviour:
   radius: 1
   dashDistance: 5
   dashDuration: 1
+  minimapIndicator: {fileID: 0}
+  playerStats: {fileID: 0}
+  interactText: {fileID: 0}
 --- !u!82 &934698948
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2061,7 +2065,7 @@ MonoBehaviour:
   statPoints: 0
   currentHealth: {fileID: 11400000, guid: 54914fe931f4a134cbf547320e38e965, type: 2}
   maxHealth: 100
-  currentMana: 20
+  currentMana: {fileID: 0}
   maxMana: 20
   currentExp: 0
   maxExp: 100
@@ -2070,6 +2074,8 @@ MonoBehaviour:
   dexterity: 1
   intelligence: 1
   speed: 1
+  health: {fileID: 0}
+  mana: {fileID: 0}
   healthBar: {fileID: 1790276099}
   manaBar: {fileID: 230730398}
   expBar: {fileID: 1415858958}
@@ -6179,6 +6185,8 @@ MonoBehaviour:
   intelligenceStat: {fileID: 93204872}
   speedStat: {fileID: 1886064138}
   statPointsRemaining: {fileID: 2063645215}
+  health: {fileID: 0}
+  mana: {fileID: 0}
   visualCue: {fileID: 242612820}
   statMenu: {fileID: 480063906}
   playerStats: {fileID: 934698949}
@@ -7533,6 +7541,9 @@ MonoBehaviour:
   dialogPanel: {fileID: 509332268}
   dialogText: {fileID: 1758323720}
   choices: []
+  inventoryData: {fileID: 0}
+  StatsMenu: {fileID: 0}
+  LockedGate: {fileID: 0}
 --- !u!114 &1873648734
 MonoBehaviour:
   m_ObjectHideFlags: 0

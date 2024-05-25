@@ -6,6 +6,15 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
     [SerializeField]
+    public float maxHealth;
+
+    [SerializeField]
+    private FloatValueSO currentHealth;
+
+    [SerializeField]
+    private GameObject bloodParticle;
+
+    [SerializeField]
     private Renderer renderer;
 
     [SerializeField]
