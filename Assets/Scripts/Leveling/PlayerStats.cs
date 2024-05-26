@@ -117,12 +117,26 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        this.transform.position = data.playerPosition;
+        // Load health, mana, exp, and level data
+        currentHealth.Value = data.playerHealth;
+        currentMana = data.currentMana;
+        currentExp = data.currentExp;
+        currentLevel = data.playerLevel;
+        statPoints = data.statPoints;
+
+        // Update UI after loading data
+        changeSliderUI();
     }
+
 
     public void SaveData(ref GameData data)
     {
         data.playerPosition = this.transform.position;
+
+        // Save health and level data
+        data.playerHealth = currentHealth.Value;
+        data.playerLevel = currentLevel;
+        data.statPoints = statPoints;
     }
 
 }

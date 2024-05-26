@@ -13,6 +13,7 @@ public class ExpCollectable : MonoBehaviour
     public int expAmount = 100;
     PlayerStats playerStats;
 
+
     AudioManager audioManager;
 
     private void Start()
