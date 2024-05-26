@@ -26,7 +26,7 @@ public class DialogManagerInk : MonoBehaviour
     [SerializeField] private InventorySO inventoryData;
     [SerializeField] private GameObject StatsMenu;
     [SerializeField] private GameObject LockedGate;
-
+    [SerializeField] private GameObject keyItem;
     public bool dialogIsPlaying { get; private set; }
     public static DialogManagerInk instance { get; private set; }
     
@@ -256,6 +256,11 @@ public class DialogManagerInk : MonoBehaviour
         {
             Debug.Log("Inkle output: " + questId);
             GameEventsManager.instance.questEvents.FinishQuest(questId);
+
+        });
+        currentStory.BindExternalFunction("spawnKey", () =>
+        {
+            keyItem.SetActive(true);
 
         });
 

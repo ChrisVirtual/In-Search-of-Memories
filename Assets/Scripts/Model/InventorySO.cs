@@ -31,6 +31,10 @@ namespace Inventory.Model
 
         public int AddItem(ItemSO item, int quantity, List<ItemParameter> itemState = null)
         {
+            if (item.Name.Equals("key", StringComparison.OrdinalIgnoreCase))
+            {
+                GameEventsManager.instance.miscEvents.keyCollected();
+            }
             if (item.IsStackable == false)
             {
                 for (int i = 0; i < inventoryItems.Count; i++)

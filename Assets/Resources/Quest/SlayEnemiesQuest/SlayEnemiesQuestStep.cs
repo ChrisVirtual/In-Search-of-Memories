@@ -22,7 +22,7 @@ public class SlayEnemiesQuestStep : QuestStep
 
     private void OnDisable()
     {
-        //Unsubscribe from the event for when a coin is collected
+        //Unsubscribe from the event for when a Enemy is slain
         GameEventsManager.instance.miscEvents.onEnemyDeath -= enemyDeath;
     }
 

@@ -26,5 +26,16 @@ public class MiscEvents
             onEnemyDeath();
         }
     }
-    
+
+    public event Action onKeyCollected;
+
+    // Method to trigger event
+    public void keyCollected()
+    {
+        if (onKeyCollected != null)
+        {
+            onKeyCollected();
+        }
+    }
+
 }

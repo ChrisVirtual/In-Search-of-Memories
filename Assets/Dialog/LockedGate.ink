@@ -1,9 +1,11 @@
 EXTERNAL checkKey(key)
 EXTERNAL deleteGate()
+EXTERNAL handIn(questID)
+EXTERNAL completeQuest(questID)
+
 VAR canStart = false
 
 -> main
-
 === main ===
 ~ canStart = checkKey("key")
 {canStart == false:
@@ -15,6 +17,7 @@ VAR canStart = false
     - Use your key to Open the gate?
     + [Yes]
      ~ deleteGate()
+     ~ completeQuest("FetchKeyQuest")
         You unlock the gate with your key, The gate explodes
  ->END
         -> chosen("Yes")

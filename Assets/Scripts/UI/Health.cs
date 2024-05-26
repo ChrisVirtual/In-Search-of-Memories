@@ -94,7 +94,6 @@ public class Health : MonoBehaviour
             isDead = true; // Mark as dead
             if (gameObject.tag != "Player")
             {
-                
                 GameEventsManager.instance.miscEvents.enemyDeath();
                 Debug.Log("Enemy killed");
             }

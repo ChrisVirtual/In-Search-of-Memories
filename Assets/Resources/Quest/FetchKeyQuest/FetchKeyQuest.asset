@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08cc56f86c18bb54f9c33e3a40d97f60, type: 3}
-  m_Name: SlayEnemiesQuest
+  m_Name: FetchKeyQuest
   m_EditorClassIdentifier: 
-  <id>k__BackingField: SlayEnemiesQuest
-  displayName: Slay Enemies
-  levelRequirement: 5
+  <id>k__BackingField: FetchKeyQuest
+  displayName: Fetch Key
+  levelRequirement: 7
   questPrerequisites: []
   questStepPrefabs:
-  - {fileID: 8813986217014524194, guid: f580e17b7d0810a45933be5a65e8b25f, type: 3}
-  goldReward: 1000
-  experienceReward: 100000
+  - {fileID: 927811777153201941, guid: 2dc3f91991de6a44ca0b1b8e8f988a17, type: 3}
+  goldReward: 500
+  experienceReward: 1000
