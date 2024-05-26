@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 // This class is a Singleton class meaning we only want one of them in the scene. 
 // It's like saving default coins or powerups for any 'New Game' created as a Singleton class and it ensures that all new users have same initial amount of coins and powerups.
 public class DataPersistenceManager : MonoBehaviour
 {
+
     [Header("File Storage Config")]
     [SerializeField] private string fileName;
+    [SerializeField] private bool useEncryption;
 
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
+
     public static DataPersistenceManager instance {  get; private set; } // get instance publicly, but modify instance privately
 
     private void Awake()
@@ -23,13 +28,33 @@ public class DataPersistenceManager : MonoBehaviour
             //Debug.LogError("Found more than one Data Persistence Manager in the scene."); // as there should only be one singleton class in the scene
         //}
         instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
+    }
+
+    public void OnSceneUnloaded(Scene scene)
+    {
+        SaveGame();
     }
 
     public void NewGame()
@@ -45,8 +70,8 @@ public class DataPersistenceManager : MonoBehaviour
         // if no data to load, then create new game
         if (this.gameData == null)
         {
-            Debug.Log("No data was found. Initializing data to defaults");
-            NewGame();
+            Debug.Log("No data was found. A New Game needs to be started before loading the data.");
+            return;
         }
         //TODO - push loaded data to all other scripts where necessary.
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
@@ -57,7 +82,13 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame()
     {
-        // TODO - pass the data to other scripts so they can update it.
+        if(this.gameData == null)
+        {
+            Debug.LogWarning("No data was found. A New Game needs to be started before loading the data.");
+            return;
+        }
+
+        //passes the data to other scripts so they can update it.
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
@@ -76,6 +107,16 @@ public class DataPersistenceManager : MonoBehaviour
     {
         IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    public bool HasGameData()
+    {
+        return gameData != null;
+    }
+
+    public Dictionary<string, GameData> GetAllProfilesGameData()
+    {
+        return dataHandler.LoadAllProfiles();
     }
 
 }

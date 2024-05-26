@@ -25,6 +25,13 @@ public class PlayerController : MonoBehaviour
     public float dashDistance;
     public float dashDuration;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     public void HandleUpdate()
     {
         if(DialogManagerInk.instance.dialogIsPlaying) 
@@ -123,7 +130,12 @@ public class PlayerController : MonoBehaviour
     private bool IsWalkable(Vector3 targetPos)
     {
         // Use a small overlap circle to check for collisions with solid or interactable objects
-        return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool walkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        if (!walkable)
+        {
+            audioManager.PlaySFX(audioManager.collision);
+        }
+        return walkable;
     }
 
     // --- Mouse Position Handling ---
@@ -164,7 +176,7 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position,radius))
         {
             //Debug.Log(collider.name);
-            Health health; 
+            Health health;
             // Attempt to get the Health component of the collided object
             if (health = collider.GetComponent<Health>()) // If the object has a Health component, inflict damage
             {
@@ -177,6 +189,8 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
 
+        audioManager.PlaySFX(audioManager.NPCInteraction);
+
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + new Vector3(input.x, input.y, 0f) * dashDistance;
 
@@ -185,6 +199,8 @@ public class PlayerController : MonoBehaviour
 
         if (hit.collider != null)
         {
+            audioManager.PlaySFX(audioManager.collision);
+
             // If there's a collision, stop at the hit box
             endPos = hit.point;
 

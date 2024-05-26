@@ -25,9 +25,17 @@ public class Health : MonoBehaviour
 
     public void AddHealth(int healthBoost)
     {
-        int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
-        int val = health + healthBoost;
-        currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
+        if (currentHealth.Value + healthBoost > maxHealth)
+        {
+            currentHealth.Value = maxHealth;
+        }
+        else
+        {
+            currentHealth.Value += healthBoost;
+        }
+        //int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
+        //int val = health + healthBoost;
+        //currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
     }
 
     public void Reduce(int damage)

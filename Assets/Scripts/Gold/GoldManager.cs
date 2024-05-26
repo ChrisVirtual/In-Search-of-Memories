@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GoldManager : MonoBehaviour, IDataPersistence
 {
@@ -18,11 +19,15 @@ public class GoldManager : MonoBehaviour, IDataPersistence
     {
         //Get the GoldEvents instance from the GameEventsManager
         goldEvents = GameEventsManager.instance.goldEvents;
+
+        // Load saved data when the game starts
+        DataPersistenceManager.instance.LoadGame();
     }
 
     public void LoadData(GameData data)
     {
         this.gold = data.gold;
+        UpdateGoldUI(this.gold); // Update UI after loading the gold data
     }
 
     public void SaveData(ref GameData data)
@@ -60,4 +65,5 @@ public class GoldManager : MonoBehaviour, IDataPersistence
         //Update the text displayed in the UI
         goldDisplay.text = " Gold: " + gold;
     }
+
 }

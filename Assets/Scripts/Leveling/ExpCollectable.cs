@@ -13,11 +13,20 @@ public class ExpCollectable : MonoBehaviour
     public int expAmount = 100;
     PlayerStats playerStats;
 
+    AudioManager audioManager;
+
     private void Start()
     {
         //Get reference to the player object
         player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through its tag
         rigidBody2D = gameObject.GetComponent<Rigidbody2D>();
+
+        // Find the AudioManager in the scene
+        audioManager = FindObjectOfType<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.LogError("AudioManager not found in the scene.");
+        }
     }
 
     private void FixedUpdate()
@@ -51,6 +60,13 @@ public class ExpCollectable : MonoBehaviour
         {
             //Add experience to the player's stats
             GameEventsManager.instance.playerEvents.ExperienceGained(expAmount);
+
+            // Play the experience gained sound
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(audioManager.dialog); // Assuming 'dialog' is the experience gained sound
+            }
+
             Destroy(gameObject); // Destroy the orb
         }
     }

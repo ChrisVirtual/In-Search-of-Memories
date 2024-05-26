@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour//, IDataPersistence
 {
     [field: SerializeField]
     public ItemSO InventoryItem { get; private set; }
@@ -28,6 +28,16 @@ public class Item : MonoBehaviour
         StartCoroutine(AnimateItemPickup());
 
     }
+
+    /**public void LoadData(GameData data)
+    {
+        this.InventoryItem = data.InventoryItem;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.InventoryItem = this.InventoryItem;
+    }**/
 
     private IEnumerator AnimateItemPickup()
     {

@@ -71,6 +71,7 @@ namespace Inventory
             {
                 inventoryUI.ShowItemAction(itemIndex);
                 inventoryUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+
             }
 
             IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;

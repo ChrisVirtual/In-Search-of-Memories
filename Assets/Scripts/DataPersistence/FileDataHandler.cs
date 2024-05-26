@@ -69,4 +69,40 @@ public class FileDataHandler
             Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
         }
     }
+
+    public Dictionary<string, GameData> LoadAllProfiles()
+    {
+        Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
+
+        // Loops over all directory names in the data directory path
+        IEnumerable<DirectoryInfo> dir_Info = new DirectoryInfo(dataDirPath).EnumerateDirectories();
+        foreach(DirectoryInfo dirInfo in dir_Info)
+        {
+            string profileId = dirInfo.Name;
+
+            //check if the data file actually exists. If it doesn't then this folder isnt a profile and should be skipped.
+            string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+            if (!File.Exists(fullPath))
+            {
+                Debug.LogWarning("Skipping directory when loading all profiles because it doesn't contain data: " + profileId);
+                continue;
+            }
+
+            // Load the game data for this profile and put it in directory
+            GameData profileData = Load();
+
+            //ensuring the profile data isnt actually null
+            if(profileData == null)
+            {
+                profileDictionary.Add(profileId, profileData);
+            }
+            else
+            {
+                Debug.LogError("Tried to load profile but something went wrong. ProfileId: " + profileId);
+            }
+
+        }
+
+        return profileDictionary;
+    }
 }

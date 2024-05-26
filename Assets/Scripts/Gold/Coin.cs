@@ -12,10 +12,19 @@ public class Coin : MonoBehaviour
     public Rigidbody2D rigidBody2D;
     public int goldAmount = 10;
 
+    AudioManager audioManager;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through it's tag
         rigidBody2D = gameObject.GetComponent<Rigidbody2D>();
+
+        // Find the AudioManager in the scene
+        audioManager = FindObjectOfType<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.LogError("AudioManager not found in the scene.");
+        }
     }
 
     private void FixedUpdate()
@@ -51,6 +60,11 @@ public class Coin : MonoBehaviour
         //If the coin touches the player
         if (collision.gameObject.tag == "Player")
         {
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(audioManager.dialog); // Usage of dialog sfx for simpler understanding.
+            }
+
             //Notify the game events manager that gold is gained
             GameEventsManager.instance.goldEvents.GoldGained(goldAmount);
             //Notify the game events manager that a coin is collected
@@ -59,4 +73,5 @@ public class Coin : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }

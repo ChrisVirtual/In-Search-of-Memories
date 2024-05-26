@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2259087746114611179}
   - component: {fileID: 5504791261412799064}
   - component: {fileID: 4829010147988117136}
-  - component: {fileID: 2020547283121942823}
   - component: {fileID: 1514254010144691161}
   m_Layer: 0
   m_Name: Item
@@ -150,22 +149,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2020547283121942823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7088582574739757157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5471fd6e48104124dbfa7e9a8d1188f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <InventoryItem>k__BackingField: {fileID: 11400000, guid: 42cc4203e58d7c4459382fc949305be1, type: 2}
-  <Quantity>k__BackingField: 5
-  audioSource: {fileID: 1514254010144691161}
-  duration: 0.3
 --- !u!82 &1514254010144691161
 AudioSource:
   m_ObjectHideFlags: 0
