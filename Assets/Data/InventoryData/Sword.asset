@@ -21,3 +21,4 @@ MonoBehaviour:
   - itemParameter: {fileID: 11400000, guid: 28402eea6aa180c468f619f277456550, type: 2}
     value: 100
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 7acf745a916e35c479166ea826f2895b, type: 3}
+  price: 10
