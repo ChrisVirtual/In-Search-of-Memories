@@ -33,6 +33,13 @@ public class RangedEnemy : BaseEnemy
     public GameObject projectilePrefab;
     public float projectileSpeed;
 
+    public EnemyWeaponParent enemyWeapon;
+
+    public Animator enemyAnimator;
+
+    [SerializeField]
+    private string attackTrigger = "Cast";
+
     protected override void Start()
     {
         base.Start();
@@ -40,6 +47,13 @@ public class RangedEnemy : BaseEnemy
         timeBetweenShots = startTimeBetweenShots;
         moveSpot = new GameObject().transform;
         rb = GetComponent<Rigidbody2D>();
+
+        enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
+
+        if (enemyWeapon == null)
+        {
+            Debug.LogError("EnemyWeaponParent script not found!");
+        }
     }
 
     protected override void Attack()
@@ -47,7 +61,11 @@ public class RangedEnemy : BaseEnemy
         if (timeBetweenShots <= 0)
         {
             // Spawn the projectile
-            GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            GameObject projectileObject = Instantiate(
+                projectilePrefab,
+                transform.position,
+                Quaternion.identity
+            );
 
             Rigidbody2D rb = projectileObject.GetComponent<Rigidbody2D>();
             if (rb == null)
@@ -60,6 +78,7 @@ public class RangedEnemy : BaseEnemy
             rb.velocity = direction * projectileSpeed;
 
             timeBetweenShots = startTimeBetweenShots;
+            enemyAnimator.SetTrigger("Cast");
         }
         else
         {
@@ -85,7 +104,11 @@ public class RangedEnemy : BaseEnemy
         if (isMovingToSpot)
         {
             Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
-            Vector2 nextPosition = Vector2.MoveTowards(transform.position, moveSpot.position, speed * Time.deltaTime);
+            Vector2 nextPosition = Vector2.MoveTowards(
+                transform.position,
+                moveSpot.position,
+                speed * Time.deltaTime
+            );
 
             if (IsWalkable(nextPosition))
             {
@@ -116,36 +139,39 @@ public class RangedEnemy : BaseEnemy
         }
     }
 
-
     void TrackPlayerBehavior()
     {
         float distance = Vector2.Distance(transform.position, target.position);
         Vector2 direction = (target.position - transform.position).normalized;
-        Vector2 nextPosition = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
-        if (IsWalkable(nextPosition))
+        // Rotate the weapon towards the player
+        enemyWeapon.RotateTowards(target.position);
+
+        if (distance > stoppingDistance)
         {
-            if (distance > stoppingDistance)
-            {
-                transform.position = nextPosition;
-            }
-            else if (distance < stoppingDistance && distance > retreatDistance)
-            {
-                transform.position = this.transform.position;
-            }
-            else if (distance < retreatDistance)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, target.position, -speed * Time.deltaTime);
-            }
+            // Move the enemy towards the player
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                target.position,
+                speed * Time.deltaTime
+            );
         }
-        else
+        else if (distance < stoppingDistance && distance > retreatDistance)
         {
-            rb.velocity = Vector2.zero;
+            transform.position = this.transform.position;
+        }
+        else if (distance < retreatDistance)
+        {
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                target.position,
+                -speed * Time.deltaTime
+            );
         }
 
+        // Attack if within range
         Attack();
     }
-
 
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -173,7 +199,6 @@ public class RangedEnemy : BaseEnemy
         }
     }
 
-
     void ResetPatrol()
     {
         // Generate a new move spot and reset movement
@@ -182,13 +207,17 @@ public class RangedEnemy : BaseEnemy
         isMovingToSpot = true;
         waitTime = startWaitTime;
 
-        transform.position = Vector2.MoveTowards(transform.position, moveSpot.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            moveSpot.position,
+            speed * Time.deltaTime
+        );
     }
-
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool isWalkable =
+            Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
 
         if (!isWalkable)
         {

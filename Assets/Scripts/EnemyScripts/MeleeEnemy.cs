@@ -128,7 +128,8 @@ public class MeleeEnemy : BaseEnemy
         if (isMovingToSpot)
         {
             Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
-            Vector2 nextPosition = (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
+            Vector2 nextPosition =
+                (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
             {
@@ -199,7 +200,8 @@ public class MeleeEnemy : BaseEnemy
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool isWalkable =
+            Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
 
         if (!isWalkable)
         {
