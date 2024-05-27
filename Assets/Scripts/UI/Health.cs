@@ -26,11 +26,25 @@ public class Health : MonoBehaviour
     public UnityEvent<GameObject> OnHitWithReference,
         OnDeathWithReference;
 
+    public GameObject player;
+    private EnemyHealthBar enemyHealthBar;
+
+
     private void Start()
     {
         currentHealth.Value = 10;
+        player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through it's tag
+        enemyHealthBar = GetComponentInChildren<EnemyHealthBar>();
+        if (enemyHealthBar != null)
+        {
+            enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
+        }
     }
 
+    public float getCurrentHealth()
+    { 
+        return currentHealth.Value;
+    }
     public void AddHealth(int healthBoost)
     {
         if (currentHealth.Value + healthBoost > maxHealth)
@@ -48,11 +62,16 @@ public class Health : MonoBehaviour
 
     public void Reduce(int damage)
     {
-        currentHealth.Value -= damage / maxHealth;
+        //currentHealth.Value -= damage / maxHealth;
+        currentHealth.Value -= damage;
         CreateHitFeedback();
         if (currentHealth.Value <= 0)
         {
             Die();
+        }
+        if(enemyHealthBar != null) 
+        {
+            enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
         }
     }
 
@@ -73,9 +92,20 @@ public class Health : MonoBehaviour
         {
             OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
             isDead = true; // Mark as dead
+            if (gameObject.tag != "Player")
+            {
+                GameEventsManager.instance.miscEvents.enemyDeath();
+                Debug.Log("Enemy killed");
+            }
             Destroy(gameObject); // Destroy the GameObject
         }
+
+        if (enemyHealthBar != null)
+        {
+            enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
+        }
     }
+    
 
     private void CreateHitFeedback()
     {

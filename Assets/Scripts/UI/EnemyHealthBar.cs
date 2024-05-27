@@ -9,6 +9,16 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 offSet;
+
+    private void Start()
+    {
+        // If necessary, initialize the health bar here
+        Health health = GetComponentInParent<Health>();
+        if (health != null)
+        {
+            UpdateHealthBar(health.getCurrentHealth(), health.maxHealth);
+        }
+    }
     public void UpdateHealthBar(float currentHealth, float maxHealth)
     {
         slider.value = currentHealth / maxHealth;
