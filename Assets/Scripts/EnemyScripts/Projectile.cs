@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
     public float destroyDelay = 2f;
     private float elapsedTime = 0f;
+    public int damage = 1; // Damage value for the projectile
 
     void Start()
     {
@@ -25,9 +26,16 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        CapsuleCollider2D capsuleCollider = other as CapsuleCollider2D;
+        if (capsuleCollider != null)
         {
-            Debug.Log("Projectile hit the player!");
+            Health targetHealth = other.GetComponent<Health>();
+            if (targetHealth != null)
+            {
+                targetHealth.GetHit(damage, gameObject);
+                Debug.Log("Projectile hit the target!");
+            }
+
             Destroy(gameObject);
         }
     }
