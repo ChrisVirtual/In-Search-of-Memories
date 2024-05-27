@@ -1511,6 +1511,10 @@ PrefabInstance:
       value: MinimapIcon
       objectReference: {fileID: 0}
     - target: {fileID: 2420328994407539941, guid: 640acd57d8e7c4242832e39ab630da6f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2420328994407539941, guid: 640acd57d8e7c4242832e39ab630da6f, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1680,7 +1684,7 @@ GameObject:
   - component: {fileID: 786651183}
   - component: {fileID: 786651184}
   - component: {fileID: 786651185}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1796,7 +1800,7 @@ GameObject:
   - component: {fileID: 934698956}
   - component: {fileID: 934698955}
   - component: {fileID: 934698957}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6219,7 +6223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1151570583}
   - component: {fileID: 1151570584}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyWeaponParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6930,7 +6934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1503051958}
   - component: {fileID: 1503051959}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlayerInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7425,7 +7429,7 @@ GameObject:
   - component: {fileID: 1778801081}
   - component: {fileID: 1778801082}
   - component: {fileID: 1778801083}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7613,11 +7617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2334474690392437715, guid: df5428b4523bee549a3b4da9bb56c98c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6082061855186124620, guid: df5428b4523bee549a3b4da9bb56c98c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7331395664935453610, guid: df5428b4523bee549a3b4da9bb56c98c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10499,7 +10503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1958278447}
   - component: {fileID: 1958278448}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WeaponParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10568,7 +10572,8 @@ GameObject:
   - component: {fileID: 1984904482}
   - component: {fileID: 1984904481}
   - component: {fileID: 1984904480}
-  m_Layer: 0
+  - component: {fileID: 1984904486}
+  m_Layer: 6
   m_Name: MeleeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -10770,6 +10775,30 @@ Transform:
   - {fileID: 1151570583}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1984904486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984904479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85eb2823cde1b714a94756688e1255c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  currentHealth: {fileID: 11400000, guid: 0ddee506d9a43f44fa099e9198d77fc9, type: 2}
+  bloodParticle: {fileID: 2156367806491492928, guid: 5f83e1530fdf11148ba195e4411ba1d9, type: 3}
+  renderer: {fileID: 1837903612}
+  flashTime: 0.2
+  isDead: 0
+  OnHitWithReference:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeathWithReference:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2004148429
 GameObject:
   m_ObjectHideFlags: 0
@@ -10779,7 +10808,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2004148430}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CircleOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

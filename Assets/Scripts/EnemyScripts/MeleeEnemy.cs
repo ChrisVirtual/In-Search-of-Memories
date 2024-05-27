@@ -46,6 +46,9 @@ public class MeleeEnemy : BaseEnemy
     // Attack animation trigger name
     private readonly string attackTrigger = "Attack";
 
+    // Reference to the player's Health component
+    private Health playerHealth;
+
     private void Awake()
     {
         moveSpot = new GameObject().transform;
@@ -53,35 +56,50 @@ public class MeleeEnemy : BaseEnemy
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Handle player entering attack range
+    private void Start()
+    {
+        base.Start();
+
+        enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
+
+        if (enemyWeapon == null)
+        {
+            Debug.LogError("EnemyWeaponParent script not found!");
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = true;
             currentState = EnemyState.TrackPlayer;
+            playerHealth = other.GetComponent<Health>();
             Debug.Log("Player entered attack range. Switching to TrackPlayer state");
         }
     }
 
-    // Handle player exiting attack range
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
             currentState = EnemyState.Patrol;
+            playerHealth = null;
             Debug.Log("Player exited attack range. Switching to Patrol state");
         }
     }
 
-    // Execute attack logic
     protected override void Attack()
     {
         if (currentCooldown <= 0 && isPlayerInRange)
         {
             Debug.Log("Melee enemy attacking player");
-            // Add code here to damage the player
+
+            if (playerHealth != null)
+            {
+                playerHealth.GetHit(1, gameObject);
+            }
 
             enemyAnimator.SetTrigger(attackTrigger);
             currentCooldown = attackCooldown;
@@ -92,21 +110,6 @@ public class MeleeEnemy : BaseEnemy
         }
     }
 
-    // Override the Start method from the BaseEnemy class
-    protected override void Start()
-    {
-        base.Start();
-
-        enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
-
-        // Check if enemyWeapon is found
-        if (enemyWeapon == null)
-        {
-            Debug.LogError("EnemyWeaponParent script not found!");
-        }
-    }
-
-    // Update method to handle state-specific behaviors
     void Update()
     {
         switch (currentState)
@@ -120,15 +123,12 @@ public class MeleeEnemy : BaseEnemy
         }
     }
 
-    // Patrol behavior logic
     void PatrolBehavior()
     {
         if (isMovingToSpot)
         {
-            // Calculate movement direction and next position
             Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
-            Vector2 nextPosition =
-                (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
+            Vector2 nextPosition = (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
             {
@@ -139,7 +139,6 @@ public class MeleeEnemy : BaseEnemy
                 ResetPatrol();
             }
 
-            // Check if reached the move spot
             if (Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
             {
                 ResetPatrol();
@@ -147,7 +146,6 @@ public class MeleeEnemy : BaseEnemy
         }
         else
         {
-            // Handle waiting behavior
             if (waitTime <= 0)
             {
                 ResetPatrol();
@@ -159,20 +157,15 @@ public class MeleeEnemy : BaseEnemy
         }
     }
 
-    // Track player behavior logic
     void TrackPlayerBehavior()
     {
-        // Calculate distance and direction to the player
         float distance = Vector2.Distance(transform.position, target.position);
         Vector2 direction = (target.position - transform.position).normalized;
 
-        // Rotate the enemy weapon towards the player
         enemyWeapon.RotateTowards(target.position);
 
-        // Check if player is out of attack range
         if (distance > attackCollider.size.x)
         {
-            // Move the enemy towards the player
             Vector2 nextPosition = (Vector2)transform.position + direction * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
@@ -184,7 +177,6 @@ public class MeleeEnemy : BaseEnemy
                 rb.velocity = Vector2.zero;
             }
 
-            // Move the enemy weapon towards the player
             enemyWeapon.MoveTo(target.position);
         }
         else
@@ -194,10 +186,8 @@ public class MeleeEnemy : BaseEnemy
         }
     }
 
-    // Reset patrol behavior
     void ResetPatrol()
     {
-        // Generate a new move spot and reset movement
         Vector2 newMoveSpot = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
         moveSpot.position = newMoveSpot;
         isMovingToSpot = true;
@@ -207,11 +197,9 @@ public class MeleeEnemy : BaseEnemy
         rb.velocity = moveDirection * speed;
     }
 
-    // Check if the target position is walkable
     private bool IsWalkable(Vector3 targetPos)
     {
-        bool isWalkable =
-            Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
 
         if (!isWalkable)
         {
@@ -221,7 +209,6 @@ public class MeleeEnemy : BaseEnemy
         return isWalkable;
     }
 
-    // Enemy states
     public enum EnemyState
     {
         Patrol,
