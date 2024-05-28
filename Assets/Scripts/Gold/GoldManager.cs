@@ -5,6 +5,26 @@ using UnityEngine;
 
 public class GoldManager : MonoBehaviour
 {
+    // Singleton instance
+    private static GoldManager _instance;
+    public static GoldManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GoldManager>();
+
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("GoldManager");
+                    _instance = obj.AddComponent<GoldManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
     //Variable to store the current gold amount
     public int gold;
 
@@ -12,7 +32,7 @@ public class GoldManager : MonoBehaviour
     public TextMeshProUGUI goldDisplay;
 
     //Reference to the GoldEvents script for handling gold-related events
-    private GoldEvents goldEvents;
+    public GoldEvents goldEvents;
 
     private void Start()
     {
