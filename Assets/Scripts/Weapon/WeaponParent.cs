@@ -79,6 +79,11 @@ public class WeaponParent : MonoBehaviour
     {
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position, radius))
         {
+            if (collider is CircleCollider2D)
+            {
+                continue;
+            }
+            
             Health health;
             if (health = collider.GetComponent<Health>())
             {
