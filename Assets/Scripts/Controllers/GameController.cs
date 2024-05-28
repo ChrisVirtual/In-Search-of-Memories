@@ -1,43 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
-using Unity.VisualScripting;
 using UnityEngine;
 
+public enum GameState { FreeRoam, Dialog, Attacking, Idle }
 
-public enum GameState { FreeRoam, Dialog, attacking, idle }
 public class GameController : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController; //Serialized Field adds a new field when this scripr bet threw in Unity Inspector to add a player controller which means drag an object inside of it
+    [SerializeField] PlayerController playerController;
 
     GameState state;
 
-    private void Start() // Switch the state of the game from free roam to Dialog and vice versa
+    private void Start()
+    {
+        InitializeGameState();
+        ResetPlayerController();
+    }
+
+    private void InitializeGameState()
     {
         if (DialogManagerInk.instance.dialogIsPlaying)
         {
             state = GameState.Dialog;
         }
-        else if (!DialogManagerInk.instance.dialogIsPlaying)
+        else
         {
-            if (state == GameState.Dialog)
-                state = GameState.FreeRoam;
+            state = GameState.FreeRoam;
         }
     }
 
-    private void Update() // Updates the game state of the game according with the situation
+    private void ResetPlayerController()
     {
-        if (state == GameState.FreeRoam)
+        playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
         {
-            playerController.HandleUpdate();
+            playerController.ResetState();
         }
-        else if (state == GameState.Dialog)
+    }
+
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        ResetPlayerController();
+    }
+
+    private void Update()
+    {
+        switch (state)
         {
-            DialogManager.Instance.HandleUpdate();
+            case GameState.FreeRoam:
+                if (playerController != null)
+                {
+                    playerController.HandleUpdate();
+                }
+                break;
+            case GameState.Dialog:
+                DialogManager.Instance.HandleUpdate();
+                break;
+            case GameState.Attacking:
+                if (playerController != null)
+                {
+                    playerController.isAttacking = true;
+                }
+                break;
         }
-        else if (state == GameState.attacking)
+    }
+
+    public void SetGameState(GameState newState)
+    {
+        state = newState;
+        if (newState == GameState.FreeRoam && playerController != null)
         {
-            playerController.isAttacking = true;
+            playerController.ResetState();
         }
     }
 }

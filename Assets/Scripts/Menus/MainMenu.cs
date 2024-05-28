@@ -16,18 +16,27 @@ public class MainMenu : MonoBehaviour
         {
             continueGameButton.interactable = false;
         }
+
+        // Add this to listen for scene changes
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up listener to avoid memory leaks
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void NewGame()
     {
-        DiableMenuButtons();
+        DisableMenuButtons();
         DataPersistenceManager.instance.NewGame();
         SceneManager.LoadSceneAsync("SaveLoadScene");
     }
 
     public void LoadGame()
     {
-        DiableMenuButtons();
+        DisableMenuButtons();
         SceneManager.LoadSceneAsync("SaveLoadScene");
     }
 
@@ -46,10 +55,21 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    private void DiableMenuButtons()
+    private void DisableMenuButtons()
     {
         newGameButton.interactable = false;
         continueGameButton.interactable = false;
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "SaveLoadScene")
+        {
+            CameraController cameraController = FindObjectOfType<CameraController>();
+            if (cameraController != null)
+            {
+                cameraController.FindPlayer();
+            }
+        }
+    }
 }

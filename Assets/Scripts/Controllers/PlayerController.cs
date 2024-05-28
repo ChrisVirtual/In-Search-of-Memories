@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Diagnostics;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,14 +25,31 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
+        if (audioManager == null)
+        {
+            Debug.LogWarning("AudioManager not found. Ensure there is an object tagged 'Audio' with an AudioManager component.");
+        }
+    }
+
+    private void Start()
+    {
+        ResetState();
+    }
+
+    public void ResetState()
+    {
+        isMoving = false;
+        isAttacking = false;
+        isDashing = false;
+        input = Vector2.zero;
     }
 
     public void HandleUpdate()
     {
-        if(DialogManagerInk.instance.dialogIsPlaying) 
+        if (DialogManagerInk.instance.dialogIsPlaying)
         {
-            return; 
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -45,21 +58,21 @@ public class PlayerController : MonoBehaviour
             GameEventsManager.instance.inputEvents.SubmitPressed();
         }
 
-        if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
+        if (!isMoving && !isAttacking && !isDashing)
         {
-            input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
-            input.y = Input.GetAxisRaw("Vertical"); // Watch if user is pressing up or down key, then store in the input variable.
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
 
             if (input.x != 0) input.y = 0;
 
-            if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
+            if (input != Vector2.zero)
             {
                 animator.SetFloat("moveX", input.x);
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
-                targetPos.x += input.x * moveSpeed * Time.deltaTime; // add to the variable in x axis
-                targetPos.y += input.y * moveSpeed * Time.deltaTime; // add to the variable in y axis
+                targetPos.x += input.x * moveSpeed * Time.deltaTime;
+                targetPos.y += input.y * moveSpeed * Time.deltaTime;
 
                 if (IsWalkable(targetPos))
                 {
@@ -69,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Attacking!"); // Print message to console
+                Debug.Log("Attacking!");
                 Vector3 mousePosition = GetMouseWorldPositon();
                 Vector3 attackDir = (mousePosition - transform.position).normalized;
                 animator.SetTrigger("Attack");
@@ -105,7 +118,7 @@ public class PlayerController : MonoBehaviour
         var interactPos = transform.position + facingDir;
 
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
-        if(collider != null)
+        if (collider != null)
         {
             collider.GetComponent<Interactable>()?.Interact();
         }
@@ -126,21 +139,15 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-    // Determine if a position is suitable for movement
     private bool IsWalkable(Vector3 targetPos)
     {
-        // Use a small overlap circle to check for collisions with solid or interactable objects
         bool walkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
-        if (!walkable)
+        if (!walkable && audioManager != null)
         {
             audioManager.PlaySFX(audioManager.collision);
         }
         return walkable;
     }
-
-    // --- Mouse Position Handling ---
-
-    // Get Mouse Position in World with Z = 0f
 
     public static Vector3 GetMouseWorldPositon()
     {
@@ -148,39 +155,33 @@ public class PlayerController : MonoBehaviour
         vec3.z = 0f;
         return vec3;
     }
-    // Get mouse position in world space with a specific camera
 
     public static Vector3 GetMouseWorldPositonWithZ(Camera worldCamera)
     {
         return GetMouseWorldPositonWithZ(Input.mousePosition, worldCamera);
     }
-    // Get mouse position in world space, providing both screen position and camera
+
     public static Vector3 GetMouseWorldPositonWithZ(Vector3 screenPos, Camera worldCamera)
     {
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
-    
-    // ---- Gizmos Visualization ----
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position; // Determine the circle's center (using origin object if set, otherwise use zero)
-        Gizmos.DrawWireSphere(position, radius); // Draw a blue wire sphere to represent the radius in the scene editor 
+        Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position;
+        Gizmos.DrawWireSphere(position, radius);
     }
 
-    // ---- Collider Detection ----
     public void DetectColliders()
     {
-        // Get all colliders within the circle's radius
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position,radius))
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position, radius))
         {
-            //Debug.Log(collider.name);
             Health health;
-            // Attempt to get the Health component of the collided object
-            if (health = collider.GetComponent<Health>()) // If the object has a Health component, inflict damage
+            if (health = collider.GetComponent<Health>())
             {
-                health.GetHit(1, transform.gameObject); // Deal 1 damage, passing this object as the reference
+                health.GetHit(1, transform.gameObject);
             }
         }
     }
@@ -189,31 +190,32 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
 
-        audioManager.PlaySFX(audioManager.NPCInteraction);
+        if (audioManager != null)
+        {
+            audioManager.PlaySFX(audioManager.NPCInteraction);
+        }
 
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + new Vector3(input.x, input.y, 0f) * dashDistance;
 
-        // Checks if there's anything solid in the path of the player's dash.
         RaycastHit2D hit = Physics2D.Raycast(startPos, endPos - startPos, Vector3.Distance(startPos, endPos), solidObjectsLayer);
 
         if (hit.collider != null)
         {
-            audioManager.PlaySFX(audioManager.collision);
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(audioManager.collision);
+            }
 
-            // If there's a collision, stop at the hit box
             endPos = hit.point;
 
-            // Calculate the normal vector of the collision
             Vector3 normal = hit.normal;
 
-            // Reflect the collsion of the original dash to find bounce distance
             Vector3 reflectedDirection = Vector3.Reflect(endPos - startPos, normal).normalized;
 
-            float bounceFactor = 0.3f; // Control bounce strength
+            float bounceFactor = 0.3f;
             reflectedDirection *= bounceFactor;
 
-            // Set the new end position to continue the dash in the reflected direction
             endPos = startPos + reflectedDirection * dashDistance;
         }
 

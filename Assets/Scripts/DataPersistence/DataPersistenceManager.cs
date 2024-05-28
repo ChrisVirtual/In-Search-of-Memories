@@ -5,30 +5,32 @@ using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Inventory;
 
-// This class is a Singleton class meaning we only want one of them in the scene. 
-// It's like saving default coins or powerups for any 'New Game' created as a Singleton class and it ensures that all new users have same initial amount of coins and powerups.
 public class DataPersistenceManager : MonoBehaviour
 {
-
     [Header("File Storage Config")]
     [SerializeField] private string fileName;
     [SerializeField] private bool useEncryption;
 
     private GameData gameData;
+    private InventoryController inventoryController;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
 
-    public static DataPersistenceManager instance {  get; private set; } // get instance publicly, but modify instance privately
+    public static DataPersistenceManager instance { get; private set; }
 
     private void Awake()
     {
-        //if (instance == null)
-        //{
-            //Debug.LogError("Found more than one Data Persistence Manager in the scene."); // as there should only be one singleton class in the scene
-        //}
-        instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
     }
@@ -47,7 +49,6 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
@@ -59,42 +60,58 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void NewGame()
     {
-        this.gameData = new GameData();
+        gameData = new GameData(); // Reset game data
+        SaveGame();
     }
 
     public void LoadGame()
     {
-        // Load saved data from file using data handler
         this.gameData = dataHandler.Load();
 
-        // if no data to load, then create new game
         if (this.gameData == null)
         {
             Debug.Log("No data was found. A New Game needs to be started before loading the data.");
+            NewGame();
             return;
         }
-        //TODO - push loaded data to all other scripts where necessary.
+
+        // Save inventory UI
+        if (inventoryController != null)
+        {
+            inventoryController.LoadInventoryUI();
+        }
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.LoadData(gameData);
+            if (dataPersistenceObj != null)
+            {
+                dataPersistenceObj.LoadData(gameData);
+            }
         }
     }
 
     public void SaveGame()
     {
-        if(this.gameData == null)
+        if (this.gameData == null)
         {
             Debug.LogWarning("No data was found. A New Game needs to be started before loading the data.");
             return;
         }
 
-        //passes the data to other scripts so they can update it.
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        // Save inventory UI
+        if (inventoryController != null)
         {
-            dataPersistenceObj.SaveData(ref gameData);
+            inventoryController.SaveInventoryUI();
         }
 
-        // Save that data to file using data handler.
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            if (dataPersistenceObj != null)
+            {
+                dataPersistenceObj.SaveData(ref gameData);
+            }
+        }
+
         dataHandler.Save(gameData);
     }
 
@@ -118,5 +135,4 @@ public class DataPersistenceManager : MonoBehaviour
     {
         return dataHandler.LoadAllProfiles();
     }
-
 }

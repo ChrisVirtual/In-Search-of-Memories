@@ -11,23 +11,60 @@ namespace Inventory
 {    
     public class InventoryController : MonoBehaviour
     {
+
         [SerializeField]
-        private InventoryPage inventoryUI;
+        public string inventoryUIKey = "InventoryUIKey"; // Key to save and load the InventoryUI reference
+
         [SerializeField]
-        private InventorySO inventoryData;
+        public  InventoryPage inventoryUI;
+        [SerializeField]
+        public InventorySO inventoryData;
 
         public List<InventoryItem> initialItems = new List<InventoryItem>();
 
         [SerializeField]
-        private AudioClip dropClip;
+        public AudioClip dropClip;
 
         [SerializeField]
-        private AudioSource audioSource;
+        public AudioSource audioSource;
 
         private void Start()
         {
+            // Load the reference to the InventoryUI object
             PrepareUI();
             PrepareInventoryData();
+        }
+
+        public void LoadInventoryUI()
+        {
+            // Load the saved key for InventoryUI
+            string inventoryUIName = PlayerPrefs.GetString(inventoryUIKey);
+
+            // Find the InventoryUI object in the scene hierarchy
+            GameObject inventoryUIObject = GameObject.Find(inventoryUIName);
+
+            // If found, assign it to the inventoryUI field
+            if (inventoryUIObject != null)
+            {
+                inventoryUI = inventoryUIObject.GetComponent<InventoryPage>();
+            }
+            else
+            {
+                Debug.LogWarning("InventoryUI object not found. Make sure it's active and enabled in the scene.");
+            }
+        }
+
+        public void SaveInventoryUI()
+        {
+            // If inventoryUI is not null, save its name to PlayerPrefs
+            if (inventoryUI != null)
+            {
+                PlayerPrefs.SetString(inventoryUIKey, inventoryUI.gameObject.name);
+            }
+            else
+            {
+                Debug.LogWarning("InventoryUI is null. Cannot save reference.");
+            }
         }
 
         private void PrepareInventoryData()
@@ -44,21 +81,35 @@ namespace Inventory
 
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
         {
+            if (inventoryUI == null)
+            {
+                Debug.LogError("Inventory UI is null.");
+                return;
+            }
+
             inventoryUI.ResetAllItems();
             foreach (var item in inventoryState)
             {
-                inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity); 
+                inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
             }
         }
 
+
         private void PrepareUI()
         {
+            if (inventoryUI == null)
+            {
+                Debug.LogError("InventoryUI is null in PrepareUI method.");
+                return;
+            }
+
             inventoryUI.InitializeInventoryUI(inventoryData.Size);
-            this.inventoryUI.OnDescriptionRequested += HandleDescriptionRequest;        
+            this.inventoryUI.OnDescriptionRequested += HandleDescriptionRequest;
             this.inventoryUI.OnSwapItems += HandleSwapItems;
             this.inventoryUI.OnStartDragging += HandleDragging;
             this.inventoryUI.OnItemActionRequested += HandleItemActionRequest;
         }
+
 
         private void HandleItemActionRequest(int itemIndex)
         {
@@ -154,21 +205,56 @@ namespace Inventory
 
         public void Update()
         {
+            Debug.Log("Update method called.");
+
             if (Input.GetKeyDown(KeyCode.I))
             {
-                if(inventoryUI.isActiveAndEnabled == false)
+                Debug.Log("I key pressed.");
+
+                if (inventoryUI == null)
                 {
+                    Debug.LogError("InventoryUI is null.");
+                    return;
+                }
+
+                if (!inventoryUI.isActiveAndEnabled)
+                {
+                    Debug.Log("InventoryUI is not active and enabled. Showing UI.");
+
                     inventoryUI.Show();
-                    foreach (var item in inventoryData.GetCurrentInventoryState())
+
+                    var currentInventoryState = inventoryData.GetCurrentInventoryState();
+                    if (currentInventoryState == null)
                     {
+                        Debug.LogError("CurrentInventoryState is null.");
+                        return;
+                    }
+
+                    foreach (var item in currentInventoryState)
+                    {
+                        if (inventoryUI == null)
+                        {
+                            Debug.LogError("InventoryUI is null inside the loop.");
+                            return;
+                        }
+
                         inventoryUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
-                    }   
+                    }
                 }
                 else
                 {
+                    Debug.Log("InventoryUI is active and enabled. Hiding UI.");
                     inventoryUI.Hide();
                 }
             }
         }
+
+        // Call SaveInventoryUI when needed, such as when the game is exiting
+        private void OnApplicationQuit()
+        {
+            SaveInventoryUI();
+        }
+
     }
+
 }

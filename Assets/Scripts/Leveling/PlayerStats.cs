@@ -8,27 +8,27 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour, IDataPersistence
 {
-    //Configuration variables
+    // Configuration variables
     [Header("Configuration")]
     [SerializeField] private int startingLevel = 1;
     [SerializeField] private int startingExperience = 0;
 
-    //Player stats
+    // Player stats
     [SerializeField] public int currentLevel;
     public int statPoints;
     public FloatValueSO currentHealth;
     public float maxHealth;
     public int currentMana;
     public int maxMana;
-    public int currentExp; //Current exp for this level
-    public int maxExp; //Max exp for this level
-    public int vitality; //Increases health 
-    public int strength; //Increases attack damage
-    public int dexterity; //Increases attack speed
-    public int intelligence; //Increases 
-    public int speed; //Increases speed and roll distance
+    public int currentExp;
+    public int maxExp;
+    public int vitality;
+    public int strength;
+    public int dexterity;
+    public int intelligence;
+    public int speed;
 
-    //UI elements
+    // UI elements
     public Slider healthBar;
     public Slider manaBar;
     public Slider expBar;
@@ -41,7 +41,7 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
 
     private void Awake()
     {
-        //Singleton pattern implementation
+        // Singleton pattern implementation
         if (instance == null)
         {
             instance = this;
@@ -57,29 +57,29 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
 
     private void OnEnable()
     {
-        //Subscribe to experience gained event
+        // Subscribe to experience gained event
         GameEventsManager.instance.playerEvents.onExperienceGained += ExperienceGained;
     }
 
     private void OnDisable()
     {
-        //Unsubscribe from experience gained event
+        // Unsubscribe from experience gained event
         GameEventsManager.instance.playerEvents.onExperienceGained -= ExperienceGained;
     }
 
     private void Start()
     {
-        //Initialize UI elements
+        // Initialize UI elements
         GameEventsManager.instance.playerEvents.PlayerLevelChange(currentLevel);
         GameEventsManager.instance.playerEvents.PlayerExperienceChange(currentExp);
     }
 
     private void ExperienceGained(int experience)
     {
-        //Update current experience
+        // Update current experience
         currentExp += experience;
 
-        //Level up logic
+        // Level up logic
         while (currentExp >= maxExp)
         {
             currentExp -= maxExp;
@@ -93,23 +93,25 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
 
     public void Update()
     {
-        //Update UI sliders and texts
+        // Update UI sliders and texts
         changeSliderUI();
     }
 
     public void changeSliderUI()
     {
-        //Update UI slider values
+        if (healthBar == null || manaBar == null || expBar == null) return;
+
+        // Update UI slider values
         healthBar.value = currentHealth.Value;
         manaBar.value = currentMana;
         expBar.value = currentExp;
 
-        //Update UI slider maximum values
+        // Update UI slider maximum values
         healthBar.maxValue = maxHealth;
         manaBar.maxValue = maxMana;
         expBar.maxValue = maxExp;
 
-        //Update UI text displays
+        // Update UI text displays
         healthSliderDisplay.text = currentHealth.Value + " / " + maxHealth;
         manaSliderDisplay.text = currentMana + " / " + maxMana;
         levelSliderDisplay.text = " Level: " + currentLevel;
@@ -128,9 +130,10 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         changeSliderUI();
     }
 
-
     public void SaveData(ref GameData data)
     {
+        if (this == null) return; // Add null check
+
         data.playerPosition = this.transform.position;
 
         // Save health and level data
@@ -138,5 +141,4 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         data.playerLevel = currentLevel;
         data.statPoints = statPoints;
     }
-
 }

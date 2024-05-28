@@ -4,18 +4,42 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Adjust the speed at which the camera moves
     public float CameraSpeed = 2f;
-
-    // Reference the player
     public Transform target;
+
+    void Start()
+    {
+        // Ensure the target is assigned when the game starts or continues
+        if (target == null)
+        {
+            FindPlayer();
+        }
+    }
 
     void LateUpdate()
     {
-        // Calculate the position for the camera
-        Vector3 newPos = new Vector3(target.position.x, target.position.y, -10f);
+        if (target == null)
+        {
+            FindPlayer();
+        }
 
-        // moves the camera towards the new position
-        transform.position = Vector3.Slerp(transform.position, newPos, CameraSpeed * Time.deltaTime);
+        if (target != null)
+        {
+            Vector3 newPos = new Vector3(target.position.x, target.position.y, -10f);
+            transform.position = Vector3.Slerp(transform.position, newPos, CameraSpeed * Time.deltaTime);
+        }
+    }
+
+    public void FindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            target = player.transform;
+        }
+        else
+        {
+            Debug.LogWarning("Player not found");
+        }
     }
 }
