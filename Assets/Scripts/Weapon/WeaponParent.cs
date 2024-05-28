@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class WeaponParent : MonoBehaviour
 {
-    public SpriteRenderer characterRender, weaponRenderer;
+    public SpriteRenderer characterRender,
+        weaponRenderer;
     private Transform weaponTransform;
     private Vector3 scale;
 
@@ -83,12 +84,22 @@ public class WeaponParent : MonoBehaviour
             {
                 continue;
             }
-            
+            if (collider.CompareTag("Player"))
+            {
+                continue;
+            }
+
             Health health;
             if (health = collider.GetComponent<Health>())
             {
                 health.GetHit(1, transform.parent.gameObject);
-                Debug.Log("Hit enemy for 1");
+                Debug.Log(
+                    $"{collider.gameObject.name} hit for 1 damage. Current health: {health.getCurrentHealth()}"
+                );
+            }
+            else
+            {
+                Debug.LogWarning($"{collider.gameObject.name} does not have a Health component.");
             }
         }
     }
