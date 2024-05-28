@@ -6240,7 +6240,7 @@ Transform:
   m_GameObject: {fileID: 1151570582}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.004537886, w: 0.99998975}
-  m_LocalPosition: {x: 0.65, y: -1.11, z: 0}
+  m_LocalPosition: {x: 0.02, y: -0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7131,7 +7131,7 @@ Transform:
   m_GameObject: {fileID: 1573028631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.984, y: -1.206, z: 0}
+  m_LocalPosition: {x: 0.13, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7389,11 +7389,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565a9a476fdc99248b20f98570ca62c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialog:
-    lines:
-    - 
-    - 
-    - 
+  ShopUI: {fileID: 0}
+  inventoryData: {fileID: 0}
+  playerInventoryData: {fileID: 0}
+  inventoryController: {fileID: 0}
+  item: {fileID: 0}
+  initialItems: []
+  dropClip: {fileID: 0}
+  audioSource: {fileID: 0}
+  goldManager: {fileID: 0}
 --- !u!1001 &1752284694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7886,7 +7890,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.99, y: -1.06}
+  m_Offset: {x: 0.11, y: -0.06}
   m_Size: {x: 0.76, y: 1.34}
   m_Direction: 0
 --- !u!50 &1860120805
@@ -7948,7 +7952,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.98, y: -1}
+  m_Offset: {x: 0.17, y: -0.03}
   serializedVersion: 2
   m_Radius: 4.14
 --- !u!114 &1860120807
@@ -8027,7 +8031,7 @@ SpriteRenderer:
   m_SortingLayerID: -1793522249
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1511277138, guid: fea4ca4ffce11e84b9c97762c4fd5a3b, type: 3}
+  m_Sprite: {fileID: -321743629, guid: 60700d558da78a445bd6591ae9224269, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11013,7 +11017,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.71, y: -1}
+  m_Offset: {x: -0.04, y: -0.06}
   m_Size: {x: 0.89, y: 1.49}
   m_Direction: 0
 --- !u!58 &1984904481
@@ -11048,7 +11052,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.71, y: -1}
+  m_Offset: {x: 0.01, y: 0}
   serializedVersion: 2
   m_Radius: 3.79
 --- !u!50 &1984904482
@@ -11169,7 +11173,7 @@ Transform:
   m_GameObject: {fileID: 1984904479}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.7, y: -1.3, z: 0}
+  m_LocalPosition: {x: 7.53, y: -0.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

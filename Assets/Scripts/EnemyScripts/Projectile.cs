@@ -12,6 +12,9 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f; // Disable gravity
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Set collision detection mode
+
+        int enemyLayer = LayerMask.NameToLayer("EnemyColliders");
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemyLayer);
     }
 
     void Update()
