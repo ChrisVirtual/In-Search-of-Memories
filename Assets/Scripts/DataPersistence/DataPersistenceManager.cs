@@ -78,7 +78,7 @@ public class DataPersistenceManager : MonoBehaviour
         // Save inventory UI
         if (inventoryController != null)
         {
-            inventoryController.LoadInventoryUI();
+            
         }
 
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
@@ -101,7 +101,7 @@ public class DataPersistenceManager : MonoBehaviour
         // Save inventory UI
         if (inventoryController != null)
         {
-            inventoryController.SaveInventoryUI();
+
         }
 
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)

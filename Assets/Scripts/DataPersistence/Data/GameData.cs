@@ -10,8 +10,7 @@ public class GameData
 {
     public Dictionary<string, bool> coinsCollected;
     public int gold;
-    public ItemSO InventoryItem;
-    public InventoryController InventoryController;
+    public List<InventoryItem> inventoryState; // List to store inventory items
     public Vector3 playerPosition;
     public float playerHealth;
     public int currentMana;
@@ -24,7 +23,7 @@ public class GameData
     {
         coinsCollected = new Dictionary<string, bool>();
         this.gold = 0;
+        inventoryState = new List<InventoryItem>();
         playerPosition = Vector3.zero;
-        
     }
 }

@@ -13,9 +13,6 @@ namespace Inventory
     {
 
         [SerializeField]
-        public string inventoryUIKey = "InventoryUIKey"; // Key to save and load the InventoryUI reference
-
-        [SerializeField]
         public  InventoryPage inventoryUI;
         [SerializeField]
         public InventorySO inventoryData;
@@ -33,38 +30,6 @@ namespace Inventory
             // Load the reference to the InventoryUI object
             PrepareUI();
             PrepareInventoryData();
-        }
-
-        public void LoadInventoryUI()
-        {
-            // Load the saved key for InventoryUI
-            string inventoryUIName = PlayerPrefs.GetString(inventoryUIKey);
-
-            // Find the InventoryUI object in the scene hierarchy
-            GameObject inventoryUIObject = GameObject.Find(inventoryUIName);
-
-            // If found, assign it to the inventoryUI field
-            if (inventoryUIObject != null)
-            {
-                inventoryUI = inventoryUIObject.GetComponent<InventoryPage>();
-            }
-            else
-            {
-                Debug.LogWarning("InventoryUI object not found. Make sure it's active and enabled in the scene.");
-            }
-        }
-
-        public void SaveInventoryUI()
-        {
-            // If inventoryUI is not null, save its name to PlayerPrefs
-            if (inventoryUI != null)
-            {
-                PlayerPrefs.SetString(inventoryUIKey, inventoryUI.gameObject.name);
-            }
-            else
-            {
-                Debug.LogWarning("InventoryUI is null. Cannot save reference.");
-            }
         }
 
         private void PrepareInventoryData()
@@ -248,13 +213,5 @@ namespace Inventory
                 }
             }
         }
-
-        // Call SaveInventoryUI when needed, such as when the game is exiting
-        private void OnApplicationQuit()
-        {
-            SaveInventoryUI();
-        }
-
     }
-
 }
