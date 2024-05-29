@@ -152,24 +152,5 @@ namespace Shop
             }
             return sb.ToString();
         }
-
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                if(ShopUI.isActiveAndEnabled == false)
-                {
-                    ShopUI.Show();
-                    foreach (var item in inventoryData.GetCurrentInventoryState())
-                    {
-                        ShopUI.UpdateData(item.Key, item.Value.item.ItemImage, item.Value.quantity);
-                    }   
-                }
-                else
-                {
-                    ShopUI.Hide();
-                }
-            }
-        }
     }
 }
