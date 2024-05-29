@@ -24,7 +24,7 @@ public class DialogManagerInk : MonoBehaviour
     private TextMeshProUGUI[] choicesText;
 
     [SerializeField] private InventorySO inventoryData;
-    [SerializeField] private GameObject StatsMenu;
+    [SerializeField] private GameObject ShopInventory;
     [SerializeField] private GameObject LockedGate;
     [SerializeField] private GameObject keyItem;
     public bool dialogIsPlaying { get; private set; }
@@ -226,7 +226,7 @@ public class DialogManagerInk : MonoBehaviour
         });//Christian Change StatsMenu to your shop panel
         currentStory.BindExternalFunction("TraderInteract", () =>
         {
-            StatsMenu.SetActive(true);
+            ShopInventory.SetActive(true);
         });
         currentStory.BindExternalFunction("checkKey", (string key) =>
         {
