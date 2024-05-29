@@ -263,6 +263,22 @@ public class DialogManagerInk : MonoBehaviour
             keyItem.SetActive(true);
 
         });
-
+    }
+    public void StartMemoryShard1()
+    {
+        TextAsset memoryShard1InkJSON = Resources.Load<TextAsset>("MemoryShard_1");
+        EnterDialogMode(memoryShard1InkJSON);
+    }
+    public void CheckMemoryShard1Availability()
+    {
+        bool canAccessMemoryShard1 = true; 
+        if (canAccessMemoryShard1)
+        {
+            StartMemoryShard1();
+        }
+        else
+        {
+            Debug.Log("You don't meet the requirements to access MemoryShard_1.");
+        }
     }
 }
