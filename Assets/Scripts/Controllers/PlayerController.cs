@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform minimapIndicator;
     public PlayerStats playerStats;
     [SerializeField] public TextMeshProUGUI interactText;
-
+    [SerializeField] public GameObject interactPanel;
     private WeaponParent weaponParent;
 
     // Animation for player attack
@@ -139,10 +139,12 @@ public class PlayerController : MonoBehaviour
         if (collider != null)
         {
             interactText.gameObject.SetActive(true);
+            interactPanel.gameObject.SetActive(true);
         }
         else
         {
             interactText.gameObject.SetActive(false);
+            interactPanel.gameObject.SetActive(false);
         }
     }
     

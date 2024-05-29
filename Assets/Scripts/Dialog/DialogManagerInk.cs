@@ -1,47 +1,40 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Ink.Runtime;
-using Inventory.Model;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using Ink.Runtime;
 using UnityEngine.EventSystems;
+using JetBrains.Annotations;
+using System;
+using Inventory.Model;
+using Inventory.UI;
 
 public class DialogManagerInk : MonoBehaviour
 {
     [Header("Dialog UI")]
-    [SerializeField]
-    private GameObject dialogPanel;
-
-    [SerializeField]
-    private TextMeshProUGUI dialogText;
+    [SerializeField] private GameObject dialogPanel;
+    [SerializeField] private TextMeshProUGUI dialogText;
 
     private bool waitingForInput;
     private Story currentStory;
 
+
     [Header("Choices UI")]
-    [SerializeField]
-    private GameObject[] choices;
+    [SerializeField] private GameObject[] choices;
 
     private TextMeshProUGUI[] choicesText;
 
-    [SerializeField]
-    private InventorySO inventoryData;
-
-    [SerializeField]
-    private GameObject ShopInventory;
-
-    [SerializeField]
-    private GameObject LockedGate;
-
-    [SerializeField]
-    private GameObject keyItem;
+    [SerializeField] private InventorySO inventoryData;
+    [SerializeField] private GameObject ShopInventory;
+    [SerializeField] private GameObject LockedGate;
+    [SerializeField] private GameObject keyItem;
+    [SerializeField] private GameObject ItemActionPanel;
     public bool dialogIsPlaying { get; private set; }
     public static DialogManagerInk instance { get; private set; }
 
     private void Awake()
     {
+
         if (instance != null)
         {
             Debug.LogWarning("Found more than one dialog manager");
@@ -88,6 +81,8 @@ public class DialogManagerInk : MonoBehaviour
         dialogIsPlaying = false;
         dialogPanel.SetActive(false);
         dialogText.text = "";
+        ShopInventory.SetActive(false);
+        ItemActionPanel.SetActive(false);
     }
 
     void Update()
@@ -98,11 +93,7 @@ public class DialogManagerInk : MonoBehaviour
             return;
         }
         //Check if waiting for player input and the 'E' key is pressed
-        if (
-            currentStory.currentChoices.Count == 0
-            && waitingForInput
-            && Input.GetKeyDown(KeyCode.E)
-        )
+        if (currentStory.currentChoices.Count == 0 && waitingForInput && Input.GetKeyDown(KeyCode.E))
         {
             ContinueStory();
         }
@@ -166,6 +157,7 @@ public class DialogManagerInk : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
+
     }
 
     //Method to handle player choice selection
@@ -179,155 +171,122 @@ public class DialogManagerInk : MonoBehaviour
     //Bind external Ink functions to C# methods
     public void checkExternalFunctions()
     {
-        currentStory.BindExternalFunction(
-            "levelCheck",
-            (int requiredLevel) =>
+        currentStory.BindExternalFunction("levelCheck", (int requiredLevel) =>
+        {
+            bool levelMet = true;
+            if (PlayerStats.instance.currentLevel < requiredLevel)
             {
-                bool levelMet = true;
-                if (PlayerStats.instance.currentLevel < requiredLevel)
-                {
-                    levelMet = false;
-                }
-
-                return levelMet;
+                levelMet = false;
             }
-        );
-        currentStory.BindExternalFunction(
-            "checkCanStart",
-            (int requiredLevel, string questId) =>
+
+            return levelMet;
+        });
+        currentStory.BindExternalFunction("checkCanStart", (int requiredLevel, string questId) =>
+        {
+            bool canStart = true;
+            if (PlayerStats.instance.currentLevel < requiredLevel)
             {
-                bool canStart = true;
-                if (PlayerStats.instance.currentLevel < requiredLevel)
+                canStart = false;
+            }
+
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() != QuestState.CAN_START)
                 {
                     canStart = false;
                 }
+            }
+            else
+            {
+                Debug.LogError("QuestPoint with questId " + questId + " not found in the scene.");
+            }
 
-                // Find the QuestPoint instance with the corresponding questId
-                QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-                if (questPoint != null && questPoint.questId == questId)
+            return canStart;
+        });
+        currentStory.BindExternalFunction("completed", (string questId) =>
+        {
+            bool completed = false;
+
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() == QuestState.FINISHED)
                 {
-                    if (questPoint.GetCurrentQuestState() != QuestState.CAN_START)
-                    {
-                        canStart = false;
-                    }
+                    completed = true;
                 }
-                else
+            }
+
+
+            return completed;
+        });
+        currentStory.BindExternalFunction("startQuest", (string questId) =>
+        {
+            Debug.Log("Inkle output: " + questId);
+            GameEventsManager.instance.questEvents.StartQuest(questId);
+
+        });//Christian Change StatsMenu to your shop panel
+        currentStory.BindExternalFunction("ShopOpen", () =>
+        {
+            ShopInventory.SetActive(true);
+        });
+        currentStory.BindExternalFunction("ShopClose", () =>
+        {
+            ShopInventory.SetActive(false);
+        });
+        currentStory.BindExternalFunction("checkKey", (string key) =>
+        {
+            return inventoryData.CheckItemByName(key);
+        });
+        currentStory.BindExternalFunction("deleteGate", () =>
+        {
+            LockedGate.SetActive(false);
+        });
+        currentStory.BindExternalFunction("handIn", (string questId) =>
+        {
+            bool readyToHandIn = false;
+
+            // Find the QuestPoint instance with the corresponding questId
+            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
+            if (questPoint != null && questPoint.questId == questId)
+            {
+                if (questPoint.GetCurrentQuestState() == QuestState.CAN_FINISH)
                 {
-                    Debug.LogError(
-                        "QuestPoint with questId " + questId + " not found in the scene."
-                    );
+                    readyToHandIn = true;
                 }
+            }
 
-                return canStart;
-            }
-        );
-        currentStory.BindExternalFunction(
-            "completed",
-            (string questId) =>
-            {
-                bool completed = false;
+            return readyToHandIn;
+        });
+        currentStory.BindExternalFunction("completeQuest", (string questId) =>
+        {
+            Debug.Log("Inkle output: " + questId);
+            GameEventsManager.instance.questEvents.FinishQuest(questId);
 
-                // Find the QuestPoint instance with the corresponding questId
-                QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-                if (questPoint != null && questPoint.questId == questId)
-                {
-                    if (questPoint.GetCurrentQuestState() == QuestState.FINISHED)
-                    {
-                        completed = true;
-                    }
-                }
+        });
+        currentStory.BindExternalFunction("spawnKey", () =>
+        {
+            keyItem.SetActive(true);
 
-                return completed;
-            }
-        );
-        currentStory.BindExternalFunction(
-            "startQuest",
-            (string questId) =>
-            {
-                Debug.Log("Inkle output: " + questId);
-                GameEventsManager.instance.questEvents.StartQuest(questId);
-            }
-        ); //Christian Change StatsMenu to your shop panel
-        currentStory.BindExternalFunction(
-            "TraderInteract",
-            () =>
-            {
-                ShopInventory.SetActive(true);
-            }
-        );
-        currentStory.BindExternalFunction(
-            "checkKey",
-            (string key) =>
-            {
-                return inventoryData.CheckItemByName(key);
-            }
-        );
-        currentStory.BindExternalFunction(
-            "deleteGate",
-            () =>
-            {
-                LockedGate.SetActive(false);
-            }
-        );
-        currentStory.BindExternalFunction(
-            "handIn",
-            (string questId) =>
-            {
-                bool readyToHandIn = false;
-
-                // Find the QuestPoint instance with the corresponding questId
-                QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-                if (questPoint != null && questPoint.questId == questId)
-                {
-                    if (questPoint.GetCurrentQuestState() == QuestState.CAN_FINISH)
-                    {
-                        readyToHandIn = true;
-                    }
-                }
-
-                return readyToHandIn;
-            }
-        );
-        currentStory.BindExternalFunction(
-            "completeQuest",
-            (string questId) =>
-            {
-                Debug.Log("Inkle output: " + questId);
-                GameEventsManager.instance.questEvents.FinishQuest(questId);
-            }
-        );
-        currentStory.BindExternalFunction(
-            "spawnKey",
-            () =>
-            {
-                keyItem.SetActive(true);
-            }
-        );
+        });
     }
-
     public void StartMemoryShard1()
+    {
+        TextAsset memoryShard1InkJSON = Resources.Load<TextAsset>("MemoryShard_1");
+        EnterDialogMode(memoryShard1InkJSON);
+    }
+    public void CheckMemoryShard1Availability()
     {
         bool canAccessMemoryShard1 = true;
         if (canAccessMemoryShard1)
         {
-            TextAsset memoryShard1InkJSON = Resources.Load<TextAsset>("MemoryShard_1");
-            EnterDialogMode(memoryShard1InkJSON);
+            StartMemoryShard1();
         }
         else
         {
             Debug.Log("You don't meet the requirements to access MemoryShard_1.");
         }
-    }
-
-    public void CheckExternalFunctions()
-    {
-        currentStory.BindExternalFunction(
-            "levelCheck",
-            (int requiredLevel) =>
-            {
-                bool levelMet = true;
-                return levelMet;
-            }
-        );
     }
 }
