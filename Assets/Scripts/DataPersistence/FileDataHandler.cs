@@ -6,7 +6,7 @@ using System.IO;
 
 public class FileDataHandler
 {
-    private string dataDirPath = Application.persistentDataPath;
+    private string dataDirPath = "";
     private string dataFileName = "";
 
     public  FileDataHandler(string dataDirPath, string dataFileName)
