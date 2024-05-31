@@ -15,9 +15,12 @@ public class MeleeEnemy : BaseEnemy
     private float waitTime;
     public float startWaitTime;
 
-    // List of patrol waypoints
-    public List<Vector2> waypoints;
-    private int currentWaypointIndex = 0;
+    // Patrol movement spot settings
+    public Transform moveSpot;
+    public float minX;
+    public float maxX;
+    public float minY;
+    public float maxY;
 
     // Layer masks for collision detection
     public LayerMask solidObjectsLayer;
@@ -48,6 +51,7 @@ public class MeleeEnemy : BaseEnemy
 
     private void Awake()
     {
+        moveSpot = new GameObject().transform;
         attackCollider.isTrigger = true;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -55,17 +59,12 @@ public class MeleeEnemy : BaseEnemy
     private void Start()
     {
         base.Start();
+
         enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
 
         if (enemyWeapon == null)
         {
             Debug.LogError("EnemyWeaponParent script not found!");
-        }
-
-        // Ensure there are waypoints assigned
-        if (waypoints == null || waypoints.Count == 0)
-        {
-            Debug.LogError("No waypoints assigned to MeleeEnemy.");
         }
     }
 
@@ -128,8 +127,9 @@ public class MeleeEnemy : BaseEnemy
     {
         if (isMovingToSpot)
         {
-            Vector2 moveDirection = (waypoints[currentWaypointIndex] - (Vector2)transform.position).normalized;
-            Vector2 nextPosition = (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
+            Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
+            Vector2 nextPosition =
+                (Vector2)transform.position + moveDirection * speed * Time.deltaTime;
 
             if (IsWalkable(nextPosition))
             {
@@ -140,7 +140,7 @@ public class MeleeEnemy : BaseEnemy
                 ResetPatrol();
             }
 
-            if (Vector2.Distance(transform.position, waypoints[currentWaypointIndex]) < 0.2f)
+            if (Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
             {
                 ResetPatrol();
             }
@@ -189,18 +189,19 @@ public class MeleeEnemy : BaseEnemy
 
     void ResetPatrol()
     {
-        // Move to the next waypoint in the list
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
+        Vector2 newMoveSpot = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        moveSpot.position = newMoveSpot;
         isMovingToSpot = true;
         waitTime = startWaitTime;
 
-        Vector2 moveDirection = (waypoints[currentWaypointIndex] - (Vector2)transform.position).normalized;
+        Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
         rb.velocity = moveDirection * speed;
     }
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        bool isWalkable = Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        bool isWalkable =
+            Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
 
         if (!isWalkable)
         {

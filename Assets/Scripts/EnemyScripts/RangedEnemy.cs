@@ -8,14 +8,16 @@ public class RangedEnemy : BaseEnemy
     public float retreatDistance;
     private float timeBetweenShots;
     public float startTimeBetweenShots;
-    public GameObject projectilePrefab;
-    public float projectileSpeed;
+    public GameObject projectile;
 
     private float waitTime;
     public float startWaitTime;
 
-    public List<Vector2> waypoints;
-    private int currentWaypointIndex = 0;
+    public Transform moveSpot;
+    public float minX;
+    public float maxX;
+    public float minY;
+    public float maxY;
 
     // Layer masks for collision detection
     public LayerMask solidObjectsLayer;
@@ -26,6 +28,10 @@ public class RangedEnemy : BaseEnemy
 
     private bool isMovingToSpot = true;
     private EnemyState currentState;
+
+    // For projectile
+    public GameObject projectilePrefab;
+    public float projectileSpeed;
 
     public EnemyWeaponParent enemyWeapon;
 
@@ -39,6 +45,7 @@ public class RangedEnemy : BaseEnemy
         base.Start();
 
         timeBetweenShots = startTimeBetweenShots;
+        moveSpot = new GameObject().transform;
         rb = GetComponent<Rigidbody2D>();
 
         enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
@@ -46,12 +53,6 @@ public class RangedEnemy : BaseEnemy
         if (enemyWeapon == null)
         {
             Debug.LogError("EnemyWeaponParent script not found!");
-        }
-
-        // Ensure there are waypoints assigned
-        if (waypoints == null || waypoints.Count == 0)
-        {
-            Debug.LogError("No waypoints assigned to RangedEnemy.");
         }
     }
 
@@ -77,7 +78,7 @@ public class RangedEnemy : BaseEnemy
             rb.velocity = direction * projectileSpeed;
 
             timeBetweenShots = startTimeBetweenShots;
-            enemyAnimator.SetTrigger(attackTrigger);
+            enemyAnimator.SetTrigger("Cast");
         }
         else
         {
@@ -102,10 +103,10 @@ public class RangedEnemy : BaseEnemy
     {
         if (isMovingToSpot)
         {
-            Vector2 moveDirection = (waypoints[currentWaypointIndex] - (Vector2)transform.position).normalized;
+            Vector2 moveDirection = (moveSpot.position - transform.position).normalized;
             Vector2 nextPosition = Vector2.MoveTowards(
                 transform.position,
-                waypoints[currentWaypointIndex],
+                moveSpot.position,
                 speed * Time.deltaTime
             );
 
@@ -119,7 +120,7 @@ public class RangedEnemy : BaseEnemy
             }
 
             // Check if reached the move spot
-            if (Vector2.Distance(transform.position, waypoints[currentWaypointIndex]) < 0.2f)
+            if (Vector2.Distance(transform.position, moveSpot.position) < 0.2f)
             {
                 ResetPatrol();
             }
@@ -200,10 +201,17 @@ public class RangedEnemy : BaseEnemy
 
     void ResetPatrol()
     {
-        // Move to the next waypoint in the list
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
+        // Generate a new move spot and reset movement
+        Vector2 newMoveSpot = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+        moveSpot.position = newMoveSpot;
         isMovingToSpot = true;
         waitTime = startWaitTime;
+
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            moveSpot.position,
+            speed * Time.deltaTime
+        );
     }
 
     private bool IsWalkable(Vector3 targetPos)
