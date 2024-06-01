@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inventory.Model;
 using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
     public float speed = 5f;
     private Vector3 targetPosition;
-    public int damage = 1;
+    public int damage;
+
+    public EquippableItemSO equippableItemSO;
+
+    public Collider2D other;
 
     // Initialize the spell with a target position
     public void Initialize(Vector3 target)
@@ -15,7 +20,7 @@ public class Spell : MonoBehaviour
         Destroy(gameObject, 5f); // Destroy the spell after 5 seconds
     }
 
-    void Update()
+    public void Update()
     {
         // Move the spell towards the target position
         if (targetPosition != null)
@@ -25,8 +30,9 @@ public class Spell : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D()
     {
+        this.damage = equippableItemSO.damage;
         // Check if the collider's GameObject is tagged as "Player"
         if (other.CompareTag("Player"))
         {

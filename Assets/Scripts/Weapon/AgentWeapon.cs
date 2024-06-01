@@ -13,7 +13,26 @@ public class AgentWeapon : MonoBehaviour
     private InventorySO inventoryData;
 
     [SerializeField]
+    private GameObject weaponObj;
+
+    [SerializeField]
     private List<ItemParameter> parametersToModify, itemCurrentState;
+    
+    private SpriteRenderer weaponSpriteRenderer;
+
+    private void Awake()
+    {
+        // Find the child object named "weapon" and get its SpriteRenderer component
+        
+        if (weaponObj != null)
+        {
+            weaponSpriteRenderer = weaponObj.GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            Debug.LogError("Weapon child object not found.");
+        }
+    }
 
     public void SetWeapon(EquippableItemSO weaponItemSO, List<ItemParameter> itemState)
     {
@@ -23,6 +42,16 @@ public class AgentWeapon : MonoBehaviour
         }
 
         this.weapon = weaponItemSO;
+        
+        // Set the sprite of the weapon child object's SpriteRenderer
+        if (weaponSpriteRenderer != null)
+        {
+            weaponSpriteRenderer.sprite = weaponItemSO.ItemImage;
+        }
+        else
+        {
+            Debug.LogError("Weapon SpriteRenderer not found.");
+        }
         this.itemCurrentState = new List<ItemParameter>(itemState);
         ModifyParameters();
     }

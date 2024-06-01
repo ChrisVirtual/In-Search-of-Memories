@@ -8,6 +8,7 @@ public class SpellBook : MonoBehaviour
     private Vector3 scale;
     public GameObject spellPrefab;  // Prefab of the spell to instantiate
     public Transform spawnPoint;    // Point from where the spell will be instantiated
+    public Vector3 targetPosition;
     public KeyCode castSpellKey = KeyCode.Mouse0; // Left mouse button by default
     public float cooldownTime = 2f; // Cooldown time in seconds
     private float nextCastTime = 0f;
@@ -18,7 +19,7 @@ public class SpellBook : MonoBehaviour
         scale = weaponTransform.localScale;
     }
 
-    void Update()
+    public void Update()
     {
         // Rotate the weapon towards the mouse position
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -53,6 +54,7 @@ public class SpellBook : MonoBehaviour
     // Cast the spell towards the target position
     public void CastSpell(Vector3 targetPosition)
     {
+        this.targetPosition = targetPosition;
         if (spellPrefab != null && spawnPoint != null)
         {
             GameObject spell = Instantiate(spellPrefab, spawnPoint.position, Quaternion.identity);

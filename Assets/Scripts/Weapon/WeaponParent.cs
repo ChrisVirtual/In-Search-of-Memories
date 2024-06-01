@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inventory.Model;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class WeaponParent : MonoBehaviour
         weaponRenderer;
     private Transform weaponTransform;
     private Vector3 scale;
+
+    private EquippableItemSO equippableItemSO;
 
     public Animator animator;
     public float delay = 0.3f;
@@ -92,7 +95,7 @@ public class WeaponParent : MonoBehaviour
             Health health;
             if (health = collider.GetComponent<Health>())
             {
-                health.GetHit(1, transform.parent.gameObject);
+                health.GetHit(equippableItemSO.damage, transform.parent.gameObject);
                 Debug.Log(
                     $"{collider.gameObject.name} hit for 1 damage. Current health: {health.getCurrentHealth()}"
                 );

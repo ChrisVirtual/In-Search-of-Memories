@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 1
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Sword
   <Description>k__BackingField: Cuts things
   <ItemImage>k__BackingField: {fileID: -251446703, guid: 87afaf0b8df22b449921ec61bdcc7f2c, type: 3}
   <DefaultParametersList>k__BackingField:
@@ -22,3 +22,6 @@ MonoBehaviour:
     value: 100
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 7acf745a916e35c479166ea826f2895b, type: 3}
   price: 10
+  damage: 0
+  weaponTypePhysic: 1
+  weaponTypeMagic: 0

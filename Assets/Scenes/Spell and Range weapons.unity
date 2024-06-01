@@ -1809,7 +1809,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1793522249
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -998217645, guid: fea4ca4ffce11e84b9c97762c4fd5a3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2123,6 +2123,7 @@ MonoBehaviour:
   minimapIndicator: {fileID: 1575594722}
   playerStats: {fileID: 934698949}
   interactText: {fileID: 882391813}
+  interactPanel: {fileID: 0}
   attack: {fileID: 0}
 --- !u!82 &934698948
 AudioSource:
@@ -7349,7 +7350,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 571253625
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -337569918, guid: 87afaf0b8df22b449921ec61bdcc7f2c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7552,7 +7553,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 571253625
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8086,9 +8087,10 @@ MonoBehaviour:
   dialogText: {fileID: 1758323720}
   choices: []
   inventoryData: {fileID: 0}
-  StatsMenu: {fileID: 0}
+  ShopInventory: {fileID: 0}
   LockedGate: {fileID: 0}
   keyItem: {fileID: 0}
+  ItemActionPanel: {fileID: 0}
 --- !u!114 &1873648734
 MonoBehaviour:
   m_ObjectHideFlags: 0

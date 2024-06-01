@@ -15,6 +15,19 @@ namespace Inventory.Model
         [SerializeField]
         public int price;
 
+        [SerializeField]
+        public int damage;
+
+        [SerializeField]
+        public bool weaponTypePhysic;
+
+        [SerializeField]
+        public bool weaponTypeMagic;
+        
+        private WeaponParent weaponParent;
+
+        private SpellBook spellBook;
+
         int IShopItem.Price => price;
 
         public Sprite Icon => throw new System.NotImplementedException();
@@ -33,6 +46,24 @@ namespace Inventory.Model
                 return true;
             }
             return false;
+        }
+
+        public void SetWeapon(AgentWeapon weapon)
+        {
+            if (weapon != null)
+            {
+                if (weaponTypeMagic == true)
+                {
+                    weaponParent.DetectColliders();
+                }
+                else if (weaponTypePhysic == true)
+                {
+                    spellBook.Update();
+                }
+            }
+            else {
+                Debug.Log("null");
+            }
         }
     }
 }

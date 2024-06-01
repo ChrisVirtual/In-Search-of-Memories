@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 1
+  equippableItemSO: {fileID: 11400000, guid: 3d676de1caea736469782a411e27fd62, type: 2}
+  other: {fileID: 3194072627340671276}
 --- !u!212 &-3156054909013513671
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88,7 +90,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 571253625
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 283464719, guid: b6580d6c731b4f94ebb72821111400b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
