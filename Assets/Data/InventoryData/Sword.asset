@@ -16,7 +16,7 @@ MonoBehaviour:
   <MaxStackSize>k__BackingField: 1
   <Name>k__BackingField: Sword
   <Description>k__BackingField: Cuts things
-  <ItemImage>k__BackingField: {fileID: -251446703, guid: 87afaf0b8df22b449921ec61bdcc7f2c, type: 3}
+  <ItemImage>k__BackingField: {fileID: 1706518191, guid: 6ccaf8ce126f1824fb508bcc9eaac0e6, type: 3}
   <DefaultParametersList>k__BackingField:
   - itemParameter: {fileID: 11400000, guid: 28402eea6aa180c468f619f277456550, type: 2}
     value: 100
