@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ExpCollectable : MonoBehaviour
 {
-    public GameObject player;
-    public float timer;
+    private GameObject player;
+    private float timer = 3f;
 
-    public bool moveToPlayer;
-    public float speed;
+    private bool moveToPlayer = false;
+    private float speed = 3f;
     public Rigidbody2D rigidBody2D;
     public int expAmount = 100;
-    PlayerStats playerStats;
+
 
     private void Start()
     {
@@ -25,9 +25,9 @@ public class ExpCollectable : MonoBehaviour
         //Move towards the player
         if (!moveToPlayer)
         {
-            if (timer < 1)
+            if (timer > 0)
             {
-                timer += Time.fixedDeltaTime;
+                timer -= Time.fixedDeltaTime;
             }
             else
             {

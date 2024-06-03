@@ -7,8 +7,11 @@ public class Projectile : MonoBehaviour
     private float elapsedTime = 0f;
     public int damage = 1; // Damage value for the projectile
 
+    public EnemySO enemyData;
+
     void Start()
     {
+
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f; // Disable gravity
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // Set collision detection mode
@@ -35,11 +38,11 @@ public class Projectile : MonoBehaviour
             Health targetHealth = other.GetComponent<Health>();
             if (targetHealth != null)
             {
-                targetHealth.GetHit(damage, gameObject);
+                targetHealth.GetHit(enemyData.Damage, gameObject);
                 Debug.Log("Projectile hit the target!");
             }
-
             Destroy(gameObject);
         }
     }
 }
+

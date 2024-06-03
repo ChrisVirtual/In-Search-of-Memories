@@ -46,6 +46,10 @@ public class MeleeEnemy : BaseEnemy
     // Reference to the player's Health component
     private Health playerHealth;
 
+    public EnemySO enemyData;
+
+
+
     private void Awake()
     {
         attackCollider.isTrigger = true;
@@ -55,6 +59,7 @@ public class MeleeEnemy : BaseEnemy
     private void Start()
     {
         base.Start();
+
         enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
 
         if (enemyWeapon == null)
@@ -99,7 +104,7 @@ public class MeleeEnemy : BaseEnemy
 
             if (playerHealth != null)
             {
-                playerHealth.GetHit(1, gameObject);
+                playerHealth.GetHit(enemyData.Damage, gameObject);
             }
 
             enemyAnimator.SetTrigger(attackTrigger);

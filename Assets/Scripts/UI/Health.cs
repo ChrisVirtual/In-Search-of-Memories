@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,26 +25,43 @@ public class Health : MonoBehaviour
     [SerializeField]
     private bool isDead = false;
 
+
+    [SerializeField]
+    private EnemySO enemyData;
+
     public UnityEvent<GameObject> OnHitWithReference,
         OnDeathWithReference;
 
     public GameObject player;
     private EnemyHealthBar enemyHealthBar;
 
+    public float enemyHealth;
 
     private void Start()
     {
-        currentHealth.Value = 10;
+        if (gameObject.CompareTag("Player"))
+        {
+            currentHealth.Value = maxHealth;
+        }
+        else if (gameObject.CompareTag("Enemy"))
+        {
+            enemyHealth = enemyData.Health;
+            maxHealth = enemyData.Health;
+        }
         player = GameObject.FindGameObjectWithTag("Player"); //gets the player reference through it's tag
         enemyHealthBar = GetComponentInChildren<EnemyHealthBar>();
         if (enemyHealthBar != null)
         {
-            enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
+            enemyHealthBar.UpdateHealthBar(enemyHealth, maxHealth);
         }
     }
 
     public float getCurrentHealth()
-    { 
+    {
+        if (gameObject.CompareTag("Enemy"))
+        {
+            return enemyHealth;
+        }
         return currentHealth.Value;
     }
     public void AddHealth(int healthBoost)
@@ -51,25 +70,30 @@ public class Health : MonoBehaviour
         {
             currentHealth.Value = maxHealth;
         }
-        else 
+        else
         {
             currentHealth.Value += healthBoost;
         }
-        //int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
-        //int val = health + healthBoost;
-        //currentHealth.Value = (val > maxHealth ? maxHealth : val / maxHealth);
     }
 
     public void Reduce(int damage)
     {
-        //currentHealth.Value -= damage / maxHealth;
-        currentHealth.Value -= damage;
+        if (gameObject.CompareTag("Player"))
+        {
+            currentHealth.Value -= damage;
+        }
+        else if (gameObject.CompareTag("Enemy"))
+        {
+            enemyHealth -= damage;
+        }
+
         CreateHitFeedback();
+
         if (currentHealth.Value <= 0)
         {
             Die();
         }
-        if(enemyHealthBar != null) 
+        if (enemyHealthBar != null)
         {
             enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
         }
@@ -82,30 +106,36 @@ public class Health : MonoBehaviour
         if (sender.layer == gameObject.layer)
             return; // Don't take damage from objects on the same layer
 
-        currentHealth.Value -= amount; // Decrease health by the damage amount
-
-        if (currentHealth.Value > 0)
+        if (gameObject.CompareTag("Player"))
         {
-            OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
-        }
-        else
-        {
-            OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
-            isDead = true; // Mark as dead
-            if (gameObject.tag != "Player")
+            currentHealth.Value -= amount; // Decrease health by the damage amount
+            if (currentHealth.Value > 0)
             {
-                GameEventsManager.instance.miscEvents.enemyDeath();
-                Debug.Log("Enemy killed");
+                OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
             }
-            Destroy(gameObject); // Destroy the GameObject
+            else
+            {
+                OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
+                Die(); // Handle player's death
+            }
         }
-
-        if (enemyHealthBar != null)
+        else if (gameObject.CompareTag("Enemy"))
         {
-            enemyHealthBar.UpdateHealthBar(currentHealth.Value, maxHealth);
+            enemyHealth -= amount;
+            if (enemyHealth > 0)
+            {
+                OnHitWithReference?.Invoke(sender);
+                enemyHealthBar.UpdateHealthBar(enemyHealth, maxHealth);
+                GameEventsManager.instance.miscEvents.enemyDeath();
+            }
+            else
+            {
+                OnHitWithReference?.Invoke(sender);
+                DropLoot();
+                Die();
+            }
         }
     }
-    
 
     private void CreateHitFeedback()
     {
@@ -122,8 +152,49 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Died");
-        currentHealth.Value = 0;
+        UnityEngine.Debug.Log("Died");
+        if (gameObject.CompareTag("Player"))
+        {
+            currentHealth.Value = 0;
+            //Open retry menu instead of destroy
+            Destroy(gameObject);
+        }
         isDead = true;
+        if (gameObject.CompareTag("Enemy"))
+        {
+            GameEventsManager.instance.miscEvents.enemyDeath();
+            Destroy(gameObject); // Destroy the enemy GameObject
+        }
     }
+
+    public void DropLoot()
+    {
+        UnityEngine.Debug.Log("DropLoot Called");
+        GameObject ExpOrb = Resources.Load<GameObject>("ExpOrb");
+        GameObject GoldCoin = Resources.Load<GameObject>("GoldCoin");
+
+        if (ExpOrb != null)
+        {
+            var expCollectable = Instantiate(ExpOrb, transform.position, Quaternion.identity);
+            expCollectable.GetComponent<ExpCollectable>().expAmount = enemyData.Exp;
+            UnityEngine.Debug.Log("expOrb instantiated");
+        }
+        else
+        {
+            UnityEngine.Debug.Log("exp orb is null");
+        }
+
+        if (GoldCoin != null)
+        {
+            var goldCollectable = Instantiate(GoldCoin, transform.position, Quaternion.identity);
+            goldCollectable.GetComponent<Coin>().goldAmount = enemyData.Gold;
+            UnityEngine.Debug.Log("GoldCoin instantiated");
+
+        }
+        else
+        {
+            UnityEngine.Debug.Log("gold orb is null");
+        }
+    }
+
 }

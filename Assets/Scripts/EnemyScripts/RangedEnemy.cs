@@ -34,6 +34,7 @@ public class RangedEnemy : BaseEnemy
     [SerializeField]
     private string attackTrigger = "Cast";
 
+
     protected override void Start()
     {
         base.Start();

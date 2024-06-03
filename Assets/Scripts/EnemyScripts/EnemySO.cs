@@ -12,7 +12,7 @@ public class EnemySO : ScriptableObject
     [SerializeField] private float enemyHealth;
     [SerializeField] private int goldDropped;
     [SerializeField] private int expDropped;
-    [SerializeField] private float damage;
+    [SerializeField] private int damage;
 
     public float Health
     {
@@ -47,7 +47,7 @@ public class EnemySO : ScriptableObject
     }
     public event Action<int> OnExpChange;
 
-    public float Damage
+    public int Damage
     {
         get => damage;
         set
@@ -56,5 +56,5 @@ public class EnemySO : ScriptableObject
             OnDamageChange?.Invoke(damage);
         }
     }
-    public event Action<float> OnDamageChange;
+    public event Action<int> OnDamageChange;
 }

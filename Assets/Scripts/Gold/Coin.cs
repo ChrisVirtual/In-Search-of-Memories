@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public GameObject player;
-    public float timer;
+    private GameObject player;
+    private float timer = 3;
 
-    public bool moveToPlayer;
-    public float speed;
+    private bool moveToPlayer = false;
+    private float speed = 3f;
     public Rigidbody2D rigidBody2D;
     public int goldAmount = 10;
 
@@ -23,16 +23,14 @@ public class Coin : MonoBehaviour
         //If the coin is not moving towards the player
         if (!moveToPlayer)
         {
-            //Increment the timer
-            if (timer < 1)
+            if (timer > 0)
             {
-                timer += Time.fixedDeltaTime;
+                timer -= Time.fixedDeltaTime;
             }
-            //Once the timer reaches 1, start moving towards the player
             else
             {
                 moveToPlayer = true;
-                rigidBody2D.gravityScale = 0; //Disable gravity to avoid affecting movement
+                rigidBody2D.gravityScale = 0;
             }
         }
 

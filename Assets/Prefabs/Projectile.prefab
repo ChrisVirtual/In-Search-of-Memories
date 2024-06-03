@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 571253625
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 702175060, guid: b6580d6c731b4f94ebb72821111400b9, type: 3}
   m_Color: {r: 0.4117647, g: 0.23529412, b: 1, a: 0.7647059}
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyDelay: 2
   damage: 1
+  enemyData: {fileID: 11400000, guid: 8a10186d44f93d04e84fe49a1b0489c6, type: 2}
 --- !u!95 &6698395824096345235
 Animator:
   serializedVersion: 5
