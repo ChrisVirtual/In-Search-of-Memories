@@ -45,7 +45,7 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             currentLevel = startingLevel;
             currentExp = startingExperience;
         }
