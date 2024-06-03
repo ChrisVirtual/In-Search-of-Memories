@@ -18,7 +18,7 @@ MonoBehaviour:
   <Description>k__BackingField: Through fire in the enimes
   <ItemImage>k__BackingField: {fileID: -251446703, guid: f1f41678cd025d34d907ff568ac5e52f, type: 3}
   <DefaultParametersList>k__BackingField: []
-  <actionSFX>k__BackingField: {fileID: 0}
+  <actionSFX>k__BackingField: {fileID: 8300000, guid: 7acf745a916e35c479166ea826f2895b, type: 3}
   price: 15
   damage: 2
   weaponTypePhysic: 0
