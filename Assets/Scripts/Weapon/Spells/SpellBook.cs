@@ -14,6 +14,7 @@ public class SpellBook : MonoBehaviour
     public float cooldownTime = 2f; // Cooldown time in seconds
     private float nextCastTime = 0f;
 
+    public Mana mana;
     // Reference to the EquippableItemSO instance associated with the spellbook
     public EquippableItemSO equippableItem;
 
@@ -30,8 +31,9 @@ public class SpellBook : MonoBehaviour
         RotateTowards(mousePosition);
 
         // Check if the spellbook is equipped before allowing casting
-        if (IsEquipped() && Input.GetKeyDown(castSpellKey) && Time.time >= nextCastTime)
+        if (IsEquipped() && Input.GetKeyDown(castSpellKey) && Time.time >= nextCastTime && mana.getMana() >= 2f)
         {
+            mana.ConsumeMana(2);
             CastSpell(mousePosition, equippableItem.damage);
             nextCastTime = Time.time + cooldownTime;
         }

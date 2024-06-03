@@ -28,6 +28,10 @@ public class Mana : MonoBehaviour
         
     }
 
+    public float getMana()
+    {
+        return currentMana.Value;
+    }
     public void AddMana(int manaBoost)
     {
         if (currentMana.Value + manaBoost > maxMana)

@@ -25,7 +25,6 @@ public class Health : MonoBehaviour
     [SerializeField]
     private bool isDead = false;
 
-
     [SerializeField]
     private EnemySO enemyData;
 
@@ -157,7 +156,8 @@ public class Health : MonoBehaviour
         {
             currentHealth.Value = 0;
             //Open retry menu instead of destroy
-            Destroy(gameObject);
+            UnityEngine.Debug.Log("Player Died like a noob");
+            //Destroy(gameObject);
         }
         isDead = true;
         if (gameObject.CompareTag("Enemy"))
