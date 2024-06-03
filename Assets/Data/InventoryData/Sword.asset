@@ -22,6 +22,6 @@ MonoBehaviour:
     value: 100
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 7acf745a916e35c479166ea826f2895b, type: 3}
   price: 10
-  damage: 0
+  damage: 2
   weaponTypePhysic: 1
   weaponTypeMagic: 0

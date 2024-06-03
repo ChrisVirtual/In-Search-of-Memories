@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public float effectiveSpeed;
     private Vector2 input;
+
     [SerializeField]
     private Animator animator;
     public LayerMask solidObjectsLayer;
@@ -27,17 +28,24 @@ public class PlayerController : MonoBehaviour
     public float radius;
     public float dashDistance;
     public float dashDuration;
-    [SerializeField] private Transform minimapIndicator;
+
+    [SerializeField]
+    private Transform minimapIndicator;
     public PlayerStats playerStats;
-    [SerializeField] public TextMeshProUGUI interactText;
-    [SerializeField] public GameObject interactPanel;
+
+    [SerializeField]
+    public TextMeshProUGUI interactText;
+
+    [SerializeField]
+    public GameObject interactPanel;
     private WeaponParent weaponParent;
 
     // Animation for player attack
     [SerializeField]
     private InputActionReference attack;
 
-    public void Awake() {
+    public void Awake()
+    {
         weaponParent = GetComponentInChildren<WeaponParent>();
     }
 
@@ -48,11 +56,10 @@ public class PlayerController : MonoBehaviour
             Vector3 mouseWorldPosition = GetMouseWorldPosition();
             weaponParent.RotateTowards(mouseWorldPosition);
         }
-        
 
-        if(DialogManagerInk.instance.dialogIsPlaying) 
+        if (DialogManagerInk.instance.dialogIsPlaying)
         {
-            return; 
+            return;
         }
 
         if (!isMoving && !isAttacking && !isDashing) // Check if player sprite is not moving
@@ -60,7 +67,8 @@ public class PlayerController : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal"); // Watch if user is pressing left or right key then store in the input variable.
             input.y = Input.GetAxisRaw("Vertical"); // Watch if user is pressing up or down key, then store in the input variable.
 
-            if (input.x != 0) input.y = 0;
+            if (input.x != 0)
+                input.y = 0;
 
             if (input != Vector2.zero) // If user is pressing a key and the value is bigger than zero it will release a function.
             {
@@ -71,7 +79,6 @@ public class PlayerController : MonoBehaviour
                 effectiveSpeed = moveSpeed + (playerStats.speed * 0.25f);
                 targetPos.x += input.x * effectiveSpeed * Time.deltaTime; // add to the variable in x axis
                 targetPos.y += input.y * effectiveSpeed * Time.deltaTime; // add to the variable in y axis
-
 
                 if (input.x < 0)
                 {
@@ -88,7 +95,6 @@ public class PlayerController : MonoBehaviour
                 else if (input.y > 0)
                 {
                     minimapIndicator.rotation = Quaternion.Euler(0, 0, 0);
-
                 }
 
                 if (IsWalkable(targetPos))
@@ -103,7 +109,6 @@ public class PlayerController : MonoBehaviour
                 {
                     weaponParent.Attack();
                 }
-                
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -111,7 +116,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Dash());
             }
             checkForInteraction();
-        
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Debug.Log("E was pushed");
@@ -126,12 +131,13 @@ public class PlayerController : MonoBehaviour
     }
 
     // Player attack aniamtion
-     private void PerformAttack(InputAction.CallbackContext obj) {
+    private void PerformAttack(InputAction.CallbackContext obj)
+    {
         weaponParent.Attack();
     }
-    
+
     public void checkForInteraction()
-    { 
+    {
         var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
         var interactPos = transform.position + facingDir;
 
@@ -147,7 +153,7 @@ public class PlayerController : MonoBehaviour
             interactPanel.gameObject.SetActive(false);
         }
     }
-    
+
     IEnumerator AttackRoutine()
     {
         yield return new WaitForSeconds(attackEndTime);
@@ -165,7 +171,7 @@ public class PlayerController : MonoBehaviour
         var interactPos = transform.position + facingDir;
 
         var collider = Physics2D.OverlapCircle(interactPos, 0.2f, interactableLayer);
-        if(collider != null)
+        if (collider != null)
         {
             collider.GetComponent<Interactable>()?.Interact();
         }
@@ -177,7 +183,11 @@ public class PlayerController : MonoBehaviour
 
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, effectiveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                targetPos,
+                effectiveSpeed * Time.deltaTime
+            );
             yield return null;
         }
         transform.position = targetPos;
@@ -190,7 +200,8 @@ public class PlayerController : MonoBehaviour
     private bool IsWalkable(Vector3 targetPos)
     {
         // Use a small overlap circle to check for collisions with solid or interactable objects
-        return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer) == null;
+        return Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer | interactableLayer)
+            == null;
     }
 
     // --- Mouse Position Handling ---
@@ -203,40 +214,52 @@ public class PlayerController : MonoBehaviour
         vec3.z = 0f;
         return vec3;
     }
+
     // Get mouse position in world space with a specific camera
 
     public static Vector3 GetMouseWorldPositionWithZ(Camera worldCamera)
     {
         return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
     }
+
     // Get mouse position in world space, providing both screen position and camera
     public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPos, Camera worldCamera)
     {
         Vector3 worldPos = worldCamera.ScreenToWorldPoint(screenPos);
         return worldPos;
     }
-    
+
     // ---- Gizmos Visualization ----
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position; // Determine the circle's center (using origin object if set, otherwise use zero)
-        Gizmos.DrawWireSphere(position, radius); // Draw a blue wire sphere to represent the radius in the scene editor 
+        Gizmos.DrawWireSphere(position, radius); // Draw a blue wire sphere to represent the radius in the scene editor
     }
 
     // ---- Collider Detection ----
     public void DetectColliders()
     {
-        // Get all colliders within the circle's radius
-        foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position,radius))
+        if (circleOrigin != null)
         {
-            //Debug.Log(collider.name);
-            Health health; 
-            // Attempt to get the Health component of the collided object
-            if (health = collider.GetComponent<Health>()) // If the object has a Health component, inflict damage
+            // Get all colliders within the circle's radius
+            foreach (
+                Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position, radius)
+            )
             {
-                health.GetHit(1, transform.gameObject); // Deal 1 damage, passing this object as the reference
+                if (collider != null)
+                {
+                    Health health = collider.GetComponent<Health>();
+                    if (health != null)
+                    {
+                        health.GetHit(1, transform.gameObject);
+                    }
+                }
             }
+        }
+        else
+        {
+            Debug.LogWarning("circleOrigin is null in DetectColliders");
         }
     }
 
@@ -248,7 +271,12 @@ public class PlayerController : MonoBehaviour
         Vector3 endPos = startPos + new Vector3(input.x, input.y, 0f) * dashDistance;
 
         // Checks if there's anything solid in the path of the player's dash.
-        RaycastHit2D hit = Physics2D.Raycast(startPos, endPos - startPos, Vector3.Distance(startPos, endPos), solidObjectsLayer);
+        RaycastHit2D hit = Physics2D.Raycast(
+            startPos,
+            endPos - startPos,
+            Vector3.Distance(startPos, endPos),
+            solidObjectsLayer
+        );
 
         if (hit.collider != null)
         {

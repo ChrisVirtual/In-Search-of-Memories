@@ -12,7 +12,7 @@ public class WeaponParent : MonoBehaviour
     private Transform weaponTransform;
     private Vector3 scale;
 
-    private EquippableItemSO equippableItemSO;
+    public EquippableItemSO equippableItemSO;
 
     public Animator animator;
     public float delay = 0.3f;
@@ -56,7 +56,7 @@ public class WeaponParent : MonoBehaviour
 
     public void Attack()
     {
-        if (attackBlocked)
+        if (!gameObject.activeInHierarchy || attackBlocked)
         {
             return;
         }
@@ -75,12 +75,23 @@ public class WeaponParent : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Vector3 positon = circleOrigin == null ? Vector3.zero : circleOrigin.position;
-        Gizmos.DrawWireSphere(positon, radius);
+        Vector3 position = circleOrigin == null ? Vector3.zero : circleOrigin.position;
+        Gizmos.DrawWireSphere(position, radius);
+    }
+
+    public void SetEquippableItemSO(EquippableItemSO itemSO)
+    {
+        equippableItemSO = itemSO;
     }
 
     public void DetectColliders()
     {
+        if (equippableItemSO == null)
+        {
+            Debug.LogError("EquippableItemSO is not set in WeaponParent.");
+            return;
+        }
+
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(circleOrigin.position, radius))
         {
             if (collider is CircleCollider2D)
@@ -96,9 +107,6 @@ public class WeaponParent : MonoBehaviour
             if (health = collider.GetComponent<Health>())
             {
                 health.GetHit(equippableItemSO.damage, transform.parent.gameObject);
-                Debug.Log(
-                    $"{collider.gameObject.name} hit for 1 damage. Current health: {health.getCurrentHealth()}"
-                );
             }
             else
             {

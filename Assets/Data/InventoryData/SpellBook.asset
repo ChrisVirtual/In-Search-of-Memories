@@ -20,6 +20,6 @@ MonoBehaviour:
   <DefaultParametersList>k__BackingField: []
   <actionSFX>k__BackingField: {fileID: 0}
   price: 15
-  Damage: 10
+  damage: 2
   weaponTypePhysic: 0
   weaponTypeMagic: 1

@@ -85,7 +85,6 @@ public class SpellBook : MonoBehaviour
         }
     }
 
-    // Reset method to initialize state when a new weapon is set
     public void ResetState()
     {
         nextCastTime = 0f; // Reset cooldown timer or other state-specific attributes
