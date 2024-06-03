@@ -40,19 +40,6 @@ public class BossEnemy : BaseEnemy
 
         timeBetweenShots = startTimeBetweenShots;
         rb = GetComponent<Rigidbody2D>();
-
-        enemyWeapon = GetComponentInChildren<EnemyWeaponParent>();
-
-        if (enemyWeapon == null)
-        {
-            Debug.LogError("EnemyWeaponParent script not found!");
-        }
-
-        // Ensure there are waypoints assigned
-        if (waypoints == null || waypoints.Count == 0)
-        {
-            Debug.LogError("No waypoints assigned to BossEnemy.");
-        }
     }
 
     protected override void Attack()
