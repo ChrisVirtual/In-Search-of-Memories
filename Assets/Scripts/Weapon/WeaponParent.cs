@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class WeaponParent : MonoBehaviour
 {
-    public SpriteRenderer characterRender,
-        weaponRenderer;
+    public SpriteRenderer weaponRenderer;
     private Transform weaponTransform;
     private Vector3 scale;
 
