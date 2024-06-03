@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Inventory.Model; 
+using Inventory.Model;
 
 public class SpellBook : MonoBehaviour
 {
@@ -11,12 +11,14 @@ public class SpellBook : MonoBehaviour
     public Transform spawnPoint;    // Point from where the spell will be instantiated
     public Vector3 targetPosition;
     public KeyCode castSpellKey = KeyCode.Mouse0; // Left mouse button by default
-    public float cooldownTime = 2f; // Cooldown time in seconds
+    public float cooldownTime = 5f; // Base cooldown time in seconds
     private float nextCastTime = 0f;
 
     public Mana mana;
     // Reference to the EquippableItemSO instance associated with the spellbook
     public EquippableItemSO equippableItem;
+
+    public PlayerStats playerStats;
 
     public void Awake()
     {
@@ -35,8 +37,14 @@ public class SpellBook : MonoBehaviour
         {
             mana.ConsumeMana(2);
             CastSpell(mousePosition, equippableItem.damage);
-            nextCastTime = Time.time + cooldownTime;
+            nextCastTime = Time.time + getCooldownTime();
         }
+    }
+
+    public float getCooldownTime()
+    {
+        float mainCooldownTime = cooldownTime / (1 + playerStats.getAttackSpeed());
+        return mainCooldownTime;
     }
 
     private bool IsEquipped()
@@ -74,7 +82,7 @@ public class SpellBook : MonoBehaviour
             if (spell != null)
             {
                 // Pass damage value to the spell
-                spell.Initialize(targetPosition, damageValue); // Pass target position and damage
+                spell.Initialize(targetPosition, damageValue, playerStats); // Pass target position and damage
             }
             else
             {

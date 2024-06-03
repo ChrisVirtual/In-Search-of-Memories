@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Ink;
 using Inventory.Model;
 using UnityEngine;
 
@@ -12,15 +13,17 @@ public class Spell : MonoBehaviour
     public EquippableItemSO equippableItemSO;
 
     public Collider2D other;
+    public PlayerStats playerStats;
 
     // Initialize the spell with a target position and damage value
-    public void Initialize(Vector3 target, int damageValue)
+    public void Initialize(Vector3 target, int damageValue, PlayerStats playerStats)
     {
         targetPosition = target;
         damage = damageValue;
+        this.playerStats = playerStats;
         Destroy(gameObject, 5f); // Destroy the spell after 5 seconds
     }
-
+    
     public void Update()
     {
         // Move the spell towards the target position
@@ -48,7 +51,8 @@ public class Spell : MonoBehaviour
             Health health = other.GetComponent<Health>();
             if (health != null)
             {
-                health.GetHit(damage, gameObject); // Pass the damage and the sender GameObject
+                int totalDamage = Mathf.RoundToInt((int)playerStats.getAttackDamage() + damage);
+                health.GetHit(totalDamage, gameObject); // Pass the damage and the sender GameObject
                 Debug.Log("Spell projectile hit an enemy!");
             }
 

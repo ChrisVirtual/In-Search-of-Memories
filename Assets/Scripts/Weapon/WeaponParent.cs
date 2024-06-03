@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Inventory.Model;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -14,13 +15,14 @@ public class WeaponParent : MonoBehaviour
     public EquippableItemSO equippableItemSO;
 
     public Animator animator;
-    public float delay = 0.3f;
+    public float delay = 1f;
     private bool attackBlocked;
 
     public Transform circleOrigin;
     public float radius;
     public LayerMask detectionLayerMask;
 
+    public PlayerStats playerStats;
     public bool isAttacking { get; private set; }
 
     public void ResetIsAttacking()
@@ -65,9 +67,15 @@ public class WeaponParent : MonoBehaviour
         StartCoroutine(DelayAttack());
     }
 
+    public float getAttackSpeed()
+    {
+        float attackSpeed = Mathf.RoundToInt(delay / (1 + playerStats.getAttackSpeed()));
+        return attackSpeed;
+    }
+
     private IEnumerator DelayAttack()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(getAttackSpeed());
         attackBlocked = false;
     }
 
@@ -85,6 +93,7 @@ public class WeaponParent : MonoBehaviour
 
     public void DetectColliders()
     {
+        int damage = Mathf.RoundToInt((int)playerStats.getAttackDamage() + equippableItemSO.damage);
         if (equippableItemSO == null)
         {
             Debug.LogError("EquippableItemSO is not set in WeaponParent.");
@@ -105,7 +114,7 @@ public class WeaponParent : MonoBehaviour
             Health health;
             if (health = collider.GetComponent<Health>())
             {
-                health.GetHit(equippableItemSO.damage, transform.parent.gameObject);
+                health.GetHit(damage, transform.parent.gameObject);
             }
             else
             {
