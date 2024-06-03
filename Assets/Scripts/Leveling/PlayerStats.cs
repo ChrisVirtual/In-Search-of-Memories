@@ -45,7 +45,6 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         if (instance == null)
         {
             instance = this;
-            //DontDestroyOnLoad(gameObject);
             currentLevel = startingLevel;
             currentExp = startingExperience;
         }
@@ -94,15 +93,15 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
     public void Update()
     {
         // Update UI sliders and texts
-        changeSliderUI();
+        ChangeSliderUI();
     }
 
-    public void changeSliderUI()
+    public void ChangeSliderUI()
     {
         if (healthBar == null || manaBar == null || expBar == null) return;
 
         // Update UI slider values
-        healthBar.value = currentHealth.Value;
+        healthBar.value = currentHealth.value;
         manaBar.value = currentMana;
         expBar.value = currentExp;
 
@@ -112,7 +111,7 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         expBar.maxValue = maxExp;
 
         // Update UI text displays
-        healthSliderDisplay.text = currentHealth.Value + " / " + maxHealth;
+        healthSliderDisplay.text = currentHealth.value + " / " + maxHealth;
         manaSliderDisplay.text = currentMana + " / " + maxMana;
         levelSliderDisplay.text = " Level: " + currentLevel;
     }
@@ -120,14 +119,14 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         // Load health, mana, exp, and level data
-        currentHealth.Value = data.playerHealth;
+        currentHealth.value = data.playerHealth;
         currentMana = data.currentMana;
         currentExp = data.currentExp;
         currentLevel = data.playerLevel;
         statPoints = data.statPoints;
 
         // Update UI after loading data
-        changeSliderUI();
+        ChangeSliderUI();
     }
 
     public void SaveData(ref GameData data)
@@ -137,7 +136,7 @@ public class PlayerStats : MonoBehaviour, IDataPersistence
         data.playerPosition = this.transform.position;
 
         // Save health and level data
-        data.playerHealth = currentHealth.Value;
+        data.playerHealth = currentHealth.value;
         data.playerLevel = currentLevel;
         data.statPoints = statPoints;
     }

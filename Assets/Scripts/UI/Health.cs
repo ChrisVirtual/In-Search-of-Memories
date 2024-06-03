@@ -20,18 +20,18 @@ public class Health : MonoBehaviour
     
     private void Start()
     {
-        currentHealth.Value = 10;
+        currentHealth.value = 10;
     }
 
     public void AddHealth(int healthBoost)
     {
-        if (currentHealth.Value + healthBoost > maxHealth)
+        if (currentHealth.value + healthBoost > maxHealth)
         {
-            currentHealth.Value = maxHealth;
+            currentHealth.value = maxHealth;
         }
         else
         {
-            currentHealth.Value += healthBoost;
+            currentHealth.value += healthBoost;
         }
         //int health = Mathf.RoundToInt(currentHealth.Value * maxHealth);
         //int val = health + healthBoost;
@@ -40,9 +40,9 @@ public class Health : MonoBehaviour
 
     public void Reduce(int damage)
     {
-        currentHealth.Value -= damage / maxHealth;
+        currentHealth.value -= damage / maxHealth;
         CreateHitFeedback();
-        if (currentHealth.Value <= 0)
+        if (currentHealth.value <= 0)
         {
             Die();
         }
@@ -55,9 +55,9 @@ public class Health : MonoBehaviour
         if (sender.layer == gameObject.layer)
             return; // Don't take damage from objects on the same layer
         
-        currentHealth.Value -= amount; // Decrease health by the damage amount
+        currentHealth.value -= amount; // Decrease health by the damage amount
 
-        if (currentHealth.Value > 0) 
+        if (currentHealth.value > 0) 
         {
             OnHitWithReference?.Invoke(sender); //Trigger the OnHitWithReference event
         }
@@ -85,7 +85,8 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Debug.Log("Died");
-        currentHealth.Value = 0;
+        currentHealth.value = 0;
         isDead = true;
     }  
+
 }

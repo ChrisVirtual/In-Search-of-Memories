@@ -75,12 +75,6 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
 
-        // Save inventory UI
-        if (inventoryController != null)
-        {
-            
-        }
-
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             if (dataPersistenceObj != null)
@@ -96,12 +90,6 @@ public class DataPersistenceManager : MonoBehaviour
         {
             Debug.LogWarning("No data was found. A New Game needs to be started before loading the data.");
             return;
-        }
-
-        // Save inventory UI
-        if (inventoryController != null)
-        {
-
         }
 
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)

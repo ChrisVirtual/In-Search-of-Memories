@@ -9,7 +9,7 @@ public class FloatValueSO : ScriptableObject
     [SerializeField]
     private float _value;
 
-    public float Value
+    public float value
     {
         get => _value;
         set
