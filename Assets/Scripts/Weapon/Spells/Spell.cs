@@ -13,10 +13,11 @@ public class Spell : MonoBehaviour
 
     public Collider2D other;
 
-    // Initialize the spell with a target position
-    public void Initialize(Vector3 target)
+    // Initialize the spell with a target position and damage value
+    public void Initialize(Vector3 target, int damageValue)
     {
         targetPosition = target;
+        damage = damageValue;
         Destroy(gameObject, 5f); // Destroy the spell after 5 seconds
     }
 
@@ -30,9 +31,8 @@ public class Spell : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter2D()
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        this.damage = equippableItemSO.damage;
         // Check if the collider's GameObject is tagged as "Player"
         if (other.CompareTag("Player"))
         {

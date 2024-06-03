@@ -23,9 +23,8 @@ namespace Inventory.Model
 
         [SerializeField]
         public bool weaponTypeMagic;
-        
-        private WeaponParent weaponParent;
 
+        private WeaponParent weaponParent;
         private SpellBook spellBook;
 
         int IShopItem.Price => price;
@@ -35,8 +34,8 @@ namespace Inventory.Model
         public void Purchase()
         {
             Debug.Log($"{Name} sold for {price} gold!");
-            // Call a method in your InventoryController to remove the item from inventory
         }
+
         public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
         {
             AgentWeapon weaponSystem = character.GetComponent<AgentWeapon>();
@@ -52,16 +51,17 @@ namespace Inventory.Model
         {
             if (weapon != null)
             {
-                if (weaponTypeMagic == true)
+                if (weaponTypeMagic)
                 {
                     weaponParent.DetectColliders();
                 }
-                else if (weaponTypePhysic == true)
+                else if (weaponTypePhysic)
                 {
                     spellBook.Update();
                 }
             }
-            else {
+            else
+            {
                 Debug.Log("null");
             }
         }

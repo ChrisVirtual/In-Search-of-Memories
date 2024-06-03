@@ -7,51 +7,100 @@ using UnityEngine.Tilemaps;
 public class AgentWeapon : MonoBehaviour
 {
     [SerializeField]
-    private EquippableItemSO weapon;
+    private EquippableItemSO currentWeapon;
 
     [SerializeField]
     private InventorySO inventoryData;
 
     [SerializeField]
-    private GameObject weaponObj;
+    private GameObject physicalWeaponObj;
+
+    [SerializeField]
+    private GameObject magicalWeaponObj;
 
     [SerializeField]
     private List<ItemParameter> parametersToModify, itemCurrentState;
-    
-    private SpriteRenderer weaponSpriteRenderer;
+
+    private SpriteRenderer physicalWeaponSpriteRenderer;
+    private SpriteRenderer magicalWeaponSpriteRenderer;
+    private SpellBook spellBook;
 
     private void Awake()
     {
-        // Find the child object named "weapon" and get its SpriteRenderer component
-        
-        if (weaponObj != null)
+        // Find the SpriteRenderer and SpellBook components on the weaponObj
+        if (physicalWeaponObj != null)
         {
-            weaponSpriteRenderer = weaponObj.GetComponent<SpriteRenderer>();
+            physicalWeaponSpriteRenderer = physicalWeaponObj.GetComponent<SpriteRenderer>();
+            physicalWeaponObj.SetActive(false); // Ensure it's inactive by default
         }
         else
         {
-            Debug.LogError("Weapon child object not found.");
+            Debug.LogError("Physical weapon child object not found.");
+        }
+
+        if (magicalWeaponObj != null)
+        {
+            magicalWeaponSpriteRenderer = magicalWeaponObj.GetComponent<SpriteRenderer>();
+            spellBook = magicalWeaponObj.GetComponent<SpellBook>();
+            magicalWeaponObj.SetActive(false); // Ensure it's inactive by default
+            if (spellBook == null)
+            {
+                Debug.LogError("SpellBook component not found on magical weapon object.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Magical weapon child object not found.");
         }
     }
 
     public void SetWeapon(EquippableItemSO weaponItemSO, List<ItemParameter> itemState)
     {
-        if (weapon != null)
+        // If a weapon is already equipped, add it back to the inventory
+        if (currentWeapon != null)
         {
-            inventoryData.AddItem(weapon, 1, itemCurrentState);
+            inventoryData.AddItem(currentWeapon, 1, itemCurrentState);
         }
 
-        this.weapon = weaponItemSO;
-        
-        // Set the sprite of the weapon child object's SpriteRenderer
-        if (weaponSpriteRenderer != null)
+        // Hide all weapons by default
+        physicalWeaponObj.SetActive(false);
+        magicalWeaponObj.SetActive(false);
+
+        this.currentWeapon = weaponItemSO;
+
+        // Determine which weapon to activate based on the type
+        if (weaponItemSO.weaponTypePhysic)
         {
-            weaponSpriteRenderer.sprite = weaponItemSO.ItemImage;
+            Debug.Log("Equipping physical weapon.");
+            physicalWeaponObj.SetActive(true);
+            if (physicalWeaponSpriteRenderer != null)
+            {
+                physicalWeaponSpriteRenderer.sprite = weaponItemSO.ItemImage;
+                Debug.Log("Physical weapon sprite set.");
+            }
+            else
+            {
+                Debug.LogError("Physical weapon SpriteRenderer not found.");
+            }
         }
-        else
+        else if (weaponItemSO.weaponTypeMagic)
         {
-            Debug.LogError("Weapon SpriteRenderer not found.");
+            Debug.Log("Equipping magical weapon.");
+            magicalWeaponObj.SetActive(true);
+            if (magicalWeaponSpriteRenderer != null)
+            {
+                magicalWeaponSpriteRenderer.sprite = weaponItemSO.ItemImage;
+                Debug.Log("Magical weapon sprite set.");
+            }
+
+            // Set the equippableItem reference in the SpellBook
+            if (spellBook != null)
+            {
+                spellBook.equippableItem = weaponItemSO;
+                spellBook.ResetState(); // Reset the state of the SpellBook
+            }
         }
+
         this.itemCurrentState = new List<ItemParameter>(itemState);
         ModifyParameters();
     }
