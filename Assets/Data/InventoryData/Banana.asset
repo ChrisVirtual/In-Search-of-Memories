@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: Banana
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 1
-  <MaxStackSize>k__BackingField: 99
+  <MaxStackSize>k__BackingField: 5
   <Name>k__BackingField: Banana
-  <Description>k__BackingField: 'Restore 10 HP
+  <Description>k__BackingField: 'Increase Player speed
 
     Boosters:
 
-    - Speed'
-  <ItemImage>k__BackingField: {fileID: 0}
+    - Player
+    Speed increased for 10 seconds'
+  <ItemImage>k__BackingField: {fileID: -596644275, guid: 63644f7545bd70940aae126d3dcab8ee, type: 3}
   <DefaultParametersList>k__BackingField: []
-  modifiersData: []
-  price: 15
+  modifiersData:
+  - statModifier: {fileID: 11400000, guid: 172e9d62234507c4a877f02bc6482673, type: 2}
+    value: 100
+  price: 30
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 2ca9f079158f8d945a2afc9fca031e41, type: 3}

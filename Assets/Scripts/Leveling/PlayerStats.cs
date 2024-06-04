@@ -40,10 +40,36 @@ public class PlayerStats : MonoBehaviour
 
     public static PlayerStats instance;
 
+    public float tempSpeed;
+
     public float getMovementSpeed()
     {
+        if(tempSpeed != 0)
+        {
+            Debug.Log("Temp speed set to " + tempSpeed);
+            return tempSpeed * 0.25f;
+        }
         return speed * 0.25f;
     }
+
+    public IEnumerator BoostPlayerSpeed(float val)
+    {
+        float boostDuration = 10f; // Duration for the speed boost
+        float originalSpeed = this.speed; // Assuming the character has a speed property
+        this.tempSpeed += val;
+
+        yield return new WaitForSeconds(boostDuration);
+
+        // Revert back to original speed
+        this.tempSpeed = 0;
+    }
+
+    public void StartCoroutine(float val)
+    {
+        // Start coroutine to temporarily boost player speed
+        StartCoroutine(BoostPlayerSpeed(val));
+    }
+
     public void setMaxHealth()
     {
         health.maxHealth = 95 + (vitality * 5);

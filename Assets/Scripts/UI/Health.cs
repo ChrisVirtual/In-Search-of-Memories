@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.TextCore.Text;
 
 public class Health : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class Health : MonoBehaviour
     private EnemyHealthBar enemyHealthBar;
 
     public float enemyHealth;
+    private float regenTime;
+
+    PlayerStats playerStats;
 
     private void Start()
     {
@@ -63,6 +67,7 @@ public class Health : MonoBehaviour
         }
         return currentHealth.Value;
     }
+
     public void AddHealth(int healthBoost)
     {
         if (currentHealth.Value + healthBoost > maxHealth)
@@ -73,6 +78,42 @@ public class Health : MonoBehaviour
         {
             currentHealth.Value += healthBoost;
         }
+    }
+
+    public IEnumerator HealthRegen(int healthBoost)
+    {
+        float duration = 5f; // Duration over which health is increased
+        float elapsed = 0f;
+        float totalElapsed = 0f;
+        float timer = 10f;
+
+        while (totalElapsed < timer)
+        {
+            if (elapsed < duration)
+            {
+                regenTime = 1f;
+                yield return new WaitForSeconds(regenTime);
+                if (currentHealth.Value < maxHealth)
+                {
+                    currentHealth.Value += (int)(healthBoost * regenTime);
+                    if (currentHealth.Value > maxHealth)
+                    {
+                        currentHealth.Value = maxHealth;
+                    }
+                    elapsed += regenTime;
+                }
+                totalElapsed += regenTime;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    public void AddHealthOvertime(int healthBoost)
+    {
+        StartCoroutine(HealthRegen(healthBoost));
     }
 
     public void Reduce(int damage)

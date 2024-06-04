@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("moveY", input.y);
 
                 Vector3 targetPos = transform.position;
-                effectiveSpeed = moveSpeed + (playerStats.speed * 0.25f);
+                effectiveSpeed = moveSpeed + (playerStats.getMovementSpeed());
                 targetPos.x += input.x * effectiveSpeed * Time.deltaTime; // add to the variable in x axis
                 targetPos.y += input.y * effectiveSpeed * Time.deltaTime; // add to the variable in y axis
 

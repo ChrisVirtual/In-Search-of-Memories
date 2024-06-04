@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 1
-  <MaxStackSize>k__BackingField: 99
+  <MaxStackSize>k__BackingField: 5
   <Name>k__BackingField: Apple
-  <Description>k__BackingField: 'Restore 10 HP
+  <Description>k__BackingField: 'Increases health overtime
 
     Booster
 
     - Regeneration'
-  <ItemImage>k__BackingField: {fileID: 0}
+  <ItemImage>k__BackingField: {fileID: -1183231198, guid: 63644f7545bd70940aae126d3dcab8ee, type: 3}
   <DefaultParametersList>k__BackingField: []
-  modifiersData: []
+  modifiersData:
+  - statModifier: {fileID: 11400000, guid: bcfb44c5a4db96940860f08b280b9b76, type: 2}
+    value: 3
   price: 10
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 2ca9f079158f8d945a2afc9fca031e41, type: 3}
