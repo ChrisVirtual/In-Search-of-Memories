@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <id>k__BackingField: SlayEnemiesQuest
   displayName: Slay Enemies
-  levelRequirement: 5
+  levelRequirement: 1
   questPrerequisites: []
   questStepPrefabs:
   - {fileID: 8813986217014524194, guid: f580e17b7d0810a45933be5a65e8b25f, type: 3}
-  goldReward: 1000
-  experienceReward: 100000
+  goldReward: 20
+  experienceReward: 2200

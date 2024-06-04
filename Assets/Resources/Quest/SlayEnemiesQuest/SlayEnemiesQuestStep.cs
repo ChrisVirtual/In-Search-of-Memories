@@ -7,7 +7,7 @@ using UnityEditor.Tilemaps;
 public class SlayEnemiesQuestStep : QuestStep
 {
     private int enemiesKilled = 0; //Number of enemies
-    private int enemiesToKill = 1; //Number of enemies required to complete the quest step
+    private int enemiesToKill = 2; //Number of enemies required to complete the quest step
 
     void Start()
     {

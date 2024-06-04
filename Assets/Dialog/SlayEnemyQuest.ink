@@ -13,8 +13,8 @@ VAR readyToHandIn = false
 -> main
 === main ===
 ~ finished = completed("SlayEnemiesQuest")
-~ levelMet = levelCheck(5)
-~ canStart = checkCanStart(5, "SlayEnemiesQuest")
+~ levelMet = levelCheck(1)
+~ canStart = checkCanStart(1, "SlayEnemiesQuest")
 ~ readyToHandIn = handIn("SlayEnemiesQuest")
 
 {finished == true:

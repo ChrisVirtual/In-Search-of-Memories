@@ -33,7 +33,7 @@ VAR finished = false
 
 {canStart == true and levelMet == true and finished == false:
     - We desperately need to get this gate open to establish a new  trading route, but there's a problem.
-I lost the key somewhere in the nearby forest. Can you help us find the key and unlock the gate to the northeast? 
+I lost the key somewhere in the nearby forest to the south. Can you help us find the key and unlock the gate? 
 Your efforts will be handsomely rewarded 
     Do you wish to start the Quest?
         + [Accept]
