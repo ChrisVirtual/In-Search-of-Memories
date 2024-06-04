@@ -90,7 +90,6 @@ namespace Inventory
         public void AddItemToPlayerInventory(IShopItem item)
         {
             // Implement the logic to add the 'item' to your player's inventory here
-            // For example:
             inventoryData.AddItem(new InventoryItem { item = (ItemSO)item, quantity = 1 });
         }
 

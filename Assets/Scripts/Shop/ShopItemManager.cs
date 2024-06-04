@@ -19,7 +19,6 @@ public class ShopItemManager : MonoBehaviour
         }
         else
         {
-            //Caleb will help me 
             Debug.Log("Not enough gold");
         }
     }

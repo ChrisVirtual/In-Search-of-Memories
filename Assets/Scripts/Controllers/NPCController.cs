@@ -76,6 +76,13 @@ namespace Shop
             if (inventoryItem.IsEmpty)
                 return;
 
+            IItemAction itemAction = inventoryItem.item as IItemAction;
+            if (itemAction != null)
+            {
+                ShopUI.ShowItemAction(itemIndex);
+                ShopUI.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+            }
+
             IShopItem shopItem = inventoryItem.item as IShopItem;
             if (shopItem != null)
             {
