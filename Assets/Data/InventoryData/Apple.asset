@@ -25,5 +25,5 @@ MonoBehaviour:
   modifiersData:
   - statModifier: {fileID: 11400000, guid: bcfb44c5a4db96940860f08b280b9b76, type: 2}
     value: 3
-  price: 10
+  price: 15
   <actionSFX>k__BackingField: {fileID: 8300000, guid: 2ca9f079158f8d945a2afc9fca031e41, type: 3}
