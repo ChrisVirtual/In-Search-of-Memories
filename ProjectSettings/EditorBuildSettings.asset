@@ -20,13 +20,4 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/AudioScene.unity
     guid: f55136d2cddd6944897d44eaa14dd81e
-  - enabled: 1
-    path: Assets/Scenes/RetryScene.unity
-    guid: a92eca06e83fd724a83dab284cda55e1
-  - enabled: 1
-    path: Assets/Scenes/Credits.unity
-    guid: 4540bc9743d7b9243a34ef2009a4fde6
-  - enabled: 1
-    path: Assets/Scenes/SaveLoadScene.unity
-    guid: 5705c99283a7a884c931d71f4ec50633
   m_configObjects: {}

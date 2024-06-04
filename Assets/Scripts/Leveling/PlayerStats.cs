@@ -96,6 +96,7 @@ public class PlayerStats : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
             currentLevel = startingLevel;
             currentExp = startingExperience;
         }
