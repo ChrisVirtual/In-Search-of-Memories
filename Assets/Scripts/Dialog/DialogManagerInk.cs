@@ -190,8 +190,8 @@ public class DialogManagerInk : MonoBehaviour
             }
 
             // Find the QuestPoint instance with the corresponding questId
-            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-            if (questPoint != null && questPoint.questId == questId)
+            QuestPoint questPoint = FindQuestPointById(questId);
+            if (questPoint != null)
             {
                 if (questPoint.GetCurrentQuestState() != QuestState.CAN_START)
                 {
@@ -210,15 +210,14 @@ public class DialogManagerInk : MonoBehaviour
             bool completed = false;
 
             // Find the QuestPoint instance with the corresponding questId
-            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-            if (questPoint != null && questPoint.questId == questId)
+            QuestPoint questPoint = FindQuestPointById(questId);
+            if (questPoint != null)
             {
                 if (questPoint.GetCurrentQuestState() == QuestState.FINISHED)
                 {
                     completed = true;
                 }
             }
-
 
             return completed;
         });
@@ -249,8 +248,8 @@ public class DialogManagerInk : MonoBehaviour
             bool readyToHandIn = false;
 
             // Find the QuestPoint instance with the corresponding questId
-            QuestPoint questPoint = FindObjectOfType<QuestPoint>();
-            if (questPoint != null && questPoint.questId == questId)
+            QuestPoint questPoint = FindQuestPointById(questId);
+            if (questPoint != null)
             {
                 if (questPoint.GetCurrentQuestState() == QuestState.CAN_FINISH)
                 {
@@ -288,5 +287,17 @@ public class DialogManagerInk : MonoBehaviour
         {
             Debug.Log("You don't meet the requirements to access MemoryShard_1.");
         }
+    }
+    private QuestPoint FindQuestPointById(string questId)
+    {
+        QuestPoint[] questPoints = FindObjectsOfType<QuestPoint>();
+        foreach (QuestPoint questPoint in questPoints)
+        {
+            if (questPoint.questId == questId)
+            {
+                return questPoint;
+            }
+        }
+        return null;
     }
 }
