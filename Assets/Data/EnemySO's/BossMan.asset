@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39df2a65a285b874983cf96b50076166, type: 3}
   m_Name: BossMan
   m_EditorClassIdentifier: 
-  enemyHealth: 1000
+  enemyHealth: 500
   goldDropped: 2000
   expDropped: 100000
-  damage: 20
+  damage: 30
