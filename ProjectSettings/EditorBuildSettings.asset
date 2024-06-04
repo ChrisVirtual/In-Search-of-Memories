@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/AudioScene.unity
     guid: f55136d2cddd6944897d44eaa14dd81e
+  - enabled: 1
+    path: Assets/Scenes/Shopping System.unity
+    guid: 337342aa637c15343b152dbb12ef2274
   m_configObjects: {}
