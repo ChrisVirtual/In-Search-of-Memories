@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 
 public class Health : MonoBehaviour
@@ -197,6 +198,7 @@ public class Health : MonoBehaviour
         {
             currentHealth.Value = 0;
             //Open retry menu instead of destroy
+            SceneManager.LoadScene("MainMenuScene");
             UnityEngine.Debug.Log("Player Died like a noob");
             //Destroy(gameObject);
         }
